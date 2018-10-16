@@ -1,4 +1,3 @@
-
 def iniciar_sesion(conn):
     cur = conn.cursor()
     cur.execute("select * from contrasena_antigua")
