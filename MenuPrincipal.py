@@ -1,5 +1,4 @@
-from api_clase import imprimir, validar_opcion
-
+from IO import *
 
 def menu_principal(usuario, conn):
     imprimir("BIENVENIDO " + usuario)

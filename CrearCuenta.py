@@ -1,7 +1,5 @@
-from api_clase import *
 import re
 
-from api_clase import imprimir
 email = ""
 password = ""
 
@@ -26,18 +24,18 @@ def ingresar_datos():
 
 
 def confirmar():
-    imprimir("Confirmar los datos:")
-    imprimir("{:<10} {:>10}\n{:<10} {:>10}".format("Mail:", email, "Password:", password))
+    print("Confirmar los datos:")
+    print("{:<10} {:>10}\n{:<10} {:>10}".format("Mail:", email, "Password:", password))
     _confirm = ""
     while not (re.match("[10]", _confirm)):
         _confirm = input("0: cambiar datos. 1: todo ok\nSeleccion: ")
     return _confirm
 
 def crear_cuenta(conn):
-    imprimir("Agregar cuenta:")
+    print("Agregar cuenta:")
     email, password = ingresar_datos()
     confirm = confirmar()
     while confirm == "0" or confirm != "1":
-        imprimir("Cambiar datos.")
+        print("Cambiar datos.")
         email, password = ingresar_datos()
         confirm = confirmar()

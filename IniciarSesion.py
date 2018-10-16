@@ -1,4 +1,4 @@
-from api_clase import *
+
 def iniciar_sesion(conn):
     cur = conn.cursor()
     cur.execute("select * from contrasena_antigua")

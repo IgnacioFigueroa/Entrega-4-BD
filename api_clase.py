@@ -1,30 +1,12 @@
 # -*- coding: utf-8 -*-
 import psycopg2
 from CrearCuenta import crear_cuenta
+from IO import *
+
 from MenuPrincipal import menu_principal
 from RecuperarContraseña import recuperar_contrasena
 
-
-def imprimir(mensaje):
-    print(mensaje)
-
-
-def imprimir_error(mensaje):
-    print(mensaje)
-
-def imprimir_positivo(mensaje):
-    print(mensaje)
-
-def validar_opcion(rango):
-    opcion = int(input("Ingrese su opcion: "))
-    while opcion not in rango:
-        imprimir_error("Ingrese una opcion valida")
-        opcion = int(input("Ingrese su opcion: "))
-    return opcion
-
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-
-
 
 # Menu
 if __name__ == '__main__':
