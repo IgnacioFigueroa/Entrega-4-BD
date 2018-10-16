@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
 import psycopg2
-from IniciarSesion import *
-from CrearCuenta import *
-from RecuperarContraseña import *
+from CrearCuenta import crear_cuenta
+from MenuPrincipal import menu_principal
+from RecuperarContraseña import recuperar_contrasena
 
-def Imprimir(mensaje):
+
+def imprimir(mensaje):
     print(mensaje)
 
 
-def ImprimirError(mensaje):
+def imprimir_error(mensaje):
     print(mensaje)
 
-
-def ImprimirPositivo(mensaje):
+def imprimir_positivo(mensaje):
     print(mensaje)
 
+def validar_opcion(rango):
+    opcion = int(input("Ingrese su opcion: "))
+    while opcion not in rango:
+        imprimir_error("Ingrese una opcion valida")
+        opcion = int(input("Ingrese su opcion: "))
+    return opcion
 
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
@@ -22,21 +28,18 @@ conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", hos
 
 # Menu
 if __name__ == '__main__':
-    Imprimir("BIENVENIDO/A A LINKEDING")
-    Imprimir("Que desea hacer?\n"
+    imprimir("BIENVENIDO/A A LINKEDING")
+    imprimir("Que desea hacer?\n"
              "\t(1) Iniciar Sesion\n"
              "\t(2) Crear Cuenta\n"
              "\t(3) Recuperar Contraseña\n")
-    opcion = int(input("Ingrese su opcion"))
-    while opcion not in range(1, 4):
-        ImprimirError("Ingrese una opcion valida")
-        opcion = input("Ingrese su opcion")
-
+    opcion = validar_opcion(range(1,4))
     if opcion == 1:
-        IniciarSesion()
+        usuario = (conn)
+        menu_principal(usuario, conn)
     elif opcion == 2:
-        CrearCuenta()
+        crear_cuenta(conn)
     elif opcion == 3:
-        RecuperarContrasena()
+        recuperar_contrasena(conn)
 
 

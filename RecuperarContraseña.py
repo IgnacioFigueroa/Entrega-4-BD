@@ -1,3 +1,4 @@
 from api_clase import *
-def RecuperarContrasena(conn):
+def recuperar_contrasena(conn):
+
     return
