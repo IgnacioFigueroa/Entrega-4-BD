@@ -1,0 +1,2 @@
+def MenuEmpresas():
+    return
