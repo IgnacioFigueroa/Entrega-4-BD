@@ -1,2 +1,2 @@
-def MenuEmpresas():
+def MenuEmpresas(usuario, conn):
     return

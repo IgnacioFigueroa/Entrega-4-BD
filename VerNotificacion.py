@@ -1,2 +1,2 @@
-def MenuVerNotificacion():
+def MenuVerNotificacion(usuario, conn):
     return

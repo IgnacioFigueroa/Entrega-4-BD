@@ -1,2 +1,2 @@
-def MenuContactos():
+def MenuContactos(usuario, conn):
     return

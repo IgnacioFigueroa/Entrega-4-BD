@@ -1,2 +1,2 @@
-def MenuVerPerfil():
+def MenuVerPerfil(usuario, conn):
     return

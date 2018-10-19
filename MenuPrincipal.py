@@ -15,13 +15,13 @@ def menu_principal(usuario, conn):
     opcion = validar_opcion(range(1,6))
 
     if opcion ==1:
-        MenuVerPerfil()
+        MenuVerPerfil(usuario, conn)
     elif opcion == 2:
-        MenuVerPublicacion()
+        MenuVerPublicacion(usuario, conn)
     elif opcion == 3:
-        MenuVerNotificacion()
+        MenuVerNotificacion(usuario, conn)
     elif opcion == 4:
-        MenuContactos()
+        MenuContactos(usuario, conn)
     elif opcion == 5:
-        MenuEmpresas()
+        MenuEmpresas(usuario, conn)
     return

@@ -1,2 +1,2 @@
-def MenuVerPublicacion():
+def MenuVerPublicacion(usuario, conn):
     return
