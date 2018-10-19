@@ -1,16 +1,16 @@
-def Imprimir(mensaje):
+def imprimir(mensaje):
     print(mensaje)
 
 
-def ImprimirError(mensaje):
+def imprimir_error(mensaje):
     print(mensaje)
 
-def ImprimirPositivo(mensaje):
+def imprimir_positivo(mensaje):
     print(mensaje)
 
-def ValidarOpcion(rango):
+def validar_opcion(rango):
     opcion = int(input("Ingrese su opcion: "))
     while opcion not in rango:
-        ImprimirError("Ingrese una opcion valida")
+        imprimir_error("Ingrese una opcion valida")
         opcion = int(input("Ingrese su opcion: "))
     return opcion
