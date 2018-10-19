@@ -104,3 +104,6 @@ venv.bak/
 .mypy_cache/
 
 
+.idea/workspace.xml
+.idea/Entrega-4-BD.iml
+.idea/misc.xml
