@@ -25,7 +25,7 @@ VER_ESTUDIOS = "SELECT em.nombre, e.grado_academico, e.descripcion, e.fecha_inic
 def MenuContactos(usuario, conn):
     salir = False
     while(not salir):
-        Imprimir("MENU DE CONTACTOS")
+        ImprimirTitulo("MENU DE CONTACTOS")
         Imprimir("Que deseas hacer? \n"
                  "\t(1) Ver Contactos\n"
                  "\t(2) Agregar Contactos\n"

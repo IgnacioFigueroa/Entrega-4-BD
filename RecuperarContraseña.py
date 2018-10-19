@@ -11,7 +11,7 @@ def RecuperarContrasena(conn):
         dicCorreoContra[tupla[1]] = tupla[2]
         dicCorreoId[tupla[1]] = tupla[0]
 
-    Imprimir("RECUPERAR CONTRASEÑA")
+    ImprimirTitulo("RECUPERAR CONTRASEÑA")
     correo = input("Ingrese su correo electronico: ")
     while correo not in dicCorreoContra.keys():
         correo = input("Correo no valido, ingreselo nuevamente: ")

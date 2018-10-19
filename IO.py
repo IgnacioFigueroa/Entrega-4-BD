@@ -1,7 +1,14 @@
-import re
+
 def Imprimir(mensaje):
     print(mensaje)
 
+def ImprimirTitulo(titulo):
+    linea = "     "
+    for i in range(len(titulo)):
+        linea = linea + "_"
+    print(linea)
+    print("     " + titulo)
+    print()
 
 def ImprimirError(mensaje):
     print(mensaje)
@@ -18,3 +25,5 @@ def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
         ImprimirError("Ingrese una opcion valida")
         opcion = input(mensaje)
     return int(opcion)
+
+

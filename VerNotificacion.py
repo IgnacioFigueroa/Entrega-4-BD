@@ -6,7 +6,7 @@ def MenuVerNotificacion(usuario, conn):
     cur.execute("select * from notificacion_publicacion where leida = FALSE"
                 " and correo_usuario = '{}';".format(usuario))
     notis = cur.fetchall()
-    Imprimir("NOTIFICACIONES NO LEIDAS")
+    ImprimirTitulo("NOTIFICACIONES NO LEIDAS")
     ListaNotificaciones = []
     ln = []
     for n in notis:

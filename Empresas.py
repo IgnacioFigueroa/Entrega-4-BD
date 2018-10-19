@@ -21,7 +21,7 @@ obtenerPerfil = "SELECT * " \
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
-    Imprimir("\nEmpresas.")
+    Imprimir("MENU DE EMPRESAS")
     #seleccionar ver mis empresas o ver otros trabajos
     opciones = "(1) Empresas que soy administrador.\n" \
                "(2) Ver trabajos.[nada todavia]"
