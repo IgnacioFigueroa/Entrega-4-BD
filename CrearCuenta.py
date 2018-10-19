@@ -31,7 +31,7 @@ def confirmar():
         _confirm = input("0: cambiar datos. 1: todo ok\nSeleccion: ")
     return _confirm
 
-def crear_cuenta(conn):
+def crearCuenta(conn):
     print("Agregar cuenta:")
     email, password = ingresar_datos()
     confirm = confirmar()
