@@ -14,7 +14,7 @@ def MenuPrincipal(usuario, conn):
              "\t(5) Empresas\n")
     opcion = ValidarOpcion(range(1, 6))
 
-    if opcion ==1:
+    if opcion == 1:
         MenuVerPerfil(usuario, conn)
     elif opcion == 2:
         MenuVerPublicacion(usuario, conn)

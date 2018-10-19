@@ -27,7 +27,11 @@ def MenuContactos(usuario, conn):
     return
 
 def VerContactos(usuario, conn):
-
+    cur= conn.cursor()
+    print("SELECT amigo FROM ("+CONTACTOS_USUARIO+") contactos WHERE correo = "+ usuario)
+    cur.execute("SELECT amigo FROM "+CONTACTOS_USUARIO+" contactos WHERE correo = "+ usuario)
+    rows = cur.fetchall()
+    print (rows)
     return
 def AgregarContactos(usuario, conn):
 

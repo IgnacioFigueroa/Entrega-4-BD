@@ -22,5 +22,5 @@ if __name__ == '__main__':
         CrearCuenta(conn)
     elif opcion == 3:
         RecuperarContrasena(conn)
-
+    conn.close()
 
