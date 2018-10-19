@@ -107,3 +107,6 @@ venv.bak/
 .idea/workspace.xml
 .idea/Entrega-4-BD.iml
 .idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_default.xml
