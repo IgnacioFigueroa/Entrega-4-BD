@@ -5,7 +5,6 @@ from IO import *
 from MenuPrincipal import MenuPrincipal
 from RecuperarContraseña import RecuperarContrasena
 from IniciarSesion import IniciarSesion
-import re
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
 # Menu

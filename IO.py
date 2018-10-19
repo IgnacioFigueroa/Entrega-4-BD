@@ -1,5 +1,4 @@
-
-
+import re
 def Imprimir(mensaje):
     print(mensaje)
 
@@ -11,8 +10,9 @@ def ImprimirPositivo(mensaje):
     print(mensaje)
 
 def ValidarOpcion(rango):
-    opcion = int(input("Ingrese su opcion: "))
-    while opcion not in rango:
+    opcion = input("Ingrese su opcion: ")
+    patron = "[{}-{}]".format(rango[0],rango[-1])
+    while not re.match(patron, opcion):
         ImprimirError("Ingrese una opcion valida")
-        opcion = int(input("Ingrese su opcion: "))
-    return opcion
+        opcion = input("Ingrese su opcion: ")
+    return int(opcion)

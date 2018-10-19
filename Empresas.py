@@ -4,7 +4,9 @@ from IO import *
 def MenuEmpresas(usuario, conn):
     Imprimir("\nMis Empresas")
     Imprimir("Seleccione una empresa, ingrese 0 para salir.")
-    MostrarMisEmpresas(usuario, conn)
+    cantidadEmpresas = MostrarMisEmpresas(usuario, conn)
+    seleccion = input("Ingrese su opcion: ")
+    ValidarOpcion(range(0,cantidadEmpresas))
     return
 
 
@@ -15,5 +17,5 @@ def MostrarMisEmpresas(usuario, conn):
     i = 1
     for empresa in empresas:
         Imprimir("Nombre empresa: {}".format(empresa[0]))
-    return
+    return len(empresas)
 
