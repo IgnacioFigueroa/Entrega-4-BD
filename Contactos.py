@@ -80,4 +80,3 @@ def SolicitudesPendientes(usuario, conn):
     return
 
 
-VerContactos("Mono1Apellido1@gmail.com", conn)
