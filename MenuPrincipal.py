@@ -4,7 +4,7 @@ from VerPublicacion import MenuVerPublicacion
 from VerNotificacion import MenuVerNotificacion
 from Contactos import MenuContactos
 from Empresas import MenuEmpresas
-def menu_principal(usuario, conn):
+def menuPrincipal(usuario, conn):
     imprimir("BIENVENIDO " + usuario)
     imprimir("Que deseas hacer? \n"
              "\t(1) Ver Perfil\n"
