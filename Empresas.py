@@ -1,5 +1,5 @@
 from IO import *
-import tabulate
+from tabulate import *
 #----QUERYS------
 NombresEmpresas = "SELECT e.nombre, e.id " \
                   "FROM administrador a, empresa e " \
@@ -10,10 +10,14 @@ IdTrabajo = "SELECT id " \
             "FROM trabajo " \
             "WHERE id_empresa = {}"
 
-NombreApellidoPostulante = "SELECT pe.nombre, pe.apellido " \
+NombreApellidoFechaEstadoCorreoIDPostulacionPostulante = "SELECT pe.nombre, pe.apellido, po.fecha, po.estado, pe.correo_usuario, po.id " \
                            "FROM perfil pe, postulacion po " \
                            "WHERE pe.correo_usuario = po.correo_usuario " \
                            "AND po.id_trabajo = {}"
+
+obtenerPerfil = "SELECT * " \
+                "FROM perfil " \
+                "WHERE correo_usuario = '{}'"
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -73,26 +77,55 @@ def VerTrabajos1(idEmpresa, conn):
     cur = conn.cursor()
     cur.execute(IdTrabajo.format(idEmpresa))
     trabajos = cur.fetchall()
+    i = 1
     for trabajo in trabajos:
-        Imprimir("({}) Trabajo {}.".format(trabajo[0]))
+        Imprimir("({}) Trabajo {}.".format(i, trabajo[0]))
+        i += 1
     seleccion = ValidarOpcion(range(1, len(trabajos) + 1), "Seleccione un trabajo: ")
     VerTrabajo1(trabajos[seleccion-1], conn)
     return
+
 
 # muestra las postulaciones de los usuarios junto con la fecha y estado de postulación
 def VerTrabajo1(idTrabajo, conn):
     Imprimir("\nId trabajo seleccionado: {}".format(idTrabajo[0]))
     cur = conn.cursor()
-    cur.execute(NombreApellidoPostulante.format(idTrabajo[0]))
+    cur.execute(NombreApellidoFechaEstadoCorreoIDPostulacionPostulante.format(idTrabajo[0]))
     postulantes = cur.fetchall()
-
+    resultadoPostulantes = [['Nombre','Apellido','Fecha postulacion', 'Estado']]
+    for postulante in postulantes:
+        resultadoPostulantes.append([postulante[0],postulante[1],postulante[2],postulante[3]])
+    Imprimir(tabulate(resultadoPostulantes,headers='firstrow',showindex=range(1,len(postulantes)+1)))
+    postulanteSeleccionado = ValidarOpcion(range(1,len(postulantes)+1),"Seleccionar postulante: ")
+    correoPostulanteSeleccionado =  postulantes[postulanteSeleccionado-1][4]
+    idPostulacion = postulantes[postulanteSeleccionado-1][5]
+    opciones = "(1) Ver perfil postulante.\n" \
+               "(2) Aceptar postulacion.\n" \
+               "(3) Rechazar postulacion."
+    Imprimir(opciones)
+    seleccion = ValidarOpcion(range(1,4))
+    if seleccion == 1:
+        VerPerfilPostulante(correoPostulanteSeleccionado, conn)
+    elif seleccion == 2:
+        AceptarPostulacion(idPostulacion, conn)
+    elif seleccion == 3:
+        RechazarPostulacion(idPostulacion, conn)
     return
 
-
+#selecciona una postulación y se muestra el perfil del postulante
 def VerPerfilPostulante(correoPostulante, conn):
+    Imprimir("\nPerfil de {}".format(correoPostulante))
+    cur = conn.cursor()
+    cur.execute(obtenerPerfil.format(correoPostulante))
+    datosPerfil = cur.fetchall()
+    datos = [["Id","Correo","Nombre","Apellido","Fecha nacimiento","Pais","Sexo","Descripcion"]]
+    for dato in datosPerfil:
+        datos.append(dato)
+    Imprimir(tabulate(datos,headers='firstrow'))
     return
 
 
+# cambia el estado de la postulación a aceptado, mandando una notificación al usuario
 def AceptarPostulacion(idPostulacion, conn):
     return
 
