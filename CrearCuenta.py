@@ -65,3 +65,4 @@ def CrearCuenta(conn):
                 "values({},'{}','{}','{}');".format(idNuevo, email, password, fechaActual))
     conn.commit()
     cur.close()
+    conn.close()
