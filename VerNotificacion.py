@@ -1,8 +1,6 @@
-import psycopg2
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 from IO import *
 from tabulate import tabulate
-u = "Mono49Apellido49@gmail.com"
+
 def MenuVerNotificacion(usuario, conn):
     cur = conn.cursor()
     cur.execute("select * from notificacion_publicacion where leida = FALSE"
@@ -10,26 +8,30 @@ def MenuVerNotificacion(usuario, conn):
     notis = cur.fetchall()
     Imprimir("NOTIFICACIONES NO LEIDAS")
     ListaNotificaciones = []
-    ln = [8]
+    ln = []
     for n in notis:
         ListaNotificaciones.append([n[0]])
         ln.append(n[0])
     Imprimir(tabulate(ListaNotificaciones))
-    print(ln)
     Imprimir("Que desea hacer?\n"
              "\t(1) Ver notificacion\n"
              "\t(2) Seleccionar todas las notificaciones como leidas\n"
              "\t(3) Ver notificaciones leidas\n")
     opcion = ValidarOpcion(range(1, 4))
     if opcion == 1:
-        pass
-        #opcionNotificacion = ValidarOpcion(ln)
-        """"
-        opcionNotificacion = input("Seleccione la notificacion que quiere ver: ")
-        while int(opcionNotificacion) not in ln:
-            opcionNotificacion = input("Seleccione una notificacion valida: ")
-        print(opcionNotificacion)
-        """
+        opcionNotificacion = ValidarOpcion(ln, "Seleccione la notificacion que quiere ver: ")
+        atributosNotificacion = ["Notificacion", "Publicacion", "Correo", "Leida"]
+        ListaNotisDetalles = []
+        for n in notis:
+            if n[0] == opcionNotificacion:
+                for i in range(len(atributosNotificacion)):
+                   ListaNotisDetalles.append([atributosNotificacion[i], n[i]])
+
+        Imprimir(tabulate(ListaNotisDetalles))
+        cur.execute("update notificacion_publicacion set leida = TRUE"
+                    " where id = {} and correo_usuario = '{}';".format(opcionNotificacion, usuario))
+        conn.commit()
+
     elif opcion == 2:
         cur.execute("update notificacion_publicacion set leida = TRUE"
                     " where leida = FALSE and correo_usuario = '{}';".format(usuario))
@@ -41,17 +43,21 @@ def MenuVerNotificacion(usuario, conn):
         lnl = []
         ListaNotificacionesLeidas = []
         for nl in notisLeidas:
-            ListaNotificacionesLeidas.append(nl[0])
+            ListaNotificacionesLeidas.append([nl[0]])
             lnl.append(nl[0])
-
-
+        Imprimir(tabulate(ListaNotificacionesLeidas))
+        respuesta = ValidarOpcion(range(1,3),"Quiere ver alguna notificacion en detalle?\n"
+                          "\t(1) si\n"
+                          "\t(2) no\n"
+                          "Ingrese su opcion: ")
+        if respuesta == 1:
+            opcionNotificacionLeida = ValidarOpcion(lnl, "Seleccione la notificacion que quiere ver: ")
+            atributosNotificacion = ["Notificacion", "Publicacion", "Correo", "Leida"]
+            ListaNotisDetalles = []
+            for n in notisLeidas:
+                if n[0] == opcionNotificacionLeida:
+                    for i in range(len(atributosNotificacion)):
+                        ListaNotisDetalles.append([atributosNotificacion[i], n[i]])
+            Imprimir(tabulate(ListaNotisDetalles))
     cur.close()
     conn.close()
-
-MenuVerNotificacion(u, conn)
-
-print()
-print("++++++++++++++++++++++++++++++")
-print("++++++++++++++++++++++++++++++")
-print("++++++++++++++++++++++++++++++")
-print()
