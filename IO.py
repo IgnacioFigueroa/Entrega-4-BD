@@ -13,9 +13,8 @@ def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
     opcion = input(mensaje)
     patron = []
     for a in rango:
-        print (a)
         patron.append(str(a))
-    while not (mensaje in patron):
+    while not (opcion in patron):
         ImprimirError("Ingrese una opcion valida")
         opcion = input(mensaje)
     return int(opcion)
