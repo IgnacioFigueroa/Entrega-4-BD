@@ -14,6 +14,7 @@ NombreApellidoPostulante = "SELECT pe.nombre, pe.apellido " \
                            "WHERE pe.correo_usuario = po.correo_usuario " \
                            "AND po.id_trabajo = {}"
 
+
 def MenuEmpresas(usuario, conn):
     Imprimir("\nMis Empresas")
     Imprimir("Seleccione una empresa, ingrese 0 para salir.")
@@ -46,7 +47,7 @@ def VerTrabajos(idEmpresa, conn):
     for trabajo in trabajos:
         cur.execute(NombreApellidoPostulante.format(trabajo[0]))
         postulantes = cur.fetchall()
-        Imprimir("({}) Trabajo {}. Postulaciones: {}".format(i,trabajo[0],))
+        Imprimir("({}) Trabajo {}. Postulaciones: {}".format(i,trabajo[0],len(postulantes)))
         Imprimir("\tPostulantes:")
         for postulante in postulantes:
             Imprimir("\t\t{} {}".format(postulante[0],postulante[1]))
