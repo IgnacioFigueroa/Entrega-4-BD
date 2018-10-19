@@ -1,4 +1,6 @@
+from IO import *
 def IniciarSesion(conn):
+    Imprimir("INICIAR SESION")
     cur = conn.cursor()
     cur.execute("select * from contrasena_antigua")
     ca = cur.fetchall()

@@ -44,7 +44,7 @@ def CrearCuenta(conn):
     idNuevo = max(dicCorreoId.values()) + 1
     fechaActual = date.today()
 
-    Imprimir("AGREGAR CUENTA")
+    Imprimir("CREAR CUENTA")
     email, password = IngresarDatos()
     confirm = Confirmar()
     while confirm == "0" or confirm != "1":
