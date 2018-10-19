@@ -1,6 +1,6 @@
 import time
 from IO import *
-def recuperarContrasena(conn):
+def RecuperarContrasena(conn):
         cur = conn.cursor()
         cur.execute("select * from contrasena_antigua")
         ca = cur.fetchall()

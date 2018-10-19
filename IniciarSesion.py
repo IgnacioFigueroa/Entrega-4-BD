@@ -1,4 +1,4 @@
-def iniciar_sesion(conn):
+def IniciarSesion(conn):
     cur = conn.cursor()
     cur.execute("select * from contrasena_antigua")
     ca = cur.fetchall()

@@ -12,12 +12,14 @@ def MenuContactos(usuario, conn):
         AgregarContactos(usuario, conn)
     elif opcion == 3:
         SolicitudesPendientes(usuario, conn)
-
     return
 
 def VerContactos(usuario, conn):
+
     return
 def AgregarContactos(usuario, conn):
+
     return
 def SolicitudesPendientes(usuario, conn):
+
     return
