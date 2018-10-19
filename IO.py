@@ -9,10 +9,12 @@ def ImprimirError(mensaje):
 def ImprimirPositivo(mensaje):
     print(mensaje)
 
-def ValidarOpcion(rango):
-    opcion = input("Ingrese su opcion: ")
-    patron = "[{}-{}]".format(rango[0],rango[-1])
-    while not re.match(patron, opcion):
+def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
+    opcion = input(mensaje)
+    patron = []
+    for a in rango:
+        patron.append(str(a))
+    while not (opcion in patron):
         ImprimirError("Ingrese una opcion valida")
-        opcion = input("Ingrese su opcion: ")
+        opcion = input(mensaje)
     return int(opcion)
