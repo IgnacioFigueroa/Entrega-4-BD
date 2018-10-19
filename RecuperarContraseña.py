@@ -13,7 +13,7 @@ def recuperar_contrasena(conn):
         correo = input("Ingrese su correo electronico: ")
         while correo not in dic_correo_contra.keys():
             correo = input("Correo no valido, ingreselo nuevamente: ")
-        imprimir("Su contrasena actual es:"+ dic_correo_contra[correo])
+        Imprimir("Su contrasena actual es:" + dic_correo_contra[correo])
         contra_nueva = input("Ingrese una contrasena nueva: ")
         while len(contra_nueva) not in range(1, 31):
             contra_nueva = input("Largo de la contrasena invalido, ingrese una contrasena nueva: ")
