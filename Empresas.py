@@ -24,10 +24,13 @@ def MenuEmpresas(usuario, conn):
     Imprimir("MENU DE EMPRESAS")
     #seleccionar ver mis empresas o ver otros trabajos
     opciones = "(1) Empresas que soy administrador.\n" \
-               "(2) Ver trabajos.[nada todavia]"
+               "(2) Ver trabajos.[nada todavia]\n" \
+               "(3) Salir\n"
     Imprimir(opciones)
-    seleccion = ValidarOpcion(range(1,3))
-    if seleccion == 1:
+    seleccion = ValidarOpcion(range(1,4))
+    if seleccion == 3:
+        sys.exit(0)
+    elif seleccion == 1:
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
         VerTrabajos2(conn)
@@ -46,16 +49,19 @@ def MostrarMisEmpresas(usuario, conn):
     seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
     idEmpresaSeleccionada = empresas[seleccion-1][1]
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
-    opcionesEmpresa = "(1) Ver trabajos.\n" \
-                      "(2) Crear publicaciones.[nada todavia]\n" \
-                      "(3) Mis publicaciones.[nada todavia]\n" \
-                      "(4) Agregar administrador.[nada todavia]\n" \
-                      "(5) Dejar de ser administrador.[nada todavia]\n" \
-                      "(6) Crear empresas.[nada todavia]\n" \
-                      "(7) Eliminar empresas.[nada todavia]"
+    opcionesEmpresa = "(1) Ver trabajos\n" \
+                      "(2) Crear publicaciones[nada todavia]\n" \
+                      "(3) Mis publicaciones[nada todavia]\n" \
+                      "(4) Agregar administrador[nada todavia]\n" \
+                      "(5) Dejar de ser administrador[nada todavia]\n" \
+                      "(6) Crear empresas[nada todavia]\n" \
+                      "(7) Eliminar empresas[nada todavia]\n" \
+                      "(8) Salir\n"
     Imprimir(opcionesEmpresa)
-    seleccion = ValidarOpcion(range(1,8))
-    if seleccion == 1:
+    seleccion = ValidarOpcion(range(1,9))
+    if seleccion == 8:
+        sys.exit(0)
+    elif seleccion == 1:
         VerTrabajos1(idEmpresaSeleccionada, conn)
     elif seleccion == 2:
         CrearPublicaciones(conn)

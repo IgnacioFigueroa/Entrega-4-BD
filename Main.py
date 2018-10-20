@@ -5,7 +5,7 @@ from IO import *
 from MenuPrincipal import MenuPrincipal
 from RecuperarContraseña import RecuperarContrasena
 from IniciarSesion import IniciarSesion
-import sys
+
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
 # MENU
@@ -16,7 +16,7 @@ if __name__ == '__main__':
              "\t(2) Crear Cuenta\n"
              "\t(3) Recuperar Contraseña\n"
              "\t(4) Salir\n")
-    opcion = ValidarOpcion(range(1, 4))
+    opcion = ValidarOpcion(range(1, 5))
     if opcion == 1:
         usuario = IniciarSesion(conn)
         MenuPrincipal(usuario, conn)

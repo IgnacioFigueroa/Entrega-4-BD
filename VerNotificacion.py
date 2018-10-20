@@ -16,9 +16,15 @@ def MenuVerNotificacion(usuario, conn):
     Imprimir("Que desea hacer?\n"
              "\t(1) Ver notificacion\n"
              "\t(2) Seleccionar todas las notificaciones como leidas\n"
-             "\t(3) Ver notificaciones leidas\n")
-    opcion = ValidarOpcion(range(1, 4))
-    if opcion == 1:
+             "\t(3) Ver notificaciones leidas\n"
+             "\t(4) Volver al menu anterior\n"
+             "\t(5) Salir\n")
+    opcion = ValidarOpcion(range(1, 6))
+    if opcion == 5:
+        sys.exit(0)
+    elif opcion == 4:
+        return
+    elif opcion == 1:
         opcionNotificacion = ValidarOpcion(ln, "Seleccione la notificacion que quiere ver: ")
         atributosNotificacion = ["Notificacion", "Publicacion", "Correo", "Leida"]
         ListaNotisDetalles = []

@@ -1,3 +1,4 @@
+import sys
 
 def Imprimir(mensaje):
     print(mensaje)
