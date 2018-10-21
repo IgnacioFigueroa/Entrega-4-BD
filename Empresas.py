@@ -19,6 +19,14 @@ obtenerPerfil = "SELECT * " \
                 "FROM perfil " \
                 "WHERE correo_usuario = '{}'"
 
+aceptarPostulacion = "UPDATE postulacion " \
+                     "SET estado = 'Aceptado' " \
+                     "WHERE id = {}"
+
+rechazarPostulacion = "UPDATE postulacion " \
+                     "SET estado = 'Rechazado' " \
+                     "WHERE id = {}"
+
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
     ImprimirTitulo("EMPRESAS")
@@ -59,11 +67,13 @@ def MostrarMisEmpresas(usuario, conn):
                       "(8) Volver.\n" \
                       "(9) Salir."
     Imprimir(opcionesEmpresa)
+    cur.close()
     seleccion = ValidarOpcion(range(1,10))
     if seleccion == 9:
         sys.exit(0)
     elif seleccion == 1:
         VerTrabajos1(idEmpresaSeleccionada, conn)
+        MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
         CrearPublicaciones(conn)
     elif seleccion == 3:
@@ -92,19 +102,28 @@ def VerTrabajos1(idEmpresa, conn):
     for trabajo in trabajos:
         Imprimir("({}) Trabajo {}.".format(i, trabajo[0]))
         i += 1
-    seleccion = ValidarOpcion(range(1, len(trabajos) + 1), "Seleccione un trabajo: ")
-    VerTrabajo1(trabajos[seleccion-1], conn)
+    opciones = "({}) Volver.\n" \
+               "({}) Salir.".format(i, i+1)
+    Imprimir(opciones)
+    seleccion = ValidarOpcion(range(1, i+2), "Seleccione un trabajo: ")
+    cur.close()
+    if seleccion == i:
+        return
+    elif seleccion == i+1:
+        sys.exit()
+    else:
+        VerTrabajo1(trabajos[seleccion-1], conn)
     return
 
 
 # muestra las postulaciones de los usuarios junto con la fecha y estado de postulación
 def VerTrabajo1(idTrabajo, conn):
     cur = conn.cursor()
-    cur.execute("SELECT id_trabajo FROM trabajo WHERE id = {}".format(idTrabajo))
+    cur.execute("SELECT id_empresa FROM trabajo WHERE id = {}".format(idTrabajo[0]))
     idEmpresa = cur.fetchall()
     idEmpresa = idEmpresa[0][0]
     ImprimirTitulo("Postulantes")
-    Imprimir("Id trabajo seleccionado: {}".format(idTrabajo[0]))
+    Imprimir("Id trabajo seleccionado: {}\n".format(idTrabajo[0]))
     cur.execute(NombreApellidoFechaEstadoCorreoIDPostulacionPostulante.format(idTrabajo[0]))
     postulantes = cur.fetchall()
     resultadoPostulantes = [['Nombre','Apellido','Fecha postulacion', 'Estado']]
@@ -120,13 +139,17 @@ def VerTrabajo1(idTrabajo, conn):
                "(4) Volver.\n" \
                "(5) Salir."
     Imprimir(opciones)
-    seleccion = ValidarOpcion(range(1,4))
+    seleccion = ValidarOpcion(range(1,6))
+    cur.close()
     if seleccion == 1:
         VerPerfilPostulante(correoPostulanteSeleccionado, conn)
+        VerTrabajo1(idTrabajo, conn)
     elif seleccion == 2:
         AceptarPostulacion(idPostulacion, conn)
+        VerTrabajo1(idTrabajo, conn)
     elif seleccion == 3:
         RechazarPostulacion(idPostulacion, conn)
+        VerTrabajo1(idTrabajo, conn)
     elif seleccion == 4:
         VerTrabajos1(idEmpresa, conn)
     elif seleccion == 5:
@@ -143,15 +166,34 @@ def VerPerfilPostulante(correoPostulante, conn):
     for dato in datosPerfil:
         datos.append(dato)
     Imprimir(tabulate(datos,headers='firstrow'))
+    opciones = "\n(0) Volver.\n" \
+               "(1) Salir."
+    Imprimir(opciones)
+    seleccion = ValidarOpcion(range(0,2))
+    cur.close()
+    if seleccion == 0:
+        return
+    elif seleccion == 1:
+        sys.exit()
     return
 
 
 # cambia el estado de la postulación a aceptado, mandando una notificación al usuario
 def AceptarPostulacion(idPostulacion, conn):
+    cur = conn.cursor()
+    cur.execute(aceptarPostulacion.format(idPostulacion))
+    ImprimirPositivo("Postulacion aceptada.")
+    conn.commit()
+    cur.close()
     return
 
 
 def RechazarPostulacion(idPostulacion, conn):
+    cur = conn.cursor()
+    cur.execute(rechazarPostulacion.format(idPostulacion))
+    ImprimirPositivo("Postulacion rechazada.")
+    conn.commit()
+    cur.close()
     return
 
 def CerrarPostulaciones(idTrabajo, conn):
