@@ -27,15 +27,16 @@ rechazarPostulacion = "UPDATE postulacion " \
                      "SET estado = 'Rechazado' " \
                      "WHERE id = {}"
 
+
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
     ImprimirTitulo("EMPRESAS")
     #seleccionar ver mis empresas o ver otros trabajos
-    opciones = "(1) Empresas que soy administrador.\n" \
-               "(2) Ver trabajos.[nada todavia]\n" \
-               "(3) Salir\n"
-    Imprimir(opciones)
-    seleccion = ValidarOpcion(range(1,4))
+    opciones = ["Empresas que soy administrador",
+               "Ver trabajos [nada todavia]",
+               "Salir"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion(range(1,len(opciones)+1))
     if seleccion == 3:
         sys.exit(0)
     elif seleccion == 1:
@@ -57,18 +58,18 @@ def MostrarMisEmpresas(usuario, conn):
     seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
     idEmpresaSeleccionada = empresas[seleccion-1][1]
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
-    opcionesEmpresa = "(1) Ver trabajos.\n" \
-                      "(2) Crear publicaciones. [nada todavia]\n" \
-                      "(3) Mis publicaciones. [nada todavia]\n" \
-                      "(4) Agregar administrador. [nada todavia]\n" \
-                      "(5) Dejar de ser administrador. [nada todavia]\n" \
-                      "(6) Crear empresas. [nada todavia]\n" \
-                      "(7) Eliminar empresas. [nada todavia]\n" \
-                      "(8) Volver.\n" \
-                      "(9) Salir."
-    Imprimir(opcionesEmpresa)
+    opcionesEmpresa = ["Ver trabajos",
+                      "Crear publicaciones [nada todavia]",
+                      "Mis publicaciones [nada todavia]",
+                      "Agregar administrador [nada todavia]",
+                      "Dejar de ser administrador [nada todavia]",
+                      "Crear empresas [nada todavia]",
+                      "Eliminar empresas [nada todavia]",
+                      "Volver",
+                      "Salir"]
+    ImprimirOpciones(opcionesEmpresa)
     cur.close()
-    seleccion = ValidarOpcion(range(1,10))
+    seleccion = ValidarOpcion(range(1,len(opcionesEmpresa)+1))
     if seleccion == 9:
         sys.exit(0)
     elif seleccion == 1:
@@ -112,7 +113,23 @@ def VerTrabajos1(idEmpresa, conn):
     elif seleccion == i+1:
         sys.exit()
     else:
-        VerTrabajo1(trabajos[seleccion-1], conn)
+        idTrabajo = trabajos[seleccion-1]
+        opciones = ["Ver trabajo", "Cerrar postulaciones", "Agregar trabajos", "Eliminar trabajo", "Volver", "Salir"]
+        ImprimirOpciones(opciones)
+        seleccion = ValidarOpcion(range(1,len(opciones)+1))
+        if seleccion == 1:
+            VerTrabajo1(idTrabajo, conn)
+        elif seleccion == 2:
+            CerrarPostulaciones(idTrabajo, conn)
+        elif seleccion == 3:
+            AgregarTrabajos(conn)
+        elif seleccion == 4:
+            EliminarTrabajo(idTrabajo, conn)
+        elif seleccion == 5:
+            return
+        elif seleccion == 6:
+            sys.exit()
+        VerTrabajos1(idEmpresa, conn)
     return
 
 
@@ -156,6 +173,7 @@ def VerTrabajo1(idTrabajo, conn):
         sys.exit()
     return
 
+
 #selecciona una postulación y se muestra el perfil del postulante
 def VerPerfilPostulante(correoPostulante, conn):
     ImprimirTitulo("Perfil de {}".format(correoPostulante))
@@ -196,50 +214,66 @@ def RechazarPostulacion(idPostulacion, conn):
     cur.close()
     return
 
+
 def CerrarPostulaciones(idTrabajo, conn):
     return
+
 
 def AgregarTrabajos(conn):
     return
 
+
 def EliminarTrabajo(idTrabajo, conn):
     return
+
 
 def CrearPublicaciones(conn):
     return
 
+
 def MisPublicaciones(correoUsuario, conn):
     return
+
 
 def VerPublicacion(idPublicacion, conn):
     return
 
+
 def EliminarPublicacion(idPublicacion, conn):
     return
+
 
 def Comentar(idPublicacion, conn, idComentado = None):
     return
 
+
 def AgregarAdministrador(idEmpresa, conn):
     return
+
 
 def DejarDeSerAdministrador(correoUsuario, conn):
     return
 
+
 def CrearEmpresa(conn):
     return
+
 
 def EliminarEmpresa(idEmpresa, conn):
     return
 
+
 def VerTrabajos2(conn):
     return
+
 
 def VerEmpresa(idEmpresa, conn):
     return
 
+
 def VerTrabajo2(idTrabajo, conn):
     return
+
 
 def PostularTrabajo(idTrabajo, correoUsuario, conn):
     return

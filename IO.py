@@ -27,4 +27,11 @@ def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
         opcion = input(mensaje)
     return int(opcion)
 
+def ImprimirOpciones(listaOpciones):
+    i = 1
+    stringOpciones = ""
+    for a in listaOpciones:
+        stringOpciones += "\n({}) {}.".format(i,a)
+        i += 1
+    print (stringOpciones)
 
