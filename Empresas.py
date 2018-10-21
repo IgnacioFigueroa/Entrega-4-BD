@@ -21,7 +21,7 @@ obtenerPerfil = "SELECT * " \
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
-    Imprimir("MENU DE EMPRESAS")
+    ImprimirTitulo("EMPRESAS")
     #seleccionar ver mis empresas o ver otros trabajos
     opciones = "(1) Empresas que soy administrador.\n" \
                "(2) Ver trabajos.[nada todavia]\n" \
@@ -38,7 +38,7 @@ def MenuEmpresas(usuario, conn):
 
 
 def MostrarMisEmpresas(usuario, conn):
-    Imprimir("\nMis Empresas")
+    ImprimirTitulo("Mis Empresas")
     cur = conn.cursor()
     cur.execute(NombresEmpresas.format(usuario))
     empresas = cur.fetchall()
@@ -49,17 +49,18 @@ def MostrarMisEmpresas(usuario, conn):
     seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
     idEmpresaSeleccionada = empresas[seleccion-1][1]
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
-    opcionesEmpresa = "(1) Ver trabajos\n" \
-                      "(2) Crear publicaciones[nada todavia]\n" \
-                      "(3) Mis publicaciones[nada todavia]\n" \
-                      "(4) Agregar administrador[nada todavia]\n" \
-                      "(5) Dejar de ser administrador[nada todavia]\n" \
-                      "(6) Crear empresas[nada todavia]\n" \
-                      "(7) Eliminar empresas[nada todavia]\n" \
-                      "(8) Salir\n"
+    opcionesEmpresa = "(1) Ver trabajos.\n" \
+                      "(2) Crear publicaciones. [nada todavia]\n" \
+                      "(3) Mis publicaciones. [nada todavia]\n" \
+                      "(4) Agregar administrador. [nada todavia]\n" \
+                      "(5) Dejar de ser administrador. [nada todavia]\n" \
+                      "(6) Crear empresas. [nada todavia]\n" \
+                      "(7) Eliminar empresas. [nada todavia]\n" \
+                      "(8) Volver.\n" \
+                      "(9) Salir."
     Imprimir(opcionesEmpresa)
-    seleccion = ValidarOpcion(range(1,9))
-    if seleccion == 8:
+    seleccion = ValidarOpcion(range(1,10))
+    if seleccion == 9:
         sys.exit(0)
     elif seleccion == 1:
         VerTrabajos1(idEmpresaSeleccionada, conn)
@@ -75,12 +76,16 @@ def MostrarMisEmpresas(usuario, conn):
         CrearEmpresa(conn)
     elif seleccion == 7:
         EliminarEmpresa(idEmpresaSeleccionada, conn)
+    elif seleccion == 8:
+        MenuEmpresas(usuario, conn)
     return
 
 
 def VerTrabajos1(idEmpresa, conn):
-    Imprimir("Trabajos de la empresa {}".format(idEmpresa))
     cur = conn.cursor()
+    cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(idEmpresa))
+    nombreEmpresa = cur.fetchall()
+    ImprimirTitulo("Trabajos en {}".format(nombreEmpresa[0][0]))
     cur.execute(IdTrabajo.format(idEmpresa))
     trabajos = cur.fetchall()
     i = 1
@@ -94,8 +99,12 @@ def VerTrabajos1(idEmpresa, conn):
 
 # muestra las postulaciones de los usuarios junto con la fecha y estado de postulación
 def VerTrabajo1(idTrabajo, conn):
-    Imprimir("\nId trabajo seleccionado: {}".format(idTrabajo[0]))
     cur = conn.cursor()
+    cur.execute("SELECT id_trabajo FROM trabajo WHERE id = {}".format(idTrabajo))
+    idEmpresa = cur.fetchall()
+    idEmpresa = idEmpresa[0][0]
+    ImprimirTitulo("Postulantes")
+    Imprimir("Id trabajo seleccionado: {}".format(idTrabajo[0]))
     cur.execute(NombreApellidoFechaEstadoCorreoIDPostulacionPostulante.format(idTrabajo[0]))
     postulantes = cur.fetchall()
     resultadoPostulantes = [['Nombre','Apellido','Fecha postulacion', 'Estado']]
@@ -107,7 +116,9 @@ def VerTrabajo1(idTrabajo, conn):
     idPostulacion = postulantes[postulanteSeleccionado-1][5]
     opciones = "(1) Ver perfil postulante.\n" \
                "(2) Aceptar postulacion.\n" \
-               "(3) Rechazar postulacion."
+               "(3) Rechazar postulacion.\n" \
+               "(4) Volver.\n" \
+               "(5) Salir."
     Imprimir(opciones)
     seleccion = ValidarOpcion(range(1,4))
     if seleccion == 1:
@@ -116,11 +127,15 @@ def VerTrabajo1(idTrabajo, conn):
         AceptarPostulacion(idPostulacion, conn)
     elif seleccion == 3:
         RechazarPostulacion(idPostulacion, conn)
+    elif seleccion == 4:
+        VerTrabajos1(idEmpresa, conn)
+    elif seleccion == 5:
+        sys.exit()
     return
 
 #selecciona una postulación y se muestra el perfil del postulante
 def VerPerfilPostulante(correoPostulante, conn):
-    Imprimir("\nPerfil de {}".format(correoPostulante))
+    ImprimirTitulo("Perfil de {}".format(correoPostulante))
     cur = conn.cursor()
     cur.execute(obtenerPerfil.format(correoPostulante))
     datosPerfil = cur.fetchall()
