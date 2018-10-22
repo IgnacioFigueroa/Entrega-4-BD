@@ -27,6 +27,14 @@ rechazarPostulacion = "UPDATE postulacion " \
                      "SET estado = 'Rechazado' " \
                      "WHERE id = {}"
 
+abrirPostulaciones = "UPDATE trabajo " \
+                      "SET postulacion_abierta = 'True' " \
+                      "WHERE id = {}"
+
+cerrarPostulaciones = "UPDATE trabajo " \
+                      "SET postulacion_abierta = 'False' " \
+                      "WHERE id = {}"
+
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -114,20 +122,22 @@ def VerTrabajos1(idEmpresa, conn):
         sys.exit()
     else:
         idTrabajo = trabajos[seleccion-1]
-        opciones = ["Ver trabajo", "Cerrar postulaciones", "Agregar trabajos", "Eliminar trabajo", "Volver", "Salir"]
+        opciones = ["Ver trabajo","Abrir postulaciones", "Cerrar postulaciones", "Agregar trabajos", "Eliminar trabajo", "Volver", "Salir"]
         ImprimirOpciones(opciones)
         seleccion = ValidarOpcion(range(1,len(opciones)+1))
         if seleccion == 1:
             VerTrabajo1(idTrabajo, conn)
         elif seleccion == 2:
-            CerrarPostulaciones(idTrabajo, conn)
+            AbrirPostulaciones(idTrabajo, conn)
         elif seleccion == 3:
-            AgregarTrabajos(conn)
+            CerrarPostulaciones(idTrabajo, conn)
         elif seleccion == 4:
-            EliminarTrabajo(idTrabajo, conn)
+            AgregarTrabajos(conn)
         elif seleccion == 5:
-            return
+            EliminarTrabajo(idTrabajo, conn)
         elif seleccion == 6:
+            return
+        elif seleccion == 7:
             sys.exit()
         VerTrabajos1(idEmpresa, conn)
     return
@@ -140,7 +150,16 @@ def VerTrabajo1(idTrabajo, conn):
     idEmpresa = cur.fetchall()
     idEmpresa = idEmpresa[0][0]
     ImprimirTitulo("Postulantes")
-    Imprimir("Id trabajo seleccionado: {}\n".format(idTrabajo[0]))
+    Imprimir("Id trabajo seleccionado: {}".format(idTrabajo[0]))
+    cur.execute("SELECT postulacion_abierta FROM trabajo WHERE id = {}".format(idTrabajo[0]))
+    estadoPostulaciones = cur.fetchall()
+    estadoPostulaciones = estadoPostulaciones[0][0]
+    if estadoPostulaciones == True:
+        estadoPostulaciones = "abiertas"
+    else:
+        estadoPostulaciones = "cerradas"
+    Imprimir("Postulaciones {}\n".format(estadoPostulaciones))
+
     cur.execute(NombreApellidoFechaEstadoCorreoIDPostulacionPostulante.format(idTrabajo[0]))
     postulantes = cur.fetchall()
     resultadoPostulantes = [['Nombre','Apellido','Fecha postulacion', 'Estado']]
@@ -215,11 +234,26 @@ def RechazarPostulacion(idPostulacion, conn):
     return
 
 
+def AbrirPostulaciones(idTrabajo, conn):
+    cur = conn.cursor()
+    cur.execute(abrirPostulaciones.format(idTrabajo[0]))
+    Imprimir("Postulaciones abiertas.")
+    conn.commit()
+    cur.close()
+    return
+
+
 def CerrarPostulaciones(idTrabajo, conn):
+    cur = conn.cursor()
+    cur.execute(cerrarPostulaciones.format(idTrabajo[0]))
+    Imprimir("Postulaciones cerradas.")
+    conn.commit()
+    cur.close()
     return
 
 
 def AgregarTrabajos(conn):
+
     return
 
 
