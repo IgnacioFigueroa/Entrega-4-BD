@@ -27,10 +27,19 @@ def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
         opcion = input(mensaje)
     return int(opcion)
 
-def ImprimirOpciones(listaOpciones):
+def ImprimirOpciones(listaOpciones, titulo = ""):
     i = 1
-    stringOpciones = ""
+    stringOpciones = titulo
     for a in listaOpciones:
         stringOpciones += "\n({}) {}.".format(i,a)
         i += 1
     print (stringOpciones)
+
+def PedirDescripcion(arg = "descripcion"):
+    Imprimir("Ingrese {}. Use doble espacio para terminar".format(arg))
+    texto = ""
+    n_text = " "
+    while len(n_text) != 0:
+        n_text = input()
+        texto += n_text
+    return texto

@@ -1,5 +1,6 @@
 from IO import *
 from tabulate import *
+import datetime
 #----QUERYS------
 NombresEmpresas = "SELECT e.nombre, e.id " \
                   "FROM administrador a, empresa e " \
@@ -8,7 +9,8 @@ NombresEmpresas = "SELECT e.nombre, e.id " \
 
 IdTrabajo = "SELECT id " \
             "FROM trabajo " \
-            "WHERE id_empresa = {}"
+            "WHERE id_empresa = {} " \
+            "ORDER BY id ASC"
 
 NombreApellidoFechaEstadoCorreoIDPostulacionPostulante = "SELECT pe.nombre, pe.apellido, po.fecha, po.estado, pe.correo_usuario, po.id " \
                            "FROM perfil pe, postulacion po " \
@@ -34,6 +36,14 @@ abrirPostulaciones = "UPDATE trabajo " \
 cerrarPostulaciones = "UPDATE trabajo " \
                       "SET postulacion_abierta = 'False' " \
                       "WHERE id = {}"
+
+agregarTrabajo = "INSERT INTO trabajo (id, id_empresa, descripcion, fecha_creacion, postulacion_abierta) " \
+                 "VALUES ({}, {}, '{}', TO_DATE('{}', 'DD/MM/YYYY'), {})"
+
+eliminarTrabajo = "DELETE FROM trabajo WHERE id = {}"
+
+crearPublicacionEmpresa = "INSERT INTO publicacion (id,id_empresa,texto,foto,link,estado,fecha,borrada) " \
+                          "VALUES ({},{},'{}','{}','{}','{}',TO_DATE('{}', 'DD/MM/YYYY'),{})"
 
 
 # Recibe el correo_usuario en usuario
@@ -67,7 +77,7 @@ def MostrarMisEmpresas(usuario, conn):
     idEmpresaSeleccionada = empresas[seleccion-1][1]
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
     opcionesEmpresa = ["Ver trabajos",
-                      "Crear publicaciones [nada todavia]",
+                      "Crear publicaciones",
                       "Mis publicaciones [nada todavia]",
                       "Agregar administrador [nada todavia]",
                       "Dejar de ser administrador [nada todavia]",
@@ -84,7 +94,7 @@ def MostrarMisEmpresas(usuario, conn):
         VerTrabajos1(idEmpresaSeleccionada, conn)
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
-        CrearPublicaciones(conn)
+        CrearPublicaciones(idEmpresaSeleccionada, conn)
     elif seleccion == 3:
         MisPublicaciones(usuario, conn)
     elif seleccion == 4:
@@ -132,7 +142,7 @@ def VerTrabajos1(idEmpresa, conn):
         elif seleccion == 3:
             CerrarPostulaciones(idTrabajo, conn)
         elif seleccion == 4:
-            AgregarTrabajos(conn)
+            AgregarTrabajos(idEmpresa, conn)
         elif seleccion == 5:
             EliminarTrabajo(idTrabajo, conn)
         elif seleccion == 6:
@@ -165,31 +175,43 @@ def VerTrabajo1(idTrabajo, conn):
     resultadoPostulantes = [['Nombre','Apellido','Fecha postulacion', 'Estado']]
     for postulante in postulantes:
         resultadoPostulantes.append([postulante[0],postulante[1],postulante[2],postulante[3]])
-    Imprimir(tabulate(resultadoPostulantes,headers='firstrow',showindex=range(1,len(postulantes)+1)))
-    postulanteSeleccionado = ValidarOpcion(range(1,len(postulantes)+1),"Seleccionar postulante: ")
-    correoPostulanteSeleccionado =  postulantes[postulanteSeleccionado-1][4]
-    idPostulacion = postulantes[postulanteSeleccionado-1][5]
-    opciones = "(1) Ver perfil postulante.\n" \
-               "(2) Aceptar postulacion.\n" \
-               "(3) Rechazar postulacion.\n" \
-               "(4) Volver.\n" \
-               "(5) Salir."
-    Imprimir(opciones)
-    seleccion = ValidarOpcion(range(1,6))
-    cur.close()
-    if seleccion == 1:
-        VerPerfilPostulante(correoPostulanteSeleccionado, conn)
-        VerTrabajo1(idTrabajo, conn)
-    elif seleccion == 2:
-        AceptarPostulacion(idPostulacion, conn)
-        VerTrabajo1(idTrabajo, conn)
-    elif seleccion == 3:
-        RechazarPostulacion(idPostulacion, conn)
-        VerTrabajo1(idTrabajo, conn)
-    elif seleccion == 4:
-        VerTrabajos1(idEmpresa, conn)
-    elif seleccion == 5:
-        sys.exit()
+    if len(resultadoPostulantes)>1:
+        Imprimir(tabulate(resultadoPostulantes,headers='firstrow',showindex=range(1,len(postulantes)+1)))
+        postulanteSeleccionado = ValidarOpcion(range(1,len(postulantes)+1),"Seleccionar postulante: ")
+        correoPostulanteSeleccionado = postulantes[postulanteSeleccionado - 1][4]
+        idPostulacion = postulantes[postulanteSeleccionado-1][5]
+        opciones = "(1) Ver perfil postulante.\n" \
+                   "(2) Aceptar postulacion.\n" \
+                   "(3) Rechazar postulacion.\n" \
+                   "(4) Volver.\n" \
+                   "(5) Salir."
+        Imprimir(opciones)
+        seleccion = ValidarOpcion(range(1, 6))
+        cur.close()
+        if seleccion == 1:
+            VerPerfilPostulante(correoPostulanteSeleccionado, conn)
+            VerTrabajo1(idTrabajo, conn)
+        elif seleccion == 2:
+            AceptarPostulacion(idPostulacion, conn)
+            VerTrabajo1(idTrabajo, conn)
+        elif seleccion == 3:
+            RechazarPostulacion(idPostulacion, conn)
+            VerTrabajo1(idTrabajo, conn)
+        elif seleccion == 4:
+            VerTrabajos1(idEmpresa, conn)
+        elif seleccion == 5:
+            sys.exit()
+    else:
+        Imprimir("No hay postulantes ); ...pero ya vendran :)")
+        ImprimirOpciones(["Volver", "Salir"])
+        seleccion = ValidarOpcion(range(1,3))
+        if seleccion == 1:
+            VerTrabajos1(idEmpresa, conn)
+        elif seleccion == 2:
+            sys.exit()
+
+
+
     return
 
 
@@ -252,16 +274,63 @@ def CerrarPostulaciones(idTrabajo, conn):
     return
 
 
-def AgregarTrabajos(conn):
-
+def AgregarTrabajos(idEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM trabajo ORDER BY id DESC LIMIT 1")
+    idNuevoTrabajo = cur.fetchall()
+    idNuevoTrabajo = idNuevoTrabajo[0][0] + 1
+    descripcion = PedirDescripcion()
+    fechaCreacion = "{:%d-%m-%Y}".format(datetime.date.today())
+    postulacionAbierta = ValidarOpcion([1,2],"(1) Postulaciones abiertas.\n(2) Postulaciones cerradas.")
+    if postulacionAbierta == 1:
+        postulacionAbierta = "TRUE"
+    else:
+        postulacionAbierta = "FALSE"
+    cur.execute(agregarTrabajo.format(idNuevoTrabajo, idEmpresa, descripcion, fechaCreacion, postulacionAbierta))
+    Imprimir("Trabajo agregado.")
+    conn.commit()
+    cur.close()
     return
 
 
 def EliminarTrabajo(idTrabajo, conn):
+    cur = conn.cursor()
+    ImprimirOpciones(["Si", "No"], "Esta seguro que desea eliminar este trabajo?")
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        cur.execute(eliminarTrabajo.format(idTrabajo[0]))
+        conn.commit()
+    else:
+        Imprimir("No se eliminara.")
+    cur.close()
     return
 
 
-def CrearPublicaciones(conn):
+def CrearPublicaciones(idEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM publicacion ORDER BY id DESC LIMIT 1")
+    id = cur.fetchall()
+    id = id[0][0] + 1
+    texto = PedirDescripcion("texto") #1000 chars
+    foto = PedirDescripcion("foto") #30 chars
+    link = PedirDescripcion("link") #100 chars
+    opciones = ["Privada", "Publica"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        estado = "privada"
+    else:
+        estado = "publica"
+    fechaCreacion = "{:%d-%m-%Y}".format(datetime.date.today())
+    borrada = False
+    opciones = ["Si", "No"]
+    ImprimirOpciones(opciones, "Desea publicar?")
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        cur.execute(crearPublicacionEmpresa.format(id,idEmpresa,texto,foto,link,estado,fechaCreacion,borrada))
+        Imprimir("Publicacion creada.")
+        conn.commit()
+    cur.close()
     return
 
 

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d99454f-d96d-43cc-9f9c-0e78c1f3c070" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Empresas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Empresas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IO.py" beforeDir="false" afterPath="$PROJECT_DIR$/IO.py" afterDir="false" />
@@ -14,9 +13,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540152053532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540244157249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$api_clase.coverage" NAME="api_clase Coverage Results" MODIFIED="1539712020009" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$Contactos.coverage" NAME="Contactos Coverage Results" MODIFIED="1539976594965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Entrega_4_BD$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1540248299460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -82,24 +82,27 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="py" value="4475" />
-          <entry key="txt" value="355" />
+          <entry key="py" value="6633" />
+          <entry key="txt" value="420" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="356" />
-          <entry key="Python" value="4475" />
+          <entry key="PLAIN_TEXT" value="421" />
+          <entry key="Python" value="6545" />
+          <entry key="SQL" value="3" />
+          <entry key="Scratch" value="85" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="16" />
+          <entry key="py" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Python" value="16" />
+          <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -107,31 +110,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-              <folding>
-                <element signature="e#24#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/IniciarSesion.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="424">
+              <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+              <folding>
+                <marker date="1540249268994" expanded="true" signature="904:909" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,29 +124,41 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Empresas.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="165" column="58" selection-start-line="165" selection-start-column="58" selection-end-line="165" selection-end-column="58" />
+            <state relative-caret-position="427">
+              <caret line="298" column="55" selection-start-line="298" selection-start-column="55" selection-end-line="298" selection-end-column="55" />
               <folding>
+                <element signature="e#0#16#0" expanded="true" />
                 <element signature="e#0#107#0" />
                 <element signature="e#0#44#1" />
+                <element signature="e#0#60#1" />
                 <element signature="e#0#174#1" />
                 <element signature="e#0#48#1" />
                 <element signature="e#0#56#1" />
                 <element signature="e#0#57#1" />
+                <element signature="e#0#62#1" />
+                <element signature="e#0#62#1" />
+                <element signature="e#0#96#1" />
                 <element signature="e#1136#1597#0" />
                 <element signature="e#1643#3313#0" />
                 <element signature="e#3355#4710#0" />
+                <element signature="e#5430#7694#0" />
                 <element signature="e#6650#7257#0" />
+                <element signature="e#7395#7563#0" />
+                <element signature="e#7616#7786#0" />
+                <element signature="e#8374#8499#0" />
+                <element signature="e#7910#7956#0" />
+                <element signature="e#9073#9101#0" />
+                <marker date="1540250572426" expanded="true" signature="9379:9548" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CrearCuenta.py">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="46" column="19" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
+            <state relative-caret-position="34">
+              <caret line="2" column="51" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -195,6 +192,7 @@
         <option value="$PROJECT_DIR$/MenuPrincipal.py" />
         <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/Contactos.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/IO.py" />
         <option value="$PROJECT_DIR$/Empresas.py" />
       </list>
@@ -224,6 +222,20 @@
               <item name="Entrega-4-BD" type="b2602c69:ProjectViewProjectNode" />
               <item name="Entrega-4-BD" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Entrega-4-BD" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Entrega-4-BD" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Extensions" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
+            <path>
+              <item name="Entrega-4-BD" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -234,6 +246,7 @@
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -318,14 +331,38 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Entrega-4-BD" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.api_clase" />
       <item itemvalue="Python.Contactos" />
       <item itemvalue="Python.Main" />
+      <item itemvalue="Python.scratch" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.Main" />
+        <item itemvalue="Python.scratch" />
         <item itemvalue="Python.Contactos" />
         <item itemvalue="Python.api_clase" />
       </list>
@@ -503,14 +540,27 @@
       <option name="project" value="LOCAL" />
       <updated>1540152259574</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;">
+      <created>1540245816409</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1540245816409</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Abrir y cerrar postulaciones">
+      <created>1540247506808</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1540247506808</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -530,7 +580,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="4" weight="0.1354009" />
-      <window_info anchor="right" id="Run" order="5" weight="0.47049925" />
+      <window_info active="true" anchor="right" id="Run" order="5" visible="true" weight="0.47049925" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14860907" />
@@ -579,7 +629,8 @@
     <MESSAGE value="mejores opciones y más bonitas" />
     <MESSAGE value="Aceptar y rechazar postulaciones&#10;Opciones de Volver en los menus dentro de Empresas" />
     <MESSAGE value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
+    <MESSAGE value="Abrir y cerrar postulaciones" />
+    <option name="LAST_COMMIT_MESSAGE" value="Abrir y cerrar postulaciones" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Input/output.py" />
@@ -650,28 +701,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="51" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/IO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="424">
+          <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+          <folding>
+            <marker date="1540249268994" expanded="true" signature="904:909" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Empresas.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="165" column="58" selection-start-line="165" selection-start-column="58" selection-end-line="165" selection-end-column="58" />
+        <state relative-caret-position="427">
+          <caret line="298" column="55" selection-start-line="298" selection-start-column="55" selection-end-line="298" selection-end-column="55" />
           <folding>
+            <element signature="e#0#16#0" expanded="true" />
             <element signature="e#0#107#0" />
             <element signature="e#0#44#1" />
+            <element signature="e#0#60#1" />
             <element signature="e#0#174#1" />
             <element signature="e#0#48#1" />
             <element signature="e#0#56#1" />
             <element signature="e#0#57#1" />
+            <element signature="e#0#62#1" />
+            <element signature="e#0#62#1" />
+            <element signature="e#0#96#1" />
             <element signature="e#1136#1597#0" />
             <element signature="e#1643#3313#0" />
             <element signature="e#3355#4710#0" />
+            <element signature="e#5430#7694#0" />
             <element signature="e#6650#7257#0" />
+            <element signature="e#7395#7563#0" />
+            <element signature="e#7616#7786#0" />
+            <element signature="e#8374#8499#0" />
+            <element signature="e#7910#7956#0" />
+            <element signature="e#9073#9101#0" />
+            <marker date="1540250572426" expanded="true" signature="9379:9548" ph="..." />
           </folding>
         </state>
       </provider>
