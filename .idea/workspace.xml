@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d99454f-d96d-43cc-9f9c-0e78c1f3c070" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Empresas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Empresas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IO.py" beforeDir="false" afterPath="$PROJECT_DIR$/IO.py" afterDir="false" />
@@ -70,22 +71,25 @@
     <session id="569865301">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.82" value="1" />
+          <entry key="project.open.time.96" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="py" value="4312" />
-          <entry key="txt" value="83" />
+          <entry key="py" value="4475" />
+          <entry key="txt" value="355" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="84" />
-          <entry key="Python" value="4312" />
+          <entry key="PLAIN_TEXT" value="356" />
+          <entry key="Python" value="4475" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -105,7 +109,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="221">
               <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
               <folding>
                 <element signature="e#24#39#0" expanded="true" />
@@ -127,10 +131,7 @@
         <entry file="file://$PROJECT_DIR$/IO.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="458">
-              <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
-              <folding>
-                <marker date="1540151893089" expanded="true" signature="651:808" ph="..." />
-              </folding>
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
             </state>
           </provider>
         </entry>
@@ -138,8 +139,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Empresas.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="123" column="28" lean-forward="true" selection-start-line="123" selection-start-column="28" selection-end-line="123" selection-end-column="28" />
+            <state relative-caret-position="277">
+              <caret line="165" column="58" selection-start-line="165" selection-start-column="58" selection-end-line="165" selection-end-column="58" />
               <folding>
                 <element signature="e#0#107#0" />
                 <element signature="e#0#44#1" />
@@ -147,12 +148,10 @@
                 <element signature="e#0#48#1" />
                 <element signature="e#0#56#1" />
                 <element signature="e#0#57#1" />
-                <element signature="e#867#1327#0" />
-                <element signature="e#2114#2574#0" />
-                <element signature="e#3605#4872#0" />
-                <element signature="e#5440#6009#0" />
-                <element signature="e#6152#6158#0" />
-                <element signature="e#6562#6730#0" />
+                <element signature="e#1136#1597#0" />
+                <element signature="e#1643#3313#0" />
+                <element signature="e#3355#4710#0" />
+                <element signature="e#6650#7257#0" />
               </folding>
             </state>
           </provider>
@@ -218,7 +217,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -230,6 +228,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -497,13 +496,21 @@
       <option name="project" value="LOCAL" />
       <updated>1540150740258</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;">
+      <created>1540152259574</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1540152259574</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14977308" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -523,7 +530,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="4" weight="0.1354009" />
-      <window_info active="true" anchor="right" id="Run" order="5" visible="true" weight="0.47049925" />
+      <window_info anchor="right" id="Run" order="5" weight="0.47049925" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14860907" />
@@ -571,7 +578,8 @@
     <MESSAGE value="listo Ver Notificaciones" />
     <MESSAGE value="mejores opciones y más bonitas" />
     <MESSAGE value="Aceptar y rechazar postulaciones&#10;Opciones de Volver en los menus dentro de Empresas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aceptar y rechazar postulaciones&#10;Opciones de Volver en los menus dentro de Empresas" />
+    <MESSAGE value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Input/output.py" />
@@ -583,23 +591,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="e#24#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MenuPrincipal.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="51" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -607,9 +602,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="29" selection-start-line="1" selection-start-column="29" selection-end-line="1" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -627,19 +619,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CrearCuenta.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="46" column="19" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Contactos.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="526">
           <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#24#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -651,20 +643,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/CrearCuenta.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="46" column="19" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/IO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="458">
-          <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
-          <folding>
-            <marker date="1540151893089" expanded="true" signature="651:808" ph="..." />
-          </folding>
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Empresas.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="123" column="28" lean-forward="true" selection-start-line="123" selection-start-column="28" selection-end-line="123" selection-end-column="28" />
+        <state relative-caret-position="277">
+          <caret line="165" column="58" selection-start-line="165" selection-start-column="58" selection-end-line="165" selection-end-column="58" />
           <folding>
             <element signature="e#0#107#0" />
             <element signature="e#0#44#1" />
@@ -672,12 +668,10 @@
             <element signature="e#0#48#1" />
             <element signature="e#0#56#1" />
             <element signature="e#0#57#1" />
-            <element signature="e#867#1327#0" />
-            <element signature="e#2114#2574#0" />
-            <element signature="e#3605#4872#0" />
-            <element signature="e#5440#6009#0" />
-            <element signature="e#6152#6158#0" />
-            <element signature="e#6562#6730#0" />
+            <element signature="e#1136#1597#0" />
+            <element signature="e#1643#3313#0" />
+            <element signature="e#3355#4710#0" />
+            <element signature="e#6650#7257#0" />
           </folding>
         </state>
       </provider>

@@ -199,7 +199,7 @@ def VerPerfilPostulante(correoPostulante, conn):
 # cambia el estado de la postulación a aceptado, mandando una notificación al usuario
 def AceptarPostulacion(idPostulacion, conn):
     cur = conn.cursor()
-    cur.execute(aceptarPostulacion.format(idPostulacion))
+    cur.execute(aceptarPostulacion.format(idPostulacion))#cambia el estado de la postulacion
     ImprimirPositivo("Postulacion aceptada.")
     conn.commit()
     cur.close()
@@ -208,7 +208,7 @@ def AceptarPostulacion(idPostulacion, conn):
 
 def RechazarPostulacion(idPostulacion, conn):
     cur = conn.cursor()
-    cur.execute(rechazarPostulacion.format(idPostulacion))
+    cur.execute(rechazarPostulacion.format(idPostulacion))#cambia el estado de la postulacion
     ImprimirPositivo("Postulacion rechazada.")
     conn.commit()
     cur.close()

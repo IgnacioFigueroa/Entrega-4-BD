@@ -34,4 +34,3 @@ def ImprimirOpciones(listaOpciones):
         stringOpciones += "\n({}) {}.".format(i,a)
         i += 1
     print (stringOpciones)
-
