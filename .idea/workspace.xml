@@ -13,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540244157249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540258935984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$api_clase.coverage" NAME="api_clase Coverage Results" MODIFIED="1539712020009" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$Contactos.coverage" NAME="Contactos Coverage Results" MODIFIED="1539976594965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1540248299460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
@@ -82,26 +82,26 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="py" value="6633" />
-          <entry key="txt" value="420" />
+          <entry key="py" value="11382" />
+          <entry key="txt" value="437" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="421" />
-          <entry key="Python" value="6545" />
-          <entry key="SQL" value="3" />
+          <entry key="PLAIN_TEXT" value="438" />
+          <entry key="Python" value="11293" />
+          <entry key="SQL" value="4" />
           <entry key="Scratch" value="85" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="17" />
+          <entry key="py" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="16" />
+          <entry key="Python" value="17" />
           <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
@@ -110,12 +110,26 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+              <folding>
+                <element signature="e#24#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+            <state relative-caret-position="441">
+              <caret line="97" column="25" selection-start-line="97" selection-start-column="25" selection-end-line="97" selection-end-column="25" />
               <folding>
-                <marker date="1540249268994" expanded="true" signature="904:909" ph="..." />
+                <marker date="1540258837693" expanded="true" signature="939:944" ph="..." />
+                <marker date="1540258837693" expanded="true" signature="1453:1458" ph="..." />
+                <marker date="1540258837693" expanded="true" signature="2917:2922" ph="..." />
               </folding>
             </state>
           </provider>
@@ -124,8 +138,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Empresas.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="298" column="55" selection-start-line="298" selection-start-column="55" selection-end-line="298" selection-end-column="55" />
+            <state relative-caret-position="289">
+              <caret line="390" column="26" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
                 <element signature="e#0#107#0" />
@@ -137,9 +151,9 @@
                 <element signature="e#0#57#1" />
                 <element signature="e#0#62#1" />
                 <element signature="e#0#62#1" />
-                <element signature="e#0#96#1" />
+                <element signature="e#0#141#1" />
+                <element signature="e#0#118#1" />
                 <element signature="e#1136#1597#0" />
-                <element signature="e#1643#3313#0" />
                 <element signature="e#3355#4710#0" />
                 <element signature="e#5430#7694#0" />
                 <element signature="e#6650#7257#0" />
@@ -148,7 +162,9 @@
                 <element signature="e#8374#8499#0" />
                 <element signature="e#7910#7956#0" />
                 <element signature="e#9073#9101#0" />
-                <marker date="1540250572426" expanded="true" signature="9379:9548" ph="..." />
+                <element signature="e#10467#10473#0" />
+                <element signature="e#10876#10882#0" />
+                <marker date="1540258935906" expanded="true" signature="9903:10072" ph="..." />
               </folding>
             </state>
           </provider>
@@ -190,10 +206,10 @@
         <option value="$PROJECT_DIR$/CrearCuenta.py" />
         <option value="$PROJECT_DIR$/VerNotificacion.py" />
         <option value="$PROJECT_DIR$/MenuPrincipal.py" />
-        <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/Contactos.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/IO.py" />
+        <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/Empresas.py" />
       </list>
     </option>
@@ -554,13 +570,21 @@
       <option name="project" value="LOCAL" />
       <updated>1540247506808</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Crear publicacion">
+      <created>1540244276449</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1540244276449</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15355521" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -580,7 +604,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="4" weight="0.1354009" />
-      <window_info active="true" anchor="right" id="Run" order="5" visible="true" weight="0.47049925" />
+      <window_info active="true" anchor="right" x="1367" y="31" width="1271" height="728" id="Run" order="5" type="WINDOWED" visible="true" weight="0.39788198" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14860907" />
@@ -630,7 +654,8 @@
     <MESSAGE value="Aceptar y rechazar postulaciones&#10;Opciones de Volver en los menus dentro de Empresas" />
     <MESSAGE value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
     <MESSAGE value="Abrir y cerrar postulaciones" />
-    <option name="LAST_COMMIT_MESSAGE" value="Abrir y cerrar postulaciones" />
+    <MESSAGE value="Crear publicacion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Crear publicacion" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Input/output.py" />
@@ -677,16 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="e#24#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/IniciarSesion.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -710,18 +725,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+        <state relative-caret-position="441">
+          <caret line="97" column="25" selection-start-line="97" selection-start-column="25" selection-end-line="97" selection-end-column="25" />
           <folding>
-            <marker date="1540249268994" expanded="true" signature="904:909" ph="..." />
+            <marker date="1540258837693" expanded="true" signature="939:944" ph="..." />
+            <marker date="1540258837693" expanded="true" signature="1453:1458" ph="..." />
+            <marker date="1540258837693" expanded="true" signature="2917:2922" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+          <folding>
+            <element signature="e#24#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Empresas.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="298" column="55" selection-start-line="298" selection-start-column="55" selection-end-line="298" selection-end-column="55" />
+        <state relative-caret-position="289">
+          <caret line="390" column="26" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
             <element signature="e#0#107#0" />
@@ -733,9 +760,9 @@
             <element signature="e#0#57#1" />
             <element signature="e#0#62#1" />
             <element signature="e#0#62#1" />
-            <element signature="e#0#96#1" />
+            <element signature="e#0#141#1" />
+            <element signature="e#0#118#1" />
             <element signature="e#1136#1597#0" />
-            <element signature="e#1643#3313#0" />
             <element signature="e#3355#4710#0" />
             <element signature="e#5430#7694#0" />
             <element signature="e#6650#7257#0" />
@@ -744,7 +771,9 @@
             <element signature="e#8374#8499#0" />
             <element signature="e#7910#7956#0" />
             <element signature="e#9073#9101#0" />
-            <marker date="1540250572426" expanded="true" signature="9379:9548" ph="..." />
+            <element signature="e#10467#10473#0" />
+            <element signature="e#10876#10882#0" />
+            <marker date="1540258935906" expanded="true" signature="9903:10072" ph="..." />
           </folding>
         </state>
       </provider>

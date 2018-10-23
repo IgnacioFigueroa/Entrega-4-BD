@@ -45,6 +45,10 @@ eliminarTrabajo = "DELETE FROM trabajo WHERE id = {}"
 crearPublicacionEmpresa = "INSERT INTO publicacion (id,id_empresa,texto,foto,link,estado,fecha,borrada) " \
                           "VALUES ({},{},'{}','{}','{}','{}',TO_DATE('{}', 'DD/MM/YYYY'),{})"
 
+verPublicacionesEmpresaCorto = "SELECT id, texto FROM publicacion WHERE id_empresa = {}"
+verPublicacionesEmpresa = "SELECT * FROM publicacion WHERE id_empresa = {}"
+verPublicacion = "SELECT * FROM publicacion WHERE id = {}"
+
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -78,7 +82,7 @@ def MostrarMisEmpresas(usuario, conn):
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
     opcionesEmpresa = ["Ver trabajos",
                       "Crear publicaciones",
-                      "Mis publicaciones [nada todavia]",
+                      "Mis publicaciones",
                       "Agregar administrador [nada todavia]",
                       "Dejar de ser administrador [nada todavia]",
                       "Crear empresas [nada todavia]",
@@ -95,8 +99,10 @@ def MostrarMisEmpresas(usuario, conn):
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
         CrearPublicaciones(idEmpresaSeleccionada, conn)
+        MostrarMisEmpresas(usuario, conn)
     elif seleccion == 3:
-        MisPublicaciones(usuario, conn)
+        MisPublicaciones(idEmpresaSeleccionada, conn)
+        MostrarMisEmpresas(usuario, conn)
     elif seleccion == 4:
         AgregarAdministrador(idEmpresaSeleccionada, conn)
     elif seleccion == 5:
@@ -334,11 +340,65 @@ def CrearPublicaciones(idEmpresa, conn):
     return
 
 
-def MisPublicaciones(correoUsuario, conn):
+# Mostrar una lista con todas las publicaciones que a creado la empresa con las siguientes opciones.
+# Una vez que el usuario seleccione debe mostrar el contenido de la publicacion, el tipo de publicacion
+# y una lista de los comentarios que tiene la publicacion.
+def MisPublicaciones(idEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute(verPublicacionesEmpresaCorto.format(idEmpresa))
+    publicacionesCorto = cur.fetchall()
+    publicacionesCorto.append(["Volver",""])
+    publicacionesCorto.append(["Salir",""])
+    Imprimir(tabulate(publicacionesCorto,headers=["Id", "Texto"],showindex=range(1,len(publicacionesCorto)+1)))
+    seleccion = ValidarOpcion(range(1,len(publicacionesCorto)+1),"Seleccione una publicacion: ")
+    idPublicacionSeleccionada = publicacionesCorto[seleccion-1][0]
+    if idPublicacionSeleccionada == "Volver":
+        cur.close()
+        return
+    elif idPublicacionSeleccionada == "Salir":
+        cur.close()
+        sys.exit()
+    opciones = ["Ver publicacion",
+                "Eliminar publicacion",
+                "Comentar",
+                "Volver",
+                "Salir"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion(range(1, len(opciones)+1))
+    if seleccion == 1:
+        VerPublicacion(idPublicacionSeleccionada, conn)
+        MisPublicaciones(idEmpresa, conn)
+    elif seleccion == 2:
+        EliminarPublicacion(idPublicacionSeleccionada, conn)
+    elif seleccion == 3:
+        Comentar(idPublicacionSeleccionada, conn)
+    elif seleccion == 4:
+        cur.close()
+        MisPublicaciones(idEmpresa, conn)
+    elif seleccion == 5:
+        cur.close()
+        sys.exit()
+    cur.close()
     return
 
 
 def VerPublicacion(idPublicacion, conn):
+    cur = conn.cursor()
+    ImprimirTitulo("Publicacion #{}".format(idPublicacion))
+    cur.execute(verPublicacion.format(idPublicacion))
+    contenidoPublicacion = cur.fetchall()
+    ImprimirInfoPublicacion(contenidoPublicacion)
+    Imprimir("__________\nComentarios")
+    ImprimirComentarios(idPublicacion, conn)
+    opciones = ["Volver", "Salir"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        cur.close()
+        return
+    elif seleccion == 2:
+        cur.close()
+        sys.exit()
     return
 
 

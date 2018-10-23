@@ -41,5 +41,61 @@ def PedirDescripcion(arg = "descripcion"):
     n_text = " "
     while len(n_text) != 0:
         n_text = input()
-        texto += n_text
+        texto += n_text + "\n"
     return texto
+
+def ImprimirInfoPublicacion(publicacionCompleta):
+    publicacion = publicacionCompleta[0]
+    id = publicacion[0]
+    if publicacion[1] == None:
+        autor = publicacion[2]
+    else:
+        autor = publicacion[1]
+    texto = publicacion[3]
+    foto = publicacion [4]
+    link = publicacion[5]
+    tipo = publicacion[6]
+    fecha = publicacion[7]
+    borrada = publicacion[8]
+    print ("ID: {:<4} Id/Correo autor: {}\n"
+           "Texto:\n"
+           "{}\n"
+           "Foto: {}\n"
+           "Link: {}\n"
+           "Tipo: {}\n"
+           "Fecha: {:%d-%m-%Y}\n"
+           "Borrada: {}".format(id,autor,texto,foto,link,tipo,fecha,borrada))
+
+def ImprimirComentarios(idPublicacion, conn):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM comentario WHERE id_publicacion = {};".format(idPublicacion))
+    comentarios_query = cur.fetchall()
+    comentarios = []
+    comentarios_de_comentarios = []
+    for comment in comentarios_query:
+        comentario = {"Comentario":[],"Comentarios":[]}
+        comentario["Comentario"] = comment
+        if comment[1] == None:
+            comentarios.append(comentario)
+        else:
+            comentarios_de_comentarios.append(comentario)
+    while len(comentarios_de_comentarios)>0:
+        for comment in comentarios:
+            id_comm = comment["Comentario"][0]
+            for i in range(len(comentarios_de_comentarios)):
+                com = comentarios_de_comentarios[i]
+                if id_comm == com["Comentario"][1]:
+                    comment["Comentarios"].append(com)
+                    comentarios_de_comentarios.pop(i)
+                    i -= 1
+    for comment in comentarios:
+        ImprimirComentario(comment)
+
+def ImprimirComentario(comment, indent=0):
+    fecha = comment["Comentario"][5]
+    autor = comment["Comentario"][2]
+    texto = comment["Comentario"][4]
+    print ("{:%d-%m-%Y}  ".format(fecha)+"\t"*indent+"|{} dijo: {}".format(autor, texto))
+    for sub_com in comment["Comentarios"]:
+        indent += 1
+        ImprimirComentario(sub_com, indent)
