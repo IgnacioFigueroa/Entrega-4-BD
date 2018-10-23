@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4d99454f-d96d-43cc-9f9c-0e78c1f3c070" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Empresas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Empresas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO.py" beforeDir="false" afterPath="$PROJECT_DIR$/IO.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540258935984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540259193754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$api_clase.coverage" NAME="api_clase Coverage Results" MODIFIED="1539712020009" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$Contactos.coverage" NAME="Contactos Coverage Results" MODIFIED="1539976594965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1540248299460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
@@ -71,25 +69,26 @@
     <session id="569865301">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.4675" value="1" />
           <entry key="project.open.time.82" value="1" />
           <entry key="project.open.time.96" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="py" value="11382" />
-          <entry key="txt" value="437" />
+          <entry key="py" value="11389" />
+          <entry key="txt" value="788" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="438" />
-          <entry key="Python" value="11293" />
+          <entry key="PLAIN_TEXT" value="789" />
+          <entry key="Python" value="11300" />
           <entry key="SQL" value="4" />
           <entry key="Scratch" value="85" />
         </counts>
@@ -112,7 +111,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="102">
               <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
               <folding>
                 <element signature="e#24#39#0" expanded="true" />
@@ -124,12 +123,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="97" column="25" selection-start-line="97" selection-start-column="25" selection-end-line="97" selection-end-column="25" />
+            <state relative-caret-position="1173">
+              <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
               <folding>
-                <marker date="1540258837693" expanded="true" signature="939:944" ph="..." />
-                <marker date="1540258837693" expanded="true" signature="1453:1458" ph="..." />
-                <marker date="1540258837693" expanded="true" signature="2917:2922" ph="..." />
+                <marker date="1540259389018" expanded="true" signature="939:944" ph="..." />
+                <marker date="1540259389018" expanded="true" signature="1453:1458" ph="..." />
+                <marker date="1540259389018" expanded="true" signature="2957:2962" ph="..." />
               </folding>
             </state>
           </provider>
@@ -138,33 +137,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Empresas.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="390" column="26" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
+            <state relative-caret-position="17">
+              <caret line="396" column="49" selection-start-line="396" selection-start-column="49" selection-end-line="396" selection-end-column="49" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
-                <element signature="e#0#107#0" />
-                <element signature="e#0#44#1" />
-                <element signature="e#0#60#1" />
-                <element signature="e#0#174#1" />
-                <element signature="e#0#48#1" />
-                <element signature="e#0#56#1" />
-                <element signature="e#0#57#1" />
-                <element signature="e#0#62#1" />
-                <element signature="e#0#62#1" />
-                <element signature="e#0#141#1" />
-                <element signature="e#0#118#1" />
-                <element signature="e#1136#1597#0" />
-                <element signature="e#3355#4710#0" />
-                <element signature="e#5430#7694#0" />
-                <element signature="e#6650#7257#0" />
-                <element signature="e#7395#7563#0" />
-                <element signature="e#7616#7786#0" />
-                <element signature="e#8374#8499#0" />
-                <element signature="e#7910#7956#0" />
-                <element signature="e#9073#9101#0" />
-                <element signature="e#10467#10473#0" />
-                <element signature="e#10876#10882#0" />
-                <marker date="1540258935906" expanded="true" signature="9903:10072" ph="..." />
+                <marker date="1540259389096" expanded="true" signature="9903:10072" ph="..." />
               </folding>
             </state>
           </provider>
@@ -174,7 +151,7 @@
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
-              <caret line="2" column="51" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
+              <caret line="2" column="51" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -208,8 +185,8 @@
         <option value="$PROJECT_DIR$/MenuPrincipal.py" />
         <option value="$PROJECT_DIR$/Contactos.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
-        <option value="$PROJECT_DIR$/IO.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/IO.py" />
         <option value="$PROJECT_DIR$/Empresas.py" />
       </list>
     </option>
@@ -231,6 +208,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -256,7 +234,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -577,14 +554,27 @@
       <option name="project" value="LOCAL" />
       <updated>1540244276449</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Ver comentarios y comentarios de comentarios">
+      <created>1540259049466</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1540259049466</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Ver comentarios y comentarios de comentarios.&#10;Nueva funcion en IO:&#10;    ImprimirComentarios(idPublicacion,indent=0)&#10;    - Recibe el id de la publicacion&#10;    - Imprime los comentarios con un titulo&#10;    - Muestra fecha, autor y texto.&#10;Ojo, comentarios en plural, la que está en singular es para la uso interno de la primera.">
+      <created>1540259457576</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1540259457576</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15355521" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15582451" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -604,7 +594,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="4" weight="0.1354009" />
-      <window_info active="true" anchor="right" x="1367" y="31" width="1271" height="728" id="Run" order="5" type="WINDOWED" visible="true" weight="0.39788198" />
+      <window_info anchor="right" x="1367" y="31" width="1271" height="728" id="Run" order="5" type="WINDOWED" weight="0.39788198" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14860907" />
@@ -655,7 +645,9 @@
     <MESSAGE value="Menu Ver trabajo, Cerrar postulaciones, Agregar trabajos, Eliminar trabajo.&#10;Agregué la funcin ImprimirOpciones. Se le entrega una lista de opciones, por ejemplo [&quot;Opcion1&quot;, &quot;Opcion2&quot;] y lo imprime así &quot;(1) Opcion1.\n(2) Opcion2.&quot;" />
     <MESSAGE value="Abrir y cerrar postulaciones" />
     <MESSAGE value="Crear publicacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="Crear publicacion" />
+    <MESSAGE value="Ver comentarios y comentarios de comentarios" />
+    <MESSAGE value="Ver comentarios y comentarios de comentarios.&#10;Nueva funcion en IO:&#10;    ImprimirComentarios(idPublicacion,indent=0)&#10;    - Recibe el id de la publicacion&#10;    - Imprime los comentarios con un titulo&#10;    - Muestra fecha, autor y texto.&#10;Ojo, comentarios en plural, la que está en singular es para la uso interno de la primera." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ver comentarios y comentarios de comentarios.&#10;Nueva funcion en IO:&#10;    ImprimirComentarios(idPublicacion,indent=0)&#10;    - Recibe el id de la publicacion&#10;    - Imprime los comentarios con un titulo&#10;    - Muestra fecha, autor y texto.&#10;Ojo, comentarios en plural, la que está en singular es para la uso interno de la primera." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Input/output.py" />
@@ -716,28 +708,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="51" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="97" column="25" selection-start-line="97" selection-start-column="25" selection-end-line="97" selection-end-column="25" />
-          <folding>
-            <marker date="1540258837693" expanded="true" signature="939:944" ph="..." />
-            <marker date="1540258837693" expanded="true" signature="1453:1458" ph="..." />
-            <marker date="1540258837693" expanded="true" signature="2917:2922" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="102">
           <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
           <folding>
             <element signature="e#24#39#0" expanded="true" />
@@ -745,35 +718,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/IO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
+          <folding>
+            <marker date="1540259389018" expanded="true" signature="939:944" ph="..." />
+            <marker date="1540259389018" expanded="true" signature="1453:1458" ph="..." />
+            <marker date="1540259389018" expanded="true" signature="2957:2962" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="51" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Empresas.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="390" column="26" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
+        <state relative-caret-position="17">
+          <caret line="396" column="49" selection-start-line="396" selection-start-column="49" selection-end-line="396" selection-end-column="49" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
-            <element signature="e#0#107#0" />
-            <element signature="e#0#44#1" />
-            <element signature="e#0#60#1" />
-            <element signature="e#0#174#1" />
-            <element signature="e#0#48#1" />
-            <element signature="e#0#56#1" />
-            <element signature="e#0#57#1" />
-            <element signature="e#0#62#1" />
-            <element signature="e#0#62#1" />
-            <element signature="e#0#141#1" />
-            <element signature="e#0#118#1" />
-            <element signature="e#1136#1597#0" />
-            <element signature="e#3355#4710#0" />
-            <element signature="e#5430#7694#0" />
-            <element signature="e#6650#7257#0" />
-            <element signature="e#7395#7563#0" />
-            <element signature="e#7616#7786#0" />
-            <element signature="e#8374#8499#0" />
-            <element signature="e#7910#7956#0" />
-            <element signature="e#9073#9101#0" />
-            <element signature="e#10467#10473#0" />
-            <element signature="e#10876#10882#0" />
-            <marker date="1540258935906" expanded="true" signature="9903:10072" ph="..." />
+            <marker date="1540259389096" expanded="true" signature="9903:10072" ph="..." />
           </folding>
         </state>
       </provider>
