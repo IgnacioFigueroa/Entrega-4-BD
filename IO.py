@@ -67,6 +67,7 @@ def ImprimirInfoPublicacion(publicacionCompleta):
            "Borrada: {}".format(id,autor,texto,foto,link,tipo,fecha,borrada))
 
 def ImprimirComentarios(idPublicacion, conn):
+    Imprimir("__________\nComentarios")
     cur = conn.cursor()
     cur.execute("SELECT * FROM comentario WHERE id_publicacion = {};".format(idPublicacion))
     comentarios_query = cur.fetchall()

@@ -358,6 +358,13 @@ def MisPublicaciones(idEmpresa, conn):
     elif idPublicacionSeleccionada == "Salir":
         cur.close()
         sys.exit()
+
+    ImprimirTitulo("Publicacion #{}".format(idPublicacionSeleccionada))
+    cur.execute(verPublicacion.format(idPublicacionSeleccionada))
+    contenidoPublicacion = cur.fetchall()
+    ImprimirInfoPublicacion(contenidoPublicacion)
+    ImprimirComentarios(idPublicacionSeleccionada, conn)
+
     opciones = ["Ver publicacion",
                 "Eliminar publicacion",
                 "Comentar",
@@ -388,7 +395,6 @@ def VerPublicacion(idPublicacion, conn):
     cur.execute(verPublicacion.format(idPublicacion))
     contenidoPublicacion = cur.fetchall()
     ImprimirInfoPublicacion(contenidoPublicacion)
-    Imprimir("__________\nComentarios")
     ImprimirComentarios(idPublicacion, conn)
     opciones = ["Volver", "Salir"]
     ImprimirOpciones(opciones)
