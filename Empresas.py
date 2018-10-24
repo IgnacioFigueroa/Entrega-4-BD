@@ -51,6 +51,8 @@ verPublicacion = "SELECT * FROM publicacion WHERE id = {}"
 
 eliminarPublicacion = "DELETE FROM publicacion WHERE id = {};"
 
+comentar = "INSERT INTO comentario (id, id_comentado, correo_usuario_comentador, id_publicacion, contenido, fecha, borrado) " \
+           "VALUES ({},{},'{}',{},'{}',TO_DATE('{}', 'DD/MM/YYYY'),{})"
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
