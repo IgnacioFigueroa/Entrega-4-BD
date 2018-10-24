@@ -49,6 +49,8 @@ verPublicacionesEmpresaCorto = "SELECT id, texto FROM publicacion WHERE id_empre
 verPublicacionesEmpresa = "SELECT * FROM publicacion WHERE id_empresa = {}"
 verPublicacion = "SELECT * FROM publicacion WHERE id = {}"
 
+eliminarPublicacion = "DELETE FROM publicacion WHERE id = {};"
+
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -378,7 +380,10 @@ def MisPublicaciones(idEmpresa, conn):
     elif seleccion == 2:
         EliminarPublicacion(idPublicacionSeleccionada, conn)
     elif seleccion == 3:
-        Comentar(idPublicacionSeleccionada, conn)
+        cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(idEmpresa))
+        nombreEmpresa = cur.fetchall()
+        nombreEmpresa = nombreEmpresa[0][0]
+        Comentar(idPublicacionSeleccionada, conn, nombreEmpresa)
     elif seleccion == 4:
         cur.close()
         MisPublicaciones(idEmpresa, conn)
@@ -409,10 +414,26 @@ def VerPublicacion(idPublicacion, conn):
 
 
 def EliminarPublicacion(idPublicacion, conn):
+    cur = conn.cursor()
+    cur.execute(eliminarPublicacion.format(idPublicacion))
+    Imprimir("Publicacion eliminada.")
+    cur.close()
+    conn.commit()
     return
 
 
-def Comentar(idPublicacion, conn, idComentado = None):
+def Comentar(idPublicacion, conn, nombre, idComentado = None):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM publicacion ORDER BY id DESC LIMIT 1")
+    id = cur.fetchall()
+    id = id[0][0]+1
+    ImprimirTitulo("Comentar.")
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    contenido = PedirDescripcion("comentario")
+    borrado = False
+    cur.execute(comentar.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
+    cur.close()
+    conn.commit()
     return
 
 
