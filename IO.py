@@ -69,7 +69,7 @@ def ImprimirTitulo(titulo):
     for i in range(len(titulo)):
         linea = linea + "_"
     print(linea)
-    print("     " + titulo)
+    print("     " + str(titulo).upper())
     print()
 
 def ImprimirError(mensaje):

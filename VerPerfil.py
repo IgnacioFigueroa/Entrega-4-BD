@@ -51,3 +51,6 @@ def MenuVerPerfil(usuario, conn):
 
     return
 MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
+
+def VerHabilidades(usuario, conn):
+    pass
