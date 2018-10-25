@@ -73,9 +73,11 @@ def ImprimirComentarios(idPublicacion, conn):
     comentarios_query = cur.fetchall()
     comentarios = []
     comentarios_de_comentarios = []
+    ids_comentariosPresentes = []
     for comment in comentarios_query:
         comentario = {"Comentario":[],"Comentarios":[]}
         comentario["Comentario"] = comment
+        ids_comentariosPresentes.append(comment[0])
         if comment[1] == None:
             comentarios.append(comentario)
         else:
@@ -91,12 +93,14 @@ def ImprimirComentarios(idPublicacion, conn):
                     i -= 1
     for comment in comentarios:
         ImprimirComentario(comment)
+    return ids_comentariosPresentes
 
 def ImprimirComentario(comment, indent=0):
+    id = comment["Comentario"][0]
     fecha = comment["Comentario"][5]
     autor = comment["Comentario"][2]
     texto = comment["Comentario"][4]
-    print ("{:%d-%m-%Y}  ".format(fecha)+"\t"*indent+"|{} dijo: {}".format(autor, texto))
+    print ("{:<3}{:%d-%m-%Y}  ".format(id,fecha)+"\t"*indent+"|{} dijo: {}".format(autor, texto))
     for sub_com in comment["Comentarios"]:
         indent += 1
         ImprimirComentario(sub_com, indent)
