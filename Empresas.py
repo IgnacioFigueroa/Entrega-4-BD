@@ -49,6 +49,10 @@ verPublicacionesEmpresaCorto = "SELECT id, texto FROM publicacion WHERE id_empre
 verPublicacionesEmpresa = "SELECT * FROM publicacion WHERE id_empresa = {}"
 verPublicacion = "SELECT * FROM publicacion WHERE id = {}"
 
+eliminarPublicacion = "DELETE FROM publicacion WHERE id = {};"
+
+comentar = "INSERT INTO comentario (id, id_comentado, correo_usuario_comentador, id_publicacion, contenido, fecha, borrado) " \
+           "VALUES ({},{},'{}',{},'{}',TO_DATE('{}', 'DD/MM/YYYY'),{});"
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -363,7 +367,7 @@ def MisPublicaciones(idEmpresa, conn):
     cur.execute(verPublicacion.format(idPublicacionSeleccionada))
     contenidoPublicacion = cur.fetchall()
     ImprimirInfoPublicacion(contenidoPublicacion)
-    ImprimirComentarios(idPublicacionSeleccionada, conn)
+    idsComentarios = ImprimirComentarios(idPublicacionSeleccionada, conn)
 
     opciones = ["Ver publicacion",
                 "Eliminar publicacion",
@@ -378,7 +382,10 @@ def MisPublicaciones(idEmpresa, conn):
     elif seleccion == 2:
         EliminarPublicacion(idPublicacionSeleccionada, conn)
     elif seleccion == 3:
-        Comentar(idPublicacionSeleccionada, conn)
+        cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(idEmpresa))
+        nombreEmpresa = cur.fetchall()
+        nombreEmpresa = nombreEmpresa[0][0]
+        Comentar(idPublicacionSeleccionada, conn, nombreEmpresa, idsComentarios)
     elif seleccion == 4:
         cur.close()
         MisPublicaciones(idEmpresa, conn)
@@ -409,14 +416,38 @@ def VerPublicacion(idPublicacion, conn):
 
 
 def EliminarPublicacion(idPublicacion, conn):
+    cur = conn.cursor()
+    cur.execute(eliminarPublicacion.format(idPublicacion))
+    Imprimir("Publicacion eliminada.")
+    cur.close()
+    conn.commit()
     return
 
 
-def Comentar(idPublicacion, conn, idComentado = None):
+def Comentar(idPublicacion, conn, nombre, idsComentarios):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM comentario ORDER BY id DESC LIMIT 1")
+    id = cur.fetchall()
+    id = id[0][0]+1
+    ImprimirTitulo("Comentar.")
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    idsComentarios.append(0)
+    idComentado = ValidarOpcion(idsComentarios,"(0)  Comentar en la publicacion.\n"
+                                               "(id) Ingrese un id de otro comentario para comentarlo.")
+    if (idComentado==0):
+        idComentado = "NULL"
+    contenido = PedirDescripcion("comentario")
+    borrado = False
+    cur.execute(comentar.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
+    cur.close()
+    conn.commit()
     return
 
 
 def AgregarAdministrador(idEmpresa, conn):
+    cur = conn.cursor()
+    #cur.execute(getTrabajadores.format(idEmpresa))
+    trabajadoresActivos = cur.fetchall()
     return
 
 
