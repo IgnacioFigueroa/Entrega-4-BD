@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4d99454f-d96d-43cc-9f9c-0e78c1f3c070" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Empresas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Empresas.py" afterDir="false" />
-    </list>
+    <list default="true" id="4d99454f-d96d-43cc-9f9c-0e78c1f3c070" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,7 +9,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540416926133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Entrega_4_BD$Main.coverage" NAME="Main Coverage Results" MODIFIED="1540432012129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$api_clase.coverage" NAME="api_clase Coverage Results" MODIFIED="1539712020009" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$Contactos.coverage" NAME="Contactos Coverage Results" MODIFIED="1539976594965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Entrega_4_BD$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1540248299460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
@@ -70,7 +67,7 @@
     <session id="569865301">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.4675" value="1" />
@@ -83,14 +80,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="py" value="12294" />
-          <entry key="txt" value="819" />
+          <entry key="py" value="12854" />
+          <entry key="txt" value="840" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="820" />
-          <entry key="Python" value="12204" />
+          <entry key="PLAIN_TEXT" value="841" />
+          <entry key="Python" value="12764" />
           <entry key="SQL" value="5" />
           <entry key="Scratch" value="85" />
         </counts>
@@ -125,12 +122,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
+            <state relative-caret-position="492">
+              <caret line="95" column="35" selection-start-line="95" selection-start-column="35" selection-end-line="95" selection-end-column="35" />
               <folding>
-                <marker date="1540259389018" expanded="true" signature="939:944" ph="..." />
-                <marker date="1540259389018" expanded="true" signature="1453:1458" ph="..." />
-                <marker date="1540259389018" expanded="true" signature="2957:2962" ph="..." />
+                <marker date="1540429667627" expanded="true" signature="939:944" ph="..." />
+                <marker date="1540429667627" expanded="true" signature="1453:1458" ph="..." />
+                <marker date="1540429667627" expanded="true" signature="3113:3118" ph="..." />
               </folding>
             </state>
           </provider>
@@ -139,8 +136,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Empresas.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-680">
-              <caret line="119" column="10" lean-forward="true" selection-start-line="119" selection-start-column="10" selection-end-line="119" selection-end-column="10" />
+            <state relative-caret-position="288">
+              <caret line="448" column="5" selection-start-line="448" selection-start-column="5" selection-end-line="448" selection-end-column="5" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
                 <element signature="e#2134#2595#0" />
@@ -155,10 +152,9 @@
                 <element signature="e#10325#11007#0" />
                 <element signature="e#11052#11368#0" />
                 <element signature="e#11416#12310#0" />
-                <element signature="e#12620#14266#0" />
                 <element signature="e#14314#14820#0" />
                 <element signature="e#14873#14885#0" />
-                <marker date="1540416926024" expanded="true" signature="10167:10336" ph="..." />
+                <marker date="1540432011982" expanded="true" signature="10168:10337" ph="..." />
               </folding>
             </state>
           </provider>
@@ -599,7 +595,21 @@
       <option name="project" value="LOCAL" />
       <updated>1540412423159</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Eliminar comentario listo">
+      <created>1540420753914</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1540420753914</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Waiting for something">
+      <created>1540432588370</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1540432588370</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -626,7 +636,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="4" weight="0.1354009" />
-      <window_info anchor="right" x="473" y="168" width="689" height="404" id="Run" order="5" type="WINDOWED" weight="0.39788198" />
+      <window_info anchor="right" x="1407" y="170" width="936" height="426" id="Run" order="5" type="WINDOWED" weight="0.39788198" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14860907" />
@@ -681,7 +691,8 @@
     <MESSAGE value="Ver comentarios y comentarios de comentarios.&#10;Nueva funcion en IO:&#10;    ImprimirComentarios(idPublicacion,indent=0)&#10;    - Recibe el id de la publicacion&#10;    - Imprime los comentarios con un titulo&#10;    - Muestra fecha, autor y texto.&#10;Ojo, comentarios en plural, la que está en singular es para la uso interno de la primera." />
     <MESSAGE value="Update" />
     <MESSAGE value="Eliminar comentario listo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Eliminar comentario listo" />
+    <MESSAGE value="Waiting for something" />
+    <option name="LAST_COMMIT_MESSAGE" value="Waiting for something" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Input/output.py" />
@@ -761,20 +772,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
+        <state relative-caret-position="492">
+          <caret line="95" column="35" selection-start-line="95" selection-start-column="35" selection-end-line="95" selection-end-column="35" />
           <folding>
-            <marker date="1540259389018" expanded="true" signature="939:944" ph="..." />
-            <marker date="1540259389018" expanded="true" signature="1453:1458" ph="..." />
-            <marker date="1540259389018" expanded="true" signature="2957:2962" ph="..." />
+            <marker date="1540429667627" expanded="true" signature="939:944" ph="..." />
+            <marker date="1540429667627" expanded="true" signature="1453:1458" ph="..." />
+            <marker date="1540429667627" expanded="true" signature="3113:3118" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Empresas.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-680">
-          <caret line="119" column="10" lean-forward="true" selection-start-line="119" selection-start-column="10" selection-end-line="119" selection-end-column="10" />
+        <state relative-caret-position="288">
+          <caret line="448" column="5" selection-start-line="448" selection-start-column="5" selection-end-line="448" selection-end-column="5" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
             <element signature="e#2134#2595#0" />
@@ -789,10 +800,9 @@
             <element signature="e#10325#11007#0" />
             <element signature="e#11052#11368#0" />
             <element signature="e#11416#12310#0" />
-            <element signature="e#12620#14266#0" />
             <element signature="e#14314#14820#0" />
             <element signature="e#14873#14885#0" />
-            <marker date="1540416926024" expanded="true" signature="10167:10336" ph="..." />
+            <marker date="1540432011982" expanded="true" signature="10168:10337" ph="..." />
           </folding>
         </state>
       </provider>
