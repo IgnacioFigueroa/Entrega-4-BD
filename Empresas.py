@@ -51,8 +51,15 @@ verPublicacion = "SELECT * FROM publicacion WHERE id = {}"
 
 eliminarPublicacion = "DELETE FROM publicacion WHERE id = {};"
 
-comentar = "INSERT INTO comentario (id, id_comentado, correo_usuario_comentador, id_publicacion, contenido, fecha, borrado) " \
+comentarEmpresa = "INSERT INTO comentario (id, id_comentado, empresa_comentadora, id_publicacion, contenido, fecha, borrado) " \
            "VALUES ({},{},'{}',{},'{}',TO_DATE('{}', 'DD/MM/YYYY'),{});"
+
+getTrabajadores = "SELECT p.id, p.correo_usuario " \
+                  "FROM trabajado, trabajo, perfil p " \
+                  "WHERE trabajado.id_trabajo = trabajo.id " \
+                  "AND trabajado.id_perfil = p.id " \
+                  "AND trabajo.id_empresa = {} " \
+                  "AND trabajado.fecha_termino > TO_DATE('{}', 'DD/MM/YYYY');"
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -86,8 +93,8 @@ def MostrarMisEmpresas(usuario, conn):
     Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
     opcionesEmpresa = ["Ver trabajos",
                       "Crear publicaciones",
-                      "Mis publicaciones",
-                      "Agregar administrador [nada todavia]",
+                      "Mis publicaciones [falta imprimir bien los comentarios]",
+                      "Agregar administrador",
                       "Dejar de ser administrador [nada todavia]",
                       "Crear empresas [nada todavia]",
                       "Eliminar empresas [nada todavia]",
@@ -109,6 +116,7 @@ def MostrarMisEmpresas(usuario, conn):
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 4:
         AgregarAdministrador(idEmpresaSeleccionada, conn)
+        MostrarMisEmpresas(usuario, conn)
     elif seleccion == 5:
         DejarDeSerAdministrador(usuario, conn)
     elif seleccion == 6:
@@ -142,7 +150,13 @@ def VerTrabajos1(idEmpresa, conn):
         sys.exit()
     else:
         idTrabajo = trabajos[seleccion-1]
-        opciones = ["Ver trabajo","Abrir postulaciones", "Cerrar postulaciones", "Agregar trabajos", "Eliminar trabajo", "Volver", "Salir"]
+        opciones = ["Ver trabajo",
+                    "Abrir postulaciones",
+                    "Cerrar postulaciones",
+                    "Agregar trabajos",
+                    "Eliminar trabajo",
+                    "Volver",
+                    "Salir"]
         ImprimirOpciones(opciones)
         seleccion = ValidarOpcion(range(1,len(opciones)+1))
         if seleccion == 1:
@@ -438,7 +452,7 @@ def Comentar(idPublicacion, conn, nombre, idsComentarios):
         idComentado = "NULL"
     contenido = PedirDescripcion("comentario")
     borrado = False
-    cur.execute(comentar.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
+    cur.execute(comentarEmpresa.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
     cur.close()
     conn.commit()
     return
@@ -446,8 +460,11 @@ def Comentar(idPublicacion, conn, nombre, idsComentarios):
 
 def AgregarAdministrador(idEmpresa, conn):
     cur = conn.cursor()
-    #cur.execute(getTrabajadores.format(idEmpresa))
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    cur.execute(getTrabajadores.format(idEmpresa,fecha))
     trabajadoresActivos = cur.fetchall()
+    ImprimirTitulo("Seleccionar trabajador.")
+    Imprimir(tabulate(trabajadoresActivos,headers='always'))
     return
 
 
