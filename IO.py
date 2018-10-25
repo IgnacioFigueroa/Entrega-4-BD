@@ -83,14 +83,24 @@ def ImprimirComentarios(idPublicacion, conn):
     """
     comentarios = []
     comentarios_de_comentarios = []
-    i = 0
+    ids_comentariosPresentes = []
     for comment in comentarios_query:
         comentario = {"Comentario":[],"Comentarios":[]}
         comentario["Comentario"] = comment
         ids_comentariosPresentes.append(comment[0])
         if comment[1] == None:
             comentarios.append(comentario)
-        
+        else:
+            comentarios_de_comentarios.append(comentario)
+    while len(comentarios_de_comentarios)>0:
+        for comment in comentarios:
+            id_comm = comment["Comentario"][0]
+            for i in range(len(comentarios_de_comentarios)):
+                com = comentarios_de_comentarios[i]
+                if id_comm == com["Comentario"][1]:
+                    comment["Comentarios"].append(com)
+                    comentarios_de_comentarios.pop(i)
+                    i -= 1
     for comment in comentarios:
         ImprimirComentario(comment)
     """
@@ -109,3 +119,9 @@ def ImprimirComentario(comment, indent=0):
         indent += 1
         ImprimirComentario(sub_com, indent)
 """
+
+def HayConexionBD(conn):
+    if "closed: 0" in str(conn): # si esta conectado
+        return True
+    elif "closed: 1" in str(conn): # no esta conectado
+        return False
