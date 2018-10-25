@@ -1,8 +1,8 @@
 from IO import *
 from tabulate import tabulate
 import psycopg2
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-u = "Mono49Apellido49@gmail.com"
+#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+#u = "Mono49Apellido49@gmail.com"
 
 def MenuVerNotificacion(usuario, conn):
     terminar = True
@@ -38,11 +38,11 @@ def MenuVerNotificacion(usuario, conn):
             opcion = ValidarOpcion(range(1, 4))
 
         if (opcion == 5 and hay_notis) or (opcion == 3 and not hay_notis):
-            conn.close()
+            if HayConexionBD(conn):
+                conn.close()
             sys.exit(0)
         elif (opcion == 4 and hay_notis) or (opcion == 2 and not hay_notis):
             terminar = False
-            conn.close()
             return
         elif opcion == 1 and hay_notis:
             opcionNotificacion = ValidarOpcion(ln, "Seleccione la notificacion que quiere ver: ")
@@ -57,12 +57,12 @@ def MenuVerNotificacion(usuario, conn):
                                     " c.contenido, c.fecha"
                                     " from comentario c, notificacion n where {} = c.id_comentado"
                                     " and n.id = {};".format(n[1], opcionNotificacion))
-                        info_comentario = cur.fetchone()
+                        res = cur.fetchone()
                         atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                       "Comentado por", "Contenido", "Fecha"]
                         tab = []
-                        for i in range(len(atributos)):
-                            tab.append([atributos[i], info_comentario[i]])
+                        for i in range(len(res)):
+                            tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
 
                     elif n[1] != None and n[7] != None: # es publicacion comentada
@@ -76,7 +76,7 @@ def MenuVerNotificacion(usuario, conn):
                         atributos = ["Notificacion", "Publicacion", "Comentario",
                                      "Comentado por", "Contenido", "Fecha"]
                         tab = []
-                        for i in range(len(atributos)):
+                        for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
 
@@ -92,7 +92,7 @@ def MenuVerNotificacion(usuario, conn):
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                         tab = []
-                        for i in range(len(atributos)):
+                        for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
 
@@ -102,11 +102,11 @@ def MenuVerNotificacion(usuario, conn):
                                     "from notificacion n, postulacion p "
                                     "where n.id = {} and n.id_postulacion = p.id "
                                     "and p.correo_usuario = '{}';".format(opcionNotificacion, usuario))
-                        resultado = cur.fetchone()
+                        res = cur.fetchone()
                         atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                         tab = []
-                        for i in range(len(atributos)):
-                            tab.append([atributos[i], resultado[i]])
+                        for i in range(len(res)):
+                            tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
 
                     elif n[6] != None: # es solicitud
@@ -119,7 +119,7 @@ def MenuVerNotificacion(usuario, conn):
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                         tab = []
-                        for i in range(len(atributos)):
+                        for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
 
@@ -167,12 +167,12 @@ def MenuVerNotificacion(usuario, conn):
                                             " c.contenido, c.fecha"
                                             " from comentario c, notificacion n where {} = c.id_comentado"
                                             " and n.id = {};".format(n[1], opcionNotificacionLeida))
-                                info_comentario = cur.fetchone()
+                                res = cur.fetchone()
                                 atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                              "Comentado por", "Contenido", "Fecha"]
                                 tab = []
-                                for i in range(len(atributos)):
-                                    tab.append([atributos[i], info_comentario[i]])
+                                for i in range(len(res)):
+                                    tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
 
                             elif n[1] != None and n[7] != None:  # es publicacion comentada
@@ -186,7 +186,7 @@ def MenuVerNotificacion(usuario, conn):
                                 atributos = ["Notificacion", "Publicacion", "Comentario",
                                              "Comentado por", "Contenido", "Fecha"]
                                 tab = []
-                                for i in range(len(atributos)):
+                                for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
 
@@ -202,7 +202,7 @@ def MenuVerNotificacion(usuario, conn):
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                                 tab = []
-                                for i in range(len(atributos)):
+                                for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
 
@@ -212,11 +212,11 @@ def MenuVerNotificacion(usuario, conn):
                                             "from notificacion n, postulacion p "
                                             "where n.id = {} and n.id_postulacion = p.id "
                                             "and p.correo_usuario = '{}';".format(opcionNotificacionLeida, usuario))
-                                resultado = cur.fetchone()
+                                res = cur.fetchone()
                                 atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                                 tab = []
-                                for i in range(len(atributos)):
-                                    tab.append([atributos[i], resultado[i]])
+                                for i in range(len(res)):
+                                    tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
 
                             elif n[6] != None:  # es solicitud
@@ -229,12 +229,13 @@ def MenuVerNotificacion(usuario, conn):
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                                 tab = []
-                                for i in range(len(atributos)):
+                                for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
 
     cur.close()
-    conn.close()
+    if HayConexionBD(conn):
+        conn.close()
 
 
-MenuVerNotificacion(u, conn)
+#MenuVerNotificacion(u, conn)

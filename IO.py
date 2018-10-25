@@ -104,3 +104,9 @@ def ImprimirComentario(comment, indent=0):
     for sub_com in comment["Comentarios"]:
         indent += 1
         ImprimirComentario(sub_com, indent)
+
+def HayConexionBD(conn):
+    if "closed: 0" in str(conn): # si esta conectado
+        return True
+    elif "closed: 1" in str(conn): # no esta conectado
+        return False
