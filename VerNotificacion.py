@@ -64,8 +64,7 @@ def MenuVerNotificacion(usuario, conn):
                     #n[0] = id, n[1] = id_comentario, n[2] = correo_usuario, n[3] = leida,
                     #n[4] = id_validacion, n[5] = id_postulacion, n[6] = id_solicitud, n[7] = publicacion
 
-                    if n[1] != None and n[7] == None: # es comentario comentado
-                        print("es comentario comentado")
+                    if RetornaTipo(n) == "Comentario comentado": # es comentario comentado
                         cur.execute("select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"
                                     " c.contenido, c.fecha"
                                     " from comentario c, notificacion n where {} = c.id_comentado"
@@ -79,7 +78,7 @@ def MenuVerNotificacion(usuario, conn):
                         Imprimir(tabulate(tab))
                         time.sleep(2)
 
-                    elif n[1] != None and n[7] != None: # es publicacion comentada
+                    elif RetornaTipo(n) == "Publicacion comentada": # es publicacion comentada
                         print("es publicacion comentada")
                         cur.execute("select n.id, n.id_publicacion, c.id, c.correo_usuario_comentador,"
                                     " c.contenido, c.fecha from notificacion n, comentario c"
@@ -95,8 +94,7 @@ def MenuVerNotificacion(usuario, conn):
                         Imprimir(tabulate(tab))
                         time.sleep(2)
 
-                    elif n[4] != None: # es validacion
-                        print("es validacion")
+                    elif RetornaTipo(n) == "Validacion": # es validacion
                         cur.execute("select n.id, v.id, v.correo_usuario_calificador, h.nombre "
                                     "from notificacion n, validacion v, perfil_habilidad ph, "
                                     "habilidad h, perfil p "
@@ -112,8 +110,7 @@ def MenuVerNotificacion(usuario, conn):
                         Imprimir(tabulate(tab))
                         time.sleep(2)
 
-                    elif n[5] != None: # es postulacion
-                        print("es postulacion")
+                    elif RetornaTipo(n) == "Postulacion": # es postulacion
                         cur.execute("select n.id, p.id, p.id_trabajo, p.estado, p.fecha "
                                     "from notificacion n, postulacion p "
                                     "where n.id = {} and n.id_postulacion = p.id "
@@ -126,8 +123,7 @@ def MenuVerNotificacion(usuario, conn):
                         Imprimir(tabulate(tab))
                         time.sleep(2)
 
-                    elif n[6] != None: # es solicitud
-                        print("es solicitud")
+                    elif RetornaTipo(n) == "Solicitud": # es solicitud
                         cur.execute("select n.id, s.id, s.correo_usuario_emisor,"
                                     " s.correo_usuario_receptor, s.fecha from notificacion n, solicitud s"
                                     " where n.id_solicitud = s.id"
@@ -179,7 +175,7 @@ def MenuVerNotificacion(usuario, conn):
                             # n[0] = id, n[1] = id_comentario, n[2] = correo_usuario, n[3] = leida,
                             # n[4] = id_validacion, n[5] = id_postulacion, n[6] = id_solicitud, n[7] = publicacion
 
-                            if n[1] != None and n[7] == None:  # es comentario comentado
+                            if RetornaTipo(n) == "Comentario comentado":  # es comentario comentado
                                 cur.execute("select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"
                                             " c.contenido, c.fecha"
                                             " from comentario c, notificacion n where {} = c.id_comentado"
@@ -193,7 +189,7 @@ def MenuVerNotificacion(usuario, conn):
                                 Imprimir(tabulate(tab))
                                 time.sleep(2)
 
-                            elif n[1] != None and n[7] != None:  # es publicacion comentada
+                            elif RetornaTipo(n) == "Publicacion comentada":  # es publicacion comentada
                                 cur.execute("select n.id, n.id_publicacion, c.id, c.correo_usuario_comentador,"
                                             " c.contenido, c.fecha from notificacion n, comentario c"
                                             " where n.id_publicacion = c.id_publicacion "
@@ -208,7 +204,7 @@ def MenuVerNotificacion(usuario, conn):
                                 Imprimir(tabulate(tab))
                                 time.sleep(2)
 
-                            elif n[4] != None: # es validacion
+                            elif RetornaTipo(n) == "Validacion": # es validacion
                                 cur.execute("select n.id, v.id, v.correo_usuario_calificador, h.nombre "
                                             "from notificacion n, validacion v, perfil_habilidad ph, "
                                             "habilidad h, perfil p "
@@ -224,7 +220,7 @@ def MenuVerNotificacion(usuario, conn):
                                 Imprimir(tabulate(tab))
                                 time.sleep(2)
 
-                            elif n[5] != None:  # es postulacion
+                            elif RetornaTipo(n) == "Postulacion":  # es postulacion
                                 cur.execute("select n.id, p.id, p.id_trabajo, p.estado, p.fecha "
                                             "from notificacion n, postulacion p "
                                             "where n.id = {} and n.id_postulacion = p.id "
@@ -237,7 +233,7 @@ def MenuVerNotificacion(usuario, conn):
                                 Imprimir(tabulate(tab))
                                 time.sleep(2)
 
-                            elif n[6] != None:  # es solicitud
+                            elif RetornaTipo(n) == "Solicitud":  # es solicitud
                                 cur.execute("select n.id, s.id, s.correo_usuario_emisor,"
                                             " s.correo_usuario_receptor, s.fecha from notificacion n, solicitud s"
                                             " where n.id_solicitud = s.id"
