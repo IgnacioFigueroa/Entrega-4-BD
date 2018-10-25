@@ -17,6 +17,14 @@ def ImprimirError(mensaje):
 def ImprimirPositivo(mensaje):
     print(mensaje)
 
+def SiguienteID(tabla, conn, id="id"):
+    cur = conn.cursor()
+    cur.execute("SELECT {} FROM {} WHERE {} IS NOT null".format(id,tabla, id))
+    rows = cur.fetchall()
+    ids = list()
+    for i in rows:
+        ids.append(i[0])
+    return max(ids)+1
 def ValidarOpcion(rango, mensaje = "Ingrese su opcion: "):
     opcion = input(mensaje)
     patron = []
