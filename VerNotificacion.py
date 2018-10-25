@@ -1,11 +1,16 @@
 from IO import *
 from tabulate import tabulate
+import psycopg2
+conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+
+u = "Mono50Apellido50@gmail.com"
 
 def MenuVerNotificacion(usuario, conn):
     cur = conn.cursor()
-    cur.execute("select * from notificacion_publicacion where leida = FALSE"
+    cur.execute("select * from notificacion where leida = FALSE"
                 " and correo_usuario = '{}';".format(usuario))
     notis = cur.fetchall()
+    print(notis)
     ImprimirTitulo("NOTIFICACIONES NO LEIDAS")
     ListaNotificaciones = []
     ln = []
@@ -26,7 +31,7 @@ def MenuVerNotificacion(usuario, conn):
         return
     elif opcion == 1:
         opcionNotificacion = ValidarOpcion(ln, "Seleccione la notificacion que quiere ver: ")
-        atributosNotificacion = ["Notificacion", "Publicacion", "Correo", "Leida"]
+        atributosNotificacion = ["Notificacion", "Evento", "Correo", "Leida"]
         ListaNotisDetalles = []
         for n in notis:
             if n[0] == opcionNotificacion:
@@ -34,16 +39,16 @@ def MenuVerNotificacion(usuario, conn):
                    ListaNotisDetalles.append([atributosNotificacion[i], n[i]])
 
         Imprimir(tabulate(ListaNotisDetalles))
-        cur.execute("update notificacion_publicacion set leida = TRUE"
+        cur.execute("update notificacion set leida = TRUE"
                     " where id = {} and correo_usuario = '{}';".format(opcionNotificacion, usuario))
         conn.commit()
 
     elif opcion == 2:
-        cur.execute("update notificacion_publicacion set leida = TRUE"
+        cur.execute("update notificacion set leida = TRUE"
                     " where leida = FALSE and correo_usuario = '{}';".format(usuario))
         conn.commit()
     elif opcion == 3:
-        cur.execute("select * from notificacion_publicacion where leida = TRUE"
+        cur.execute("select * from notificacion where leida = TRUE"
                     " and correo_usuario = '{}';".format(usuario))
         notisLeidas = cur.fetchall()
         lnl = []
@@ -67,3 +72,6 @@ def MenuVerNotificacion(usuario, conn):
             Imprimir(tabulate(ListaNotisDetalles))
     cur.close()
     conn.close()
+
+
+MenuVerNotificacion(u, conn)
