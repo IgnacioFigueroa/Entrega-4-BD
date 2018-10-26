@@ -80,6 +80,22 @@ empresasQueOfrecenTrabajos = "SELECT e.id, e.nombre, COUNT(*) trabajosOfrecidos 
                              "GROUP BY e.id, e.nombre " \
                              "ORDER BY e.id "
 
+ultimasPublicaciones = "SELECT texto, foto, link, fecha FROM publicacion WHERE id_empresa = {} " \
+                       "AND estado = 'publica' " \
+                       "ORDER BY fecha DESC LIMIT {};"
+
+ultimosComentarios = "SELECT c.contenido, c.fecha FROM comentario c, publicacion p WHERE c.empresa_comentadora = {} " \
+                     "AND c.id_publicacion = p.id AND p.estado = 'publica' " \
+                     "ORDER BY c.fecha DESC LIMIT {};"
+
+trabajosOfrecidos = "SELECT id, descripcion, fecha_creacion FROM trabajo WHERE id_empresa = {} " \
+                    "AND postulacion_abierta = TRUE;"
+
+obtenerInfoTrabajoOfrecido = "SELECT t.id, t.id_empresa, e.nombre, t.descripcion, t.fecha_creacion, t.postulacion_abierta " \
+                             "FROM trabajo t, empresa e WHERE t.id = {} AND t.id_empresa = e.id;"
+
+postulantes = "SELECT COUNT(*) c FROM postulacion WHERE estado = 'pendiente' AND id_trabajo = {}"
+
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -95,7 +111,7 @@ def MenuEmpresas(usuario, conn):
     elif seleccion == 1:
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
-        VerTrabajos2(conn)
+        VerTrabajos2(usuario, conn)
     return
 
 
@@ -582,7 +598,7 @@ def EliminarEmpresa(idEmpresa, conn):
     return
 
 
-def VerTrabajos2(conn):
+def VerTrabajos2(usuario, conn):
     cur = conn.cursor()
     ImprimirTitulo("Ver Trabajos")
     cur.execute(empresasQueOfrecenTrabajos)
@@ -598,17 +614,17 @@ def VerTrabajos2(conn):
         conn.close()
         sys.exit()
     else:
-        idEmpresaSeleccionada = trabajosDisponibles[seleccion-1][0]
+        idTrabajoSeleccionado = trabajosDisponibles[seleccion-1][0]
         opciones = ["Ver empresa",
                     "Volver",
                     "Salir"]
         ImprimirOpciones(opciones)
         seleccion = ValidarOpcion(range(1,4))
         if seleccion == 1:
-            VerEmpresa(idEmpresaSeleccionada, conn)
+            VerEmpresa(idTrabajoSeleccionado, usuario, conn)
         elif seleccion == 2:
             cur.close()
-            VerTrabajos2(conn)
+            VerTrabajos2(idTrabajoSeleccionado, conn)
         elif seleccion == 3:
             cur.close()
             conn.close()
@@ -616,16 +632,7 @@ def VerTrabajos2(conn):
     return
 
 
-ultimasPublicaciones = "SELECT texto, foto, link, fecha FROM publicacion WHERE id_empresa = {} " \
-                       "AND estado = 'publica' " \
-                       "ORDER BY fecha DESC LIMIT {};"
-ultimosComentarios = "SELECT c.contenido, c.fecha FROM comentario c, publicacion p WHERE c.empresa_comentadora = {} " \
-                     "AND c.id_publicacion = p.id AND p.estado = 'publica' " \
-                     "ORDER BY c.fecha DESC LIMIT {};"
-trabajosOfrecidos = "SELECT id, descripcion, fecha_creacion FROM trabajo WHERE id_empresa = {} " \
-                    "AND postulacion_abierta = TRUE;"
-
-def VerEmpresa(idEmpresa, conn):
+def VerEmpresa(idEmpresa, correoUsuario, conn):
     cur = conn.cursor()
     cur.execute(ultimasPublicaciones.format(idEmpresa,5))
     UltimasPublicaciones = cur.fetchall()
@@ -644,7 +651,7 @@ def VerEmpresa(idEmpresa, conn):
     else:
         Imprimir(tabulate(UltimosComentarios, headers=["id", "Descripcion", "Fecha creacion"]))
     ImprimirTitulo("Trabajos ofrecidos:")
-    int_trabajosOfrecidos = len(trabajosOfrecidos)
+    int_trabajosOfrecidos = len(TrabajosOfrecidos)
     Imprimir(tabulate(TrabajosOfrecidos, showindex=range(1, int_trabajosOfrecidos+1), headers=["id", "Descripcion", "Fecha creacion"]))
     Imprimir("{} Volver.\n{} Salir.".format(int_trabajosOfrecidos+1, int_trabajosOfrecidos+2))
     seleccion = ValidarOpcion(range(1, int_trabajosOfrecidos+3))
@@ -655,14 +662,49 @@ def VerEmpresa(idEmpresa, conn):
         conn.close()
         sys.exit()
     else:
-        idTrabajoSeleccionado = trabajosOfrecidos[seleccion-1][0]
-        VerTrabajo2(idTrabajoSeleccionado, conn)
+        idTrabajoSeleccionado = TrabajosOfrecidos[seleccion-1][0]
+        opciones = ["Ver trabajo",
+                    "Postular",
+                    "Volver",
+                    "Salir"]
+        ImprimirOpciones(opciones)
+        seleccion = ValidarOpcion(range(1,5))
+        if seleccion == 1:
+            VerTrabajo2(idTrabajoSeleccionado, conn)
+            VerEmpresa(idEmpresa, correoUsuario, conn)
+        elif seleccion == 2:
+            PostularTrabajo(idTrabajoSeleccionado, correoUsuario, conn)
+            VerEmpresa(idEmpresa, correoUsuario, conn)
     return
 
 
 def VerTrabajo2(idTrabajo, conn):
+    cur = conn.cursor()
+    ImprimirTitulo("Ver trabajo")
+    cur.execute(obtenerInfoTrabajoOfrecido.format(idTrabajo))
+    infoTrabajo = cur.fetchall()
+    cur.execute(postulantes.format(idTrabajo))
+    cantidad_postulantes = cur.fetchall()
+    cantidad_postulantes = cantidad_postulantes[0][0]
+    info1 = []
+    for i in infoTrabajo[0]:
+        info1.append(i)
+    info1.append(cantidad_postulantes)
+    info = [info1]
+    Imprimir(tabulate(info, headers=["Id", "Id Empresa", "Nombre Empresa", "Descripcion", "Fecha creacion", "Postulaciones abiertas", "Cantidad postulantes"], tablefmt = 'grid'))
     return
 
+crearPostulacion = ("INSERT INTO postulacion (id, correo_usuario, id_trabajo, estado, fecha) "
+                    "VALUES ({}, '{}', {}, '{}', TO_DATE('{}', 'DD/MM/YYYY'))")
 
 def PostularTrabajo(idTrabajo, correoUsuario, conn):
+    ImprimirTitulo("Postular a trabajo")
+    cur = conn.cursor()
+    id = SiguienteID("postulacion", conn)
+    estado = 'pendiente'
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    cur.execute(crearPostulacion.format(id, correoUsuario, idTrabajo, estado, fecha))
+    Imprimir("Postulacion realizada con exito.")
+    conn.commit()
+    cur.close()
     return
