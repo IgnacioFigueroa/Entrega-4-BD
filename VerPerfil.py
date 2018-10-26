@@ -47,12 +47,53 @@ VER_IDPERFILHABILIDAD = "SELECT pf.id " \
 VER_IDVALIDACIONES = "SELECT id FROM Validacion"
 VER_SOLICITUDESPENDIENTES = "SELECT * FROM Solicitud WHERE correo_usuario_receptor = '{}' AND estado = 'pendiente'"
 def MenuVerPerfil(usuario, conn):
-    VerPerfilHastaHabilidad(usuario, conn)
+    volver = False
+    while not volver:
+        VerPerfilHastaHabilidad(usuario, conn)
+        ImprimirTitulo("Ver perfil")
+        Imprimir("Que desea hacer?\n"
+                 "(1) Editar Perfil\n"
+                 "(2) Seleccionar nueva foto de perfil\n"
+                 "(3) Ver Habilidades\n"
+                 "(4) Ver experiencia laboral\n"
+                 "(5) Ver educacion\n"
+                 "(6) Eliminar Cuenta\n"
+                 "(7) Volver\n"
+                 "(8) Salir\n")
+        opcion = ValidarOpcion(range(1,9))
+        if opcion == 1:
+            EditarPerfil(usuario, conn)
+        elif opcion == 2:
+            CambiarFoto(usuario, conn)
+        elif opcion == 3:
+            VerHabilidades(usuario, conn)
+        elif opcion == 4:
+            VerExperienciaLaboral(usuario, conn)
+        elif opcion == 5:
+            VerEducacion(usuario, conn)
+        elif opcion == 6:
+            EliminarCuenta(usuario, conn)
+        elif opcion == 7:
+            return
+        elif opcion == 8:
+            conn.close()
+            sys.exit(0)
     return
 #MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
 
 u = "Mono1Apellido1@gmail.com"
-
+def EditarPerfil(usuario, conn):
+    VerPerfilHastaHabilidad(usuario, conn)
+    atributosPerfil=["Correo", "Nombre", "Apellido", "Fecha de Nacimiento", "Pais", "Sexo", "Descripcion"]
+    cont = 0
+    for i in atributosPerfil:
+        cont+=1
+        Imprimir("({}) {}".format(cont, i))
+    opcion = ValidarOpcion(range(1,7))
+    atributoCambiar=atributosPerfil[opcion-1]
+    return
+def CambiarFoto(usuario, conn):
+    return
 def VerHabilidades(usuario, conn):
     ImprimirTitulo("ver habilidades")
     cur = conn.cursor()
@@ -86,5 +127,13 @@ def VerHabilidades(usuario, conn):
     else:
         Imprimir("La habilidad seleccionada no tiene validaciones")
     cur.close()
+
+def VerExperienciaLaboral(usuario,conn):
+    return
+def VerEducacion(usuario, conn):
+    return
+def EliminarCuenta(usuario, conn):
+    return
+
 
 VerHabilidades(u, conn)
