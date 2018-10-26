@@ -48,43 +48,9 @@ VER_IDVALIDACIONES = "SELECT id FROM Validacion"
 VER_SOLICITUDESPENDIENTES = "SELECT * FROM Solicitud WHERE correo_usuario_receptor = '{}' AND estado = 'pendiente'"
 def MenuVerPerfil(usuario, conn):
     VerPerfilHastaHabilidad(usuario, conn)
-    return
-#MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
 
-u = "Mono1Apellido1@gmail.com"
+    return
+MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
 
 def VerHabilidades(usuario, conn):
-    ImprimirTitulo("ver habilidades")
-    cur = conn.cursor()
-    cur.execute(VER_HABILIDADES.format(usuario))
-    respuesta = cur.fetchall()
-    matriz_mostrar = [["HABILIDAD", "DESCRIPCION", "CANTIDAD DE VALIDACIONES"]]
-    ids = []
-    for tupla in respuesta:
-        ids.append(tupla[0])
-        matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
-    Imprimir(tabulate(matriz_mostrar))
-    Imprimir("Que desea hacer?\n"
-             "(1) Ver Habilidad\n"
-             "(2) Agregar Habilidad\n"
-             "(3) Eliminar Habilidad\n"
-             "(4) Volver al menu anterior\n"
-             "(5) Salir\n")
-    opcion = ValidarOpcion(range(1,5))
-    habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
-    cur.execute("select h.id, v.id, v.correo_usuario_calificador "
-                "from habilidad h, perfil_habilidad ph, validacion v, perfil p "
-                "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "
-                "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
-                .format(habilidad_seleccionada, usuario))
-    respuesta = cur.fetchall()
-    if len(respuesta) > 0:
-        matriz_mostrar = [["HABILIDAD", "VALIDACION", "VALIDADA POR"]]
-        for tupla in respuesta:
-            matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
-        Imprimir(tabulate(matriz_mostrar))
-    else:
-        Imprimir("La habilidad seleccionada no tiene validaciones")
-    cur.close()
-
-VerHabilidades(u, conn)
+    pass
