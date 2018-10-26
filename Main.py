@@ -10,21 +10,23 @@ conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", hos
 
 # MENU
 if __name__ == '__main__':
-    ImprimirTitulo("BIENVENIDO/A A LINKEDING")
-    Imprimir("Que desea hacer?\n"
-             "\t(1) Iniciar Sesion\n"
-             "\t(2) Crear Cuenta\n"
-             "\t(3) Recuperar Contraseña\n"
-             "\t(4) Salir\n")
-    opcion = ValidarOpcion(range(1, 5))
-    if opcion == 1:
-        usuario = IniciarSesion(conn)
-        MenuPrincipal(usuario, conn)
-    elif opcion == 2:
-        CrearCuenta(conn)
-    elif opcion == 3:
-        RecuperarContrasena(conn)
-    elif opcion == 4:
-        sys.exit(0)
+    activo = True
+    while activo:
+        ImprimirTitulo("BIENVENIDO/A A LINKEDING")
+        Imprimir("Que desea hacer?\n"
+                 "\t(1) Iniciar Sesion\n"
+                 "\t(2) Crear Cuenta\n"
+                 "\t(3) Recuperar Contraseña\n"
+                 "\t(4) Salir\n")
+        opcion = ValidarOpcion(range(1, 5))
+        if opcion == 1:
+            usuario = IniciarSesion(conn)
+            MenuPrincipal(usuario, conn)
+        elif opcion == 2:
+            CrearCuenta(conn)
+        elif opcion == 3:
+            RecuperarContrasena(conn)
+        elif opcion == 4:
+            activo = False
     conn.close()
 

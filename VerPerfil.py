@@ -3,8 +3,7 @@ from tabulate import tabulate
 from Empresas import AgregarTrabajos, CrearEmpresa
 from datetime import date
 
-import psycopg2
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+
 # ----------QUERYS----------
 CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
                     ' FROM ' \
@@ -363,4 +362,3 @@ def EliminarCuenta(usuario, conn):
         conn.commit()
 
     return
-#EliminarCuenta("a@a.a", conn)

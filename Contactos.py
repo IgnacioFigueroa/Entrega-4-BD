@@ -62,7 +62,7 @@ def MenuContactos(usuario, conn):
                  "\t(5) Salir")
         opcion = ValidarOpcion(range(1, 5))
         if opcion == 4:
-            salir = False
+            salir = True
         elif opcion == 1:
             VerContactos(usuario, conn)
         elif opcion == 2:
@@ -114,13 +114,13 @@ def VerContactos(usuario, conn):
             if amigo not in amigosEnComun:
                 amigosEnComun.append(amigo)
         Imprimir("Tienes {} amigos en comun con {}".format(len(amigosEnComun), amigoPorVer))
-        Imprimir("Que deseas hacer: "
+        Imprimir("Que deseas hacer:\n "
                  "(1) Validar Habilidad\n"
                  "(2) Volver")
         opcion = ValidarOpcion(range(1, 3))
         if opcion == 1:
             ValidarHabilidad(usuario, amigoPorVer, conn)
-    if opcion == 2:
+    elif opcion == 2:
         Imprimir("Seleccione a quien desea elminar de su lista de amigos\n")
         opcion = ValidarOpcion(range(1, selector + 1))
         amigoPorEliminar = usuariosAmigos[opcion - 1][0]
@@ -182,7 +182,7 @@ def AgregarContactos(usuario, conn):
     cur.execute("INSERT INTO Solicitud(id, correo_usuario_emisor, correo_usuario_receptor, estado, fecha)"
                 "VALUES ({}, '{}', '{}', '{}', '{}')".format(idSolicitud, usuario, futuroAmigo, "pendiente", date.today()))
     cur.execute("INSERT INTO Notificacion(id, correo_usuario_notificado, id_solicitud, leida)"
-                "VALUES ({}, '{}', {}, {})".format(SiguienteID("Notificacion", conn),SiguienteID("Notificacion", conn, "id_solicitud"), futuroAmigo, False))
+                "VALUES ({}, {}, '{}', {})".format(SiguienteID("Notificacion", conn),SiguienteID("Notificacion", conn, "id_solicitud"), futuroAmigo, False))
     conn.commit()
     cur.close()
     return

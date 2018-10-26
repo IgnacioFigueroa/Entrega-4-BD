@@ -1,10 +1,11 @@
 from datetime import date
+import re
 from IO import *
 email = ""
 password = ""
 
-def PedirMail():
-    __email = input("Correo: ")
+def PedirMail(texto = "Correo: "):
+    __email = input(texto)
     while __email == "" or not (re.match(".*@.*\..*", __email)):
         __email = input("Error, ingrese un correo valido: ")
     return __email
@@ -17,9 +18,19 @@ def PedirPassword():
     return __password
 
 
-def IngresarDatos():
+def IngresarDatos(conn):
     _email = PedirMail()
+    cur = conn.cursor()
+    cur.execute("SELECT correo FROM Usuario")
+    rows = cur.fetchall()
+    usuarios = list()
+    for correo in rows:
+        usuarios.append(correo[0])
+    while _email in usuarios:
+        _email = PedirMail("Ese email ya existe, ingrese uno distinto: ")
     _password = PedirPassword()
+
+
     return _email, _password
 
 
@@ -45,11 +56,11 @@ def CrearCuenta(conn):
     fechaActual = date.today()
 
     ImprimirTitulo("CREAR CUENTA")
-    email, password = IngresarDatos()
+    email, password = IngresarDatos(conn)
     confirm = Confirmar()
     while confirm == "0" or confirm != "1":
         Imprimir("CAMBIAR DATOS")
-        email, password = IngresarDatos()
+        email, password = IngresarDatos(conn)
         confirm = Confirmar()
     Imprimir("VERIFICACION DE CONTRASEÑA")
     verifPassword = input("Ingrese la contraseña nuevamente: ")
@@ -64,5 +75,5 @@ def CrearCuenta(conn):
     cur.execute("insert into contrasena_antigua(id, correo_usuario, contrasena, fecha_creacion) "
                 "values({},'{}','{}','{}');".format(idNuevo, email, password, fechaActual))
     conn.commit()
-    cur.close()
-    conn.close()
+
+

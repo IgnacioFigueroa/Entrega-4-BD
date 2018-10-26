@@ -139,7 +139,7 @@ def MostrarMisEmpresas(usuario, conn):
                           "Agregar administrador",
                           "Dejar de ser administrador",
                           "Crear empresas",
-                          "Eliminar empresas [nada todavia]",
+                          "Eliminar empresas",
                           "Volver",
                           "Salir"]
         ImprimirOpciones(opcionesEmpresa)
@@ -183,7 +183,7 @@ def MostrarMisEmpresas(usuario, conn):
             CrearEmpresa(usuario, conn)
             MenuEmpresas(usuario, conn)
         elif seleccion == 2:
-            MenuEmpresas()
+            MenuEmpresas(usuario, conn)
         elif seleccion == 3:
             conn.close()
             sys.exit()

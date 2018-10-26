@@ -31,4 +31,3 @@ def RecuperarContrasena(conn):
                 "values({},'{}','{}','{}');".format(idNuevo, correo, contraNueva, fechaActual))
     conn.commit()
     cur.close()
-    conn.close()

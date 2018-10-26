@@ -1,9 +1,7 @@
 from IO import *
 from tabulate import tabulate
 import time
-#import psycopg2
-#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-#u = "Mono49Apellido49@gmail.com"
+
 
 INFO_COMENTARIO_COMENTADO = "select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"\
                                     " c.contenido, c.fecha"\
