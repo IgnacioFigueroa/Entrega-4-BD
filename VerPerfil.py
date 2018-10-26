@@ -57,6 +57,10 @@ HABILIDADES_VALIDACIONES = "select h.id, v.id, v.correo_usuario_calificador "\
 NUEVA_EXPERIENCIA_LABORAL = "INSERT INTO trabajado(id, id_trabajo, id_perfil, fecha_inicio) "\
                             "VALUES({}, {}, {}, '{}')"
 
+ID_PERFIL_HABILIDAD = "select ph.id from perfil_habilidad ph, habilidad h, "\
+                        "perfil p where ph.id_perfil = p.id and ph.id_habilidad = h.id "\
+                        "and h.id = {} and p.id = {}"
+
 def MenuVerPerfil(usuario, conn):
     volver = False
     while not volver:
@@ -121,11 +125,17 @@ def CambiarFoto(usuario, conn):
     cur.execute("UPDATE foto_perfil SET foto = '{}' WHERE id_perfil = {} ".format(foto, id))
     Imprimir("Foto cambiada")
     return
+
 def VerHabilidades(usuario, conn):
-    while(True):
+    while True:
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
+        if id_perfil == None:
+            Imprimir("Error, el usuario no tiene un perfil creado")
+            if HayConexionBD(conn):
+                conn.close()
+                sys.exit(0)
         id_perfil = id_perfil[0]
         ImprimirTitulo("ver habilidades")
         cur.execute(VER_HABILIDADES.format(usuario))
@@ -137,11 +147,11 @@ def VerHabilidades(usuario, conn):
             matriz_mostrar_inicio.append([tupla[0], tupla[1], tupla[2]])
         Imprimir(tabulate(matriz_mostrar_inicio))
         Imprimir("Que desea hacer?\n"
-                 "(1) Ver Habilidad\n"
-                 "(2) Agregar Habilidad\n"
-                 "(3) Eliminar Habilidad\n"
-                 "(4) Volver al menu anterior\n"
-                 "(5) Salir\n")
+                 "\t(1) Ver Habilidad\n"
+                 "\t(2) Agregar Habilidad\n"
+                 "\t(3) Eliminar Habilidad\n"
+                 "\t(4) Volver al menu anterior\n"
+                 "\t(5) Salir\n")
         opcion = ValidarOpcion(range(1,6))
         if opcion == 5:
             if HayConexionBD(conn):
@@ -195,21 +205,29 @@ def VerHabilidades(usuario, conn):
                 conn.commit()
         elif opcion == 3: # eliminar habilidad
             habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere eliminar: ")
-
+            cur.execute(ID_PERFIL_HABILIDAD.format(habilidad_seleccionada, id_perfil))
+            id_ph = cur.fetchone()
+            id_ph = id_ph[0]
+            cur.execute("delete from perfil_habilidad where id = {}"
+                        .format(id_ph))
+            conn.commit()
         cur.close()
 
-u = "Mono3Apellido3@gmail.com"
-
 def VerExperienciaLaboral(usuario,conn):
-    while(True):
+    while True:
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
+        if id_perfil == None:
+            Imprimir("Error, el usuario no tiene un perfil creado")
+            if HayConexionBD(conn):
+                conn.close()
+                sys.exit(0)
         id_perfil = id_perfil[0]
         ImprimirTitulo("experiencia laboral: trabajos")
         cur.execute(VER_TRABAJOS.format(usuario))
         trabajos = cur.fetchall()
-        tab = [["TRABAJO", "EMPRESA"]]
+        tab = [["EXPERIENCIA LABORAL", "EMPRESA"]]
         idsTrabajos = []
         for t in trabajos:
             tab.append([t[0], t[1]])
@@ -217,11 +235,11 @@ def VerExperienciaLaboral(usuario,conn):
         Imprimir(tabulate(tab))
 
         Imprimir("Que desea hacer?\n"
-                 "(1) Ver Experiencia Laboral\n"
-                 "(2) Agregar Experiencia Laboral\n"
-                 "(3) Eliminar Experiencia Laboral\n"
-                 "(4) Volver al menu anterior\n"
-                 "(5) Salir\n")
+                 "\t(1) Ver Experiencia Laboral\n"
+                 "\t(2) Agregar Experiencia Laboral\n"
+                 "\t(3) Eliminar Experiencia Laboral\n"
+                 "\t(4) Volver al menu anterior\n"
+                 "\t(5) Salir\n")
         opcion = ValidarOpcion(range(1, 6))
         if opcion == 5:
             if HayConexionBD(conn):
@@ -230,7 +248,7 @@ def VerExperienciaLaboral(usuario,conn):
         elif opcion == 4:
             return
         elif opcion == 1:
-            trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione el trabajo que quiere ver: ")
+            trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione la experiencia laboral que quiere ver: ")
             tablaTrabajos = list()
             atributosTrabajo = ["Trabajo", "Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
 
@@ -271,8 +289,17 @@ def VerExperienciaLaboral(usuario,conn):
                 cur.execute(NUEVA_EXPERIENCIA_LABORAL.format(SiguienteID("trabajado", conn),
                             idNuevoTrabajo-1, id_perfil, fecha_actual))
                 conn.commit()
-            elif hacer == 3:
-                print("Aca hay que eliminar una experiencia laboral")
+        elif opcion == 3:
+            print("Aca hay que eliminar una experiencia laboral")
+            trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione la experiencia laboral que quiere eliminar: ")
+            cur.execute("SELECT tj.id from trabajado tj, trabajo t "
+                        "WHERE tj.id_trabajo = t.id AND t.id = {} "
+                        "AND tj.id_perfil = {}"
+                        .format(trabajo_elegido, id_perfil))
+            idTrabajado = cur.fetchone()
+            idTrabajado = idTrabajado[0]
+            cur.execute("DELETE FROM trabajado WHERE id = {}".format(idTrabajado))
+            conn.commit()
 
 
 def VerEducacion(usuario, conn):
@@ -336,4 +363,4 @@ def EliminarCuenta(usuario, conn):
         conn.commit()
 
     return
-EliminarCuenta("a@a.a", conn)
+#EliminarCuenta("a@a.a", conn)
