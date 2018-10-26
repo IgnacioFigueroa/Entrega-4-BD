@@ -71,20 +71,23 @@ def VerHabilidades(usuario, conn):
              "(4) Volver al menu anterior\n"
              "(5) Salir\n")
     opcion = ValidarOpcion(range(1,5))
-    habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
-    cur.execute("select h.id, v.id, v.correo_usuario_calificador "
-                "from habilidad h, perfil_habilidad ph, validacion v, perfil p "
-                "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "
-                "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
-                .format(habilidad_seleccionada, usuario))
-    respuesta = cur.fetchall()
-    if len(respuesta) > 0:
-        matriz_mostrar = [["HABILIDAD", "VALIDACION", "VALIDADA POR"]]
-        for tupla in respuesta:
-            matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
-        Imprimir(tabulate(matriz_mostrar))
-    else:
-        Imprimir("La habilidad seleccionada no tiene validaciones")
+    if opcion == 1:
+        habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
+        cur.execute("select h.id, v.id, v.correo_usuario_calificador "
+                    "from habilidad h, perfil_habilidad ph, validacion v, perfil p "
+                    "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "
+                    "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
+                    .format(habilidad_seleccionada, usuario))
+        respuesta = cur.fetchall()
+        if len(respuesta) > 0:
+            matriz_mostrar = [["HABILIDAD", "VALIDACION", "VALIDADA POR"]]
+            for tupla in respuesta:
+                matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
+            Imprimir(tabulate(matriz_mostrar))
+        else:
+            Imprimir("La habilidad seleccionada no tiene validaciones")
+    elif opcion == 2:
+        pass
     cur.close()
 
 VerHabilidades(u, conn)
