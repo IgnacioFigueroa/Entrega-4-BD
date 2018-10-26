@@ -133,6 +133,11 @@ def VerHabilidades(usuario, conn):
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
+        if id_perfil == None:
+            Imprimir("Error, el usuario no tiene un perfil creado")
+            if HayConexionBD(conn):
+                conn.close()
+                sys.exit(0)
         id_perfil = id_perfil[0]
         ImprimirTitulo("ver habilidades")
         cur.execute(VER_HABILIDADES.format(usuario))
@@ -218,6 +223,11 @@ def VerExperienciaLaboral(usuario,conn):
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
+        if id_perfil == None:
+            Imprimir("Error, el usuario no tiene un perfil creado")
+            if HayConexionBD(conn):
+                conn.close()
+                sys.exit(0)
         id_perfil = id_perfil[0]
         ImprimirTitulo("experiencia laboral: trabajos")
         cur.execute(VER_TRABAJOS.format(usuario))
