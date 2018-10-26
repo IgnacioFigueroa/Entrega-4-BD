@@ -1,8 +1,44 @@
 from IO import *
 from tabulate import tabulate
-import psycopg2
+import time
+#import psycopg2
 #conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 #u = "Mono49Apellido49@gmail.com"
+
+INFO_COMENTARIO_COMENTADO = "select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"\
+                                    " c.contenido, c.fecha"\
+                                    " from comentario c, notificacion n where {} = c.id_comentado"\
+                                    " and n.id = {}"
+INFO_PUBLICACION_COMENTADA = "select n.id, n.id_publicacion, c.id, c.correo_usuario_comentador,"\
+                                    " c.contenido, c.fecha from notificacion n, comentario c"\
+                                    " where n.id_publicacion = c.id_publicacion "\
+                                    "and n.id_comentario = c.id and n.id = {}"
+INFO_VALIDACION = "select n.id, v.id, v.correo_usuario_calificador, h.nombre "\
+                    "from notificacion n, validacion v, perfil_habilidad ph, "\
+                    "habilidad h, perfil p "\
+                    "where n.id = {} and n.id_validacion = v.id and "\
+                    "v.id_perfil_habilidad = ph.id and ph.id_habilidad = h.id "\
+                    "and ph.id_perfil = p.id and p.correo_usuario = '{}'"
+INFO_POSTULACION = "select n.id, p.id, p.id_trabajo, p.estado, p.fecha "\
+                    "from notificacion n, postulacion p "\
+                    "where n.id = {} and n.id_postulacion = p.id "\
+                    "and p.correo_usuario = '{}'"
+INFO_SOLICITUD = "select n.id, s.id, s.correo_usuario_emisor,"\
+                    " s.correo_usuario_receptor, s.fecha from notificacion n, solicitud s"\
+                    " where n.id_solicitud = s.id"\
+                    " and n.id = {} and s.id = {}"\
+                    " and s.correo_usuario_receptor = '{}'"
+def RetornaTipo(n):
+    if n[1] != None and n[7] == None:  # es comentario comentado
+        return "Comentario comentado"
+    elif n[1] != None and n[7] != None:  # es publicacion comentada
+        return "Publicacion comentada"
+    elif n[4] != None:  # es validacion
+        return "Validacion"
+    elif n[5] != None:  # es postulacion
+        return "Postulacion"
+    elif n[6] != None:  # es solicitud
+        return "Solicitud"
 
 def MenuVerNotificacion(usuario, conn):
     terminar = True
@@ -12,10 +48,10 @@ def MenuVerNotificacion(usuario, conn):
                     " and correo_usuario_notificado = '{}';".format(usuario))
         notis = cur.fetchall()
         ImprimirTitulo("NOTIFICACIONES NO LEIDAS")
-        ListaNotificaciones = []
+        ListaNotificaciones = [["NOTIFICACION", "TIPO"]]
         ln = []
         for n in notis:
-            ListaNotificaciones.append([n[0]])
+            ListaNotificaciones.append([n[0], RetornaTipo(n)])
             ln.append(n[0])
 
         hay_notis = False
@@ -51,12 +87,8 @@ def MenuVerNotificacion(usuario, conn):
                     #n[0] = id, n[1] = id_comentario, n[2] = correo_usuario, n[3] = leida,
                     #n[4] = id_validacion, n[5] = id_postulacion, n[6] = id_solicitud, n[7] = publicacion
 
-                    if n[1] != None and n[7] == None: # es comentario comentado
-                        print("es comentario comentado")
-                        cur.execute("select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"
-                                    " c.contenido, c.fecha"
-                                    " from comentario c, notificacion n where {} = c.id_comentado"
-                                    " and n.id = {};".format(n[1], opcionNotificacion))
+                    if RetornaTipo(n) == "Comentario comentado": # es comentario comentado
+                        cur.execute(INFO_COMENTARIO_COMENTADO.format(n[1], opcionNotificacion))
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                       "Comentado por", "Contenido", "Fecha"]
@@ -64,13 +96,10 @@ def MenuVerNotificacion(usuario, conn):
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
+                        time.sleep(2)
 
-                    elif n[1] != None and n[7] != None: # es publicacion comentada
-                        print("es publicacion comentada")
-                        cur.execute("select n.id, n.id_publicacion, c.id, c.correo_usuario_comentador,"
-                                    " c.contenido, c.fecha from notificacion n, comentario c"
-                                    " where n.id_publicacion = c.id_publicacion "
-                                    "and n.id_comentario = c.id and n.id = {};".format(opcionNotificacion))
+                    elif RetornaTipo(n) == "Publicacion comentada": # es publicacion comentada
+                        cur.execute(INFO_PUBLICACION_COMENTADA.format(opcionNotificacion))
                         res = cur.fetchone()
 
                         atributos = ["Notificacion", "Publicacion", "Comentario",
@@ -79,54 +108,42 @@ def MenuVerNotificacion(usuario, conn):
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
+                        time.sleep(2)
 
-                    elif n[4] != None:
-                        print("es validacion")
-                        cur.execute("select n.id, v.id, v.correo_usuario_calificador, h.nombre "
-                                    "from notificacion n, validacion v, perfil_habilidad ph, "
-                                    "habilidad h, perfil p "
-                                    "where n.id = {} and n.id_validacion = v.id and "
-                                    "v.id_perfil_habilidad = ph.id and ph.id_habilidad = h.id "
-                                    "and ph.id_perfil = p.id and p.correo_usuario = '{}';"
-                                    .format(opcionNotificacion, usuario))
+                    elif RetornaTipo(n) == "Validacion": # es validacion
+                        cur.execute(INFO_VALIDACION.format(opcionNotificacion, usuario))
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                         tab = []
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
+                        time.sleep(2)
 
-                    elif n[5] != None: # es postulacion
-                        print("es postulacion")
-                        cur.execute("select n.id, p.id, p.id_trabajo, p.estado, p.fecha "
-                                    "from notificacion n, postulacion p "
-                                    "where n.id = {} and n.id_postulacion = p.id "
-                                    "and p.correo_usuario = '{}';".format(opcionNotificacion, usuario))
+                    elif RetornaTipo(n) == "Postulacion": # es postulacion
+                        cur.execute(INFO_POSTULACION.format(opcionNotificacion, usuario))
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                         tab = []
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
+                        time.sleep(2)
 
-                    elif n[6] != None: # es solicitud
-                        print("es solicitud")
-                        cur.execute("select n.id, s.id, s.correo_usuario_emisor,"
-                                    " s.correo_usuario_receptor, s.fecha from notificacion n, solicitud s"
-                                    " where n.id_solicitud = s.id"
-                                    " and n.id = {} and s.id = {}"
-                                    " and s.correo_usuario_receptor = '{}'".format(opcionNotificacion, n[6], usuario))
+                    elif RetornaTipo(n) == "Solicitud": # es solicitud
+                        cur.execute(INFO_SOLICITUD.format(opcionNotificacion, n[6], usuario))
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                         tab = []
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
+                        time.sleep(2)
 
 
-            #cur.execute("update notificacion set leida = TRUE"
-            #            " where id = {} and correo_usuario_notificado = '{}';".format(opcionNotificacion, usuario))
-            #conn.commit()
+            cur.execute("update notificacion set leida = TRUE"
+                        " where id = {} and correo_usuario_notificado = '{}';".format(opcionNotificacion, usuario))
+            conn.commit()
 
         elif opcion == 2 and hay_notis:
             cur.execute("update notificacion set leida = TRUE"
@@ -138,9 +155,9 @@ def MenuVerNotificacion(usuario, conn):
                         " and correo_usuario_notificado = '{}';".format(usuario))
             notisLeidas = cur.fetchall()
             lnl = []
-            ListaNotificacionesLeidas = []
+            ListaNotificacionesLeidas = [["NOTIFICACION", "TIPO"]]
             for nl in notisLeidas:
-                ListaNotificacionesLeidas.append([nl[0]])
+                ListaNotificacionesLeidas.append([nl[0], RetornaTipo(nl)])
                 lnl.append(nl[0])
 
             hay_notis_leidas = False
@@ -161,12 +178,8 @@ def MenuVerNotificacion(usuario, conn):
                             # n[0] = id, n[1] = id_comentario, n[2] = correo_usuario, n[3] = leida,
                             # n[4] = id_validacion, n[5] = id_postulacion, n[6] = id_solicitud, n[7] = publicacion
 
-                            if n[1] != None and n[7] == None:  # es comentario comentado
-                                print("es comentario comentado")
-                                cur.execute("select n.id, c.id, c.id_comentado, c.correo_usuario_comentador,"
-                                            " c.contenido, c.fecha"
-                                            " from comentario c, notificacion n where {} = c.id_comentado"
-                                            " and n.id = {};".format(n[1], opcionNotificacionLeida))
+                            if RetornaTipo(n) == "Comentario comentado":  # es comentario comentado
+                                cur.execute(INFO_COMENTARIO_COMENTADO.format(n[1], opcionNotificacionLeida))
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                              "Comentado por", "Contenido", "Fecha"]
@@ -174,13 +187,10 @@ def MenuVerNotificacion(usuario, conn):
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
+                                time.sleep(2)
 
-                            elif n[1] != None and n[7] != None:  # es publicacion comentada
-                                print("es publicacion comentada")
-                                cur.execute("select n.id, n.id_publicacion, c.id, c.correo_usuario_comentador,"
-                                            " c.contenido, c.fecha from notificacion n, comentario c"
-                                            " where n.id_publicacion = c.id_publicacion "
-                                            "and n.id_comentario = c.id and n.id = {};".format(opcionNotificacionLeida))
+                            elif RetornaTipo(n) == "Publicacion comentada":  # es publicacion comentada
+                                cur.execute(INFO_PUBLICACION_COMENTADA.format(opcionNotificacionLeida))
                                 res = cur.fetchone()
 
                                 atributos = ["Notificacion", "Publicacion", "Comentario",
@@ -189,53 +199,36 @@ def MenuVerNotificacion(usuario, conn):
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
+                                time.sleep(2)
 
-                            elif n[4] != None:
-                                print("es validacion")
-                                cur.execute("select n.id, v.id, v.correo_usuario_calificador, h.nombre "
-                                            "from notificacion n, validacion v, perfil_habilidad ph, "
-                                            "habilidad h, perfil p "
-                                            "where n.id = {} and n.id_validacion = v.id and "
-                                            "v.id_perfil_habilidad = ph.id and ph.id_habilidad = h.id "
-                                            "and ph.id_perfil = p.id and p.correo_usuario = '{}';"
-                                            .format(opcionNotificacionLeida, usuario))
+                            elif RetornaTipo(n) == "Validacion": # es validacion
+                                cur.execute(INFO_VALIDACION.format(opcionNotificacionLeida, usuario))
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                                 tab = []
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
+                                time.sleep(2)
 
-                            elif n[5] != None:  # es postulacion
-                                print("es postulacion")
-                                cur.execute("select n.id, p.id, p.id_trabajo, p.estado, p.fecha "
-                                            "from notificacion n, postulacion p "
-                                            "where n.id = {} and n.id_postulacion = p.id "
-                                            "and p.correo_usuario = '{}';".format(opcionNotificacionLeida, usuario))
+                            elif RetornaTipo(n) == "Postulacion":  # es postulacion
+                                cur.execute(INFO_POSTULACION.format(opcionNotificacionLeida, usuario))
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                                 tab = []
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
+                                time.sleep(2)
 
-                            elif n[6] != None:  # es solicitud
-                                print("es solicitud")
-                                cur.execute("select n.id, s.id, s.correo_usuario_emisor,"
-                                            " s.correo_usuario_receptor, s.fecha from notificacion n, solicitud s"
-                                            " where n.id_solicitud = s.id"
-                                            " and n.id = {} and s.id = {}"
-                                            " and s.correo_usuario_receptor = '{}'".format(opcionNotificacionLeida, n[6], usuario))
+                            elif RetornaTipo(n) == "Solicitud":  # es solicitud
+                                cur.execute(INFO_SOLICITUD.format(opcionNotificacionLeida, n[6], usuario))
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                                 tab = []
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
+                                time.sleep(2)
 
     cur.close()
-    if HayConexionBD(conn):
-        conn.close()
-
-
-#MenuVerNotificacion(u, conn)
