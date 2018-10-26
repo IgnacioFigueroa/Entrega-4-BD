@@ -276,12 +276,63 @@ def VerExperienciaLaboral(usuario,conn):
 
 
 def VerEducacion(usuario, conn):
+    cur = conn.cursor()
+    cur.execute(VER_ESTUDIOS.format(usuario))
+    estudios = cur.fetchall()
+    tablaEstudios = list()
+    atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
+    Imprimir("ESTUDIOS")
+    cont = 0
+    for grado in atributosEstudios:
+        cont+=1
+        Imprimir("({}) {}".format(cont, grado[1]))
+    Imprimir("Que desea hacer: \n"
+             "\t(1) Ver Educacion\n"
+             "\t(2) Agregar educacion\n"
+             "\t(3) Eliminar educacion")
+    opcion = ValidarOpcion(range(1,4))
+    if opcion == 1:
+        cur.execute(VER_ESTUDIOS.format(usuario))
+        estudios = cur.fetchall()
+        tablaEstudios = list()
+        atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
+        Imprimir("ESTUDIOS")
+        for estudio in estudios:
+            for i in range(len(estudio)):
+                tablaEstudios.append([atributosEstudios[i], estudio[i]])
+            Imprimir(tabulate(tablaEstudios))
+            tablaEstudios = list()
+    elif opcion == 2:
+        cur.execute("SELECT nombre FROM Empresa WHERE rubro ='Educacion'")
+        instituciones = cur.fetchall()
+        for i in range(len(instituciones)):
+            Imprimir("({}) {}".format(i+1, instituciones[i][0]))
+        opcion1 = ValidarOpcion(range(1,len(instituciones)), "Que institucion desea seleccionar")
+        institucion = instituciones[opcion1-1][0]
+        cur.execute("SELECT id FROM Empresa WHERE nombre = '{}'".format(institucion))
+        row = cur.fetchall()
+        id = row[0][0]
+        fechaInicio = input("Ingrese fecha de inicio: ")
+        fechaTermino = input("Ingrese fecha de termino: ")
+        niveles = ["Educacion Basica", "Educacion Media", "Universitario", "PostGrado"]
+        Imprimir("Ingrese su Nivel de educacion")
+        for i in range(1,5):
+            Imprimir("({}) {}".format(i, niveles[i-1]))
+        opcion1= ValidarOpcion(range(1,5))
+        nivel= niveles[opcion-1]
+        descripcion = input("Ingrese una descripcion de su estudio")
+        cur.execute("INSERT INTO Educacion(id, correo_usuario, id_empresa, grado_academico, decripcion, fecha_inicio, fecha_termino)"
+                    " VALUES ({}, '{}', {}, '{}', '{}', '{}', '{}'".format(SiguienteID("Educacion",conn), usuario, id, nivel, descripcion, fechaInicio, fechaTermino))
+
+
+
     return
 def EliminarCuenta(usuario, conn):
-    opcion = input("Ingresa 'Si' si deseas eliminar tu cuenta, si no, ingresa cualquier cosa")
-    if opcion in ["si, SI, Si, sI"]:
+    opcion = input("Ingresa 'Si' si deseas eliminar tu cuenta, si no, ingresa cualquier cosa: ")
+    if opcion in ["si", "SI", "Si", "sI"]:
         cur = conn. cursor()
         cur.execute("DELETE FROM Usuario WHERE correo = '{}'".format(usuario))#Quedo tan corto porque lo hicimos con cascade
+        Imprimir("Tu cuenta ha sido borrada")
         conn.commit()
 
     return
