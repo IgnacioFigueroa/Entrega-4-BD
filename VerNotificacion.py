@@ -89,6 +89,9 @@ def MenuVerNotificacion(usuario, conn):
                         atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                       "Comentado por", "Contenido", "Fecha"]
                         tab = []
+                        if len(res) == 0:
+                            Imprimir("ERROR")
+                            return
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
@@ -101,6 +104,9 @@ def MenuVerNotificacion(usuario, conn):
                         atributos = ["Notificacion", "Publicacion", "Comentario",
                                      "Comentado por", "Contenido", "Fecha"]
                         tab = []
+                        if len(res) == 0:
+                            Imprimir("ERROR")
+                            return
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
@@ -111,6 +117,9 @@ def MenuVerNotificacion(usuario, conn):
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                         tab = []
+                        if len(res) == 0:
+                            Imprimir("ERROR")
+                            return
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
@@ -121,6 +130,9 @@ def MenuVerNotificacion(usuario, conn):
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                         tab = []
+                        if len(res) == 0:
+                            Imprimir("ERROR")
+                            return
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
@@ -131,6 +143,9 @@ def MenuVerNotificacion(usuario, conn):
                         res = cur.fetchone()
                         atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                         tab = []
+                        if len(res) == 0:
+                            Imprimir("ERROR")
+                            return
                         for i in range(len(res)):
                             tab.append([atributos[i], res[i]])
                         Imprimir(tabulate(tab))
@@ -180,6 +195,9 @@ def MenuVerNotificacion(usuario, conn):
                                 atributos = ["Notificacion", "Comentario", "Realizado en comentario",
                                              "Comentado por", "Contenido", "Fecha"]
                                 tab = []
+                                if len(res) == 0:
+                                    Imprimir("ERROR")
+                                    return
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
@@ -192,6 +210,9 @@ def MenuVerNotificacion(usuario, conn):
                                 atributos = ["Notificacion", "Publicacion", "Comentario",
                                              "Comentado por", "Contenido", "Fecha"]
                                 tab = []
+                                if len(res) == 0:
+                                    Imprimir("ERROR")
+                                    return
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
@@ -202,6 +223,9 @@ def MenuVerNotificacion(usuario, conn):
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Validacion", "Calificado por", "Habilidad validada"]
                                 tab = []
+                                if len(res) == 0:
+                                    Imprimir("ERROR")
+                                    return
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
@@ -212,6 +236,9 @@ def MenuVerNotificacion(usuario, conn):
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Postulacion", "Trabajo", "Estado", "Fecha postulacion"]
                                 tab = []
+                                if len(res) == 0:
+                                    Imprimir("ERROR")
+                                    return
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
@@ -222,6 +249,9 @@ def MenuVerNotificacion(usuario, conn):
                                 res = cur.fetchone()
                                 atributos = ["Notificacion", "Solicitud", "Enviada por", "Enviada a", "Fecha"]
                                 tab = []
+                                if len(res) == 0:
+                                    Imprimir("ERROR")
+                                    return
                                 for i in range(len(res)):
                                     tab.append([atributos[i], res[i]])
                                 Imprimir(tabulate(tab))
