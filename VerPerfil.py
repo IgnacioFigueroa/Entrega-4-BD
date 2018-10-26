@@ -46,6 +46,12 @@ VER_IDPERFILHABILIDAD = "SELECT pf.id " \
                         "WHERE p.correo_usuario = '{}' AND h.nombre = '{}'"
 VER_IDVALIDACIONES = "SELECT id FROM Validacion"
 VER_SOLICITUDESPENDIENTES = "SELECT * FROM Solicitud WHERE correo_usuario_receptor = '{}' AND estado = 'pendiente'"
+
+HABILIDADES_VALIDACIONES = "select h.id, v.id, v.correo_usuario_calificador "\
+                        "from habilidad h, perfil_habilidad ph, validacion v, perfil p "\
+                        "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "\
+                        "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
+
 def MenuVerPerfil(usuario, conn):
     volver = False
     while not volver:
@@ -95,38 +101,62 @@ def EditarPerfil(usuario, conn):
 def CambiarFoto(usuario, conn):
     return
 def VerHabilidades(usuario, conn):
-    ImprimirTitulo("ver habilidades")
-    cur = conn.cursor()
-    cur.execute(VER_HABILIDADES.format(usuario))
-    respuesta = cur.fetchall()
-    matriz_mostrar = [["HABILIDAD", "DESCRIPCION", "CANTIDAD DE VALIDACIONES"]]
-    ids = []
-    for tupla in respuesta:
-        ids.append(tupla[0])
-        matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
-    Imprimir(tabulate(matriz_mostrar))
-    Imprimir("Que desea hacer?\n"
-             "(1) Ver Habilidad\n"
-             "(2) Agregar Habilidad\n"
-             "(3) Eliminar Habilidad\n"
-             "(4) Volver al menu anterior\n"
-             "(5) Salir\n")
-    opcion = ValidarOpcion(range(1,5))
-    habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
-    cur.execute("select h.id, v.id, v.correo_usuario_calificador "
-                "from habilidad h, perfil_habilidad ph, validacion v, perfil p "
-                "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "
-                "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
-                .format(habilidad_seleccionada, usuario))
-    respuesta = cur.fetchall()
-    if len(respuesta) > 0:
-        matriz_mostrar = [["HABILIDAD", "VALIDACION", "VALIDADA POR"]]
-        for tupla in respuesta:
-            matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
-        Imprimir(tabulate(matriz_mostrar))
-    else:
-        Imprimir("La habilidad seleccionada no tiene validaciones")
-    cur.close()
+    no_terminar = True
+    while no_terminar:
+        cur = conn.cursor()
+        ImprimirTitulo("ver habilidades")
+        cur.execute(VER_HABILIDADES.format(usuario))
+        respuesta_inicio = cur.fetchall()
+        matriz_mostrar_inicio = [["HABILIDAD", "DESCRIPCION", "CANTIDAD DE VALIDACIONES"]]
+        ids = []
+        for tupla in respuesta_inicio:
+            ids.append(tupla[0])
+            matriz_mostrar_inicio.append([tupla[0], tupla[1], tupla[2]])
+        Imprimir(tabulate(matriz_mostrar_inicio))
+        Imprimir("Que desea hacer?\n"
+                 "(1) Ver Habilidad\n"
+                 "(2) Agregar Habilidad\n"
+                 "(3) Eliminar Habilidad\n"
+                 "(4) Volver al menu anterior\n"
+                 "(5) Salir\n")
+        opcion = ValidarOpcion(range(1,6))
+        if opcion == 5:
+            if HayConexionBD(conn):
+                conn.close()
+            sys.exit(0)
+        elif opcion == 4:
+            no_terminar = False
+            return
+        elif opcion == 1: # ver habilidad
+            habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
+            cur.execute(HABILIDADES_VALIDACIONES.format(habilidad_seleccionada, usuario))
+            respuesta = cur.fetchall()
+            if len(respuesta) > 0:
+                matriz_mostrar = [["HABILIDAD", "VALIDACION", "VALIDADA POR"]]
+                for tupla in respuesta:
+                    matriz_mostrar.append([tupla[0], tupla[1], tupla[2]])
+                Imprimir(tabulate(matriz_mostrar))
+            else:
+                Imprimir("La habilidad seleccionada no tiene validaciones")
+        elif opcion == 2: # agregar habilidad
+            cur.execute("select * from habilidad")
+            respuesta = cur.fetchall()
+            idsNoDelUsuario = []
+            matriz_mostrar = [["HABILIDAD", "DESCRIPCION"]]
+            for tupla in respuesta:
+                if tupla[0] not in ids:
+                    idsNoDelUsuario.append(tupla[0])
+                    matriz_mostrar.append([tupla[0], tupla[1]])
+            Imprimir(tabulate(matriz_mostrar))
+            Imprimir("Que deseas hacer?\n"
+                     "\t(1) Seleccionar una habilidad existente\n"
+                     "\t(2) Crear una habilidad nueva\n")
+            seleccionarOcrear = ValidarOpcion(range(1,3))
+            if seleccionarOcrear == 1:
+                    habilidadAagregar = ValidarOpcion(idsNoDelUsuario,
+                    "Seleccione la habilidad que quiere agregar a su perfil: ")
+
+        cur.close()
 
 def VerExperienciaLaboral(usuario,conn):
     return
