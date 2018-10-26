@@ -126,10 +126,8 @@ def CambiarFoto(usuario, conn):
     Imprimir("Foto cambiada")
     return
 
-u = "Mono3Apellido3@gmail.com"
-
 def VerHabilidades(usuario, conn):
-    while(True):
+    while True:
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
@@ -215,11 +213,8 @@ def VerHabilidades(usuario, conn):
             conn.commit()
         cur.close()
 
-VerHabilidades(u, conn)
-
-
 def VerExperienciaLaboral(usuario,conn):
-    while(True):
+    while True:
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
         id_perfil = cur.fetchone()
