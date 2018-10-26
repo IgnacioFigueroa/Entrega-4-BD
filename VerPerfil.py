@@ -1,7 +1,9 @@
 from IO import *
 from tabulate import tabulate
-import psycopg2
+from Empresas import AgregarTrabajos, CrearEmpresa
+from datetime import date
 
+import psycopg2
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 # ----------QUERYS----------
 CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
@@ -101,11 +103,11 @@ def EditarPerfil(usuario, conn):
 def CambiarFoto(usuario, conn):
     return
 def VerHabilidades(usuario, conn):
-    no_terminar = True
-    while no_terminar:
+    while(True):
         cur = conn.cursor()
         cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
-        id_perfil = cur.fetchone()[0]
+        id_perfil = cur.fetchone()
+        id_perfil = id_perfil[0]
         ImprimirTitulo("ver habilidades")
         cur.execute(VER_HABILIDADES.format(usuario))
         respuesta_inicio = cur.fetchall()
@@ -127,7 +129,6 @@ def VerHabilidades(usuario, conn):
                 conn.close()
             sys.exit(0)
         elif opcion == 4:
-            no_terminar = False
             return
         elif opcion == 1: # ver habilidad
             habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere ver: ")
@@ -178,39 +179,73 @@ def VerHabilidades(usuario, conn):
 
         cur.close()
 
-u = "Mono2Apellido2@gmail.com"
+u = "Mono3Apellido3@gmail.com"
 
 def VerExperienciaLaboral(usuario,conn):
-    cur = conn.cursor()
-    ImprimirTitulo("experiencia laboral: trabajos")
-    cur.execute(VER_TRABAJOS.format(usuario))
-    trabajos = cur.fetchall()
-    tab = [["TRABAJO", "EMPRESA"]]
-    idsTrabajos = []
-    for t in trabajos:
-        tab.append([t[0], t[1]])
-        idsTrabajos.append(t[0])
-    Imprimir(tabulate(tab))
+    while(True):
+        cur = conn.cursor()
+        cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
+        id_perfil = cur.fetchone()
+        id_perfil = id_perfil[0]
+        ImprimirTitulo("experiencia laboral: trabajos")
+        cur.execute(VER_TRABAJOS.format(usuario))
+        trabajos = cur.fetchall()
+        tab = [["TRABAJO", "EMPRESA"]]
+        idsTrabajos = []
+        for t in trabajos:
+            tab.append([t[0], t[1]])
+            idsTrabajos.append(t[0])
+        Imprimir(tabulate(tab))
 
-    Imprimir("Que desea hacer?\n"
-             "(1) Ver Experiencia Laboral\n"
-             "(2) Agregar Experiencia Laboral\n"
-             "(3) Eliminar Experiencia Laboral\n"
-             "(4) Volver al menu anterior\n"
-             "(5) Salir\n")
-    opcion = ValidarOpcion(range(1, 6))
-
-    if opcion == 1:
-        trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione el trabajo que quiere ver: ")
-    tablaTrabajos = list()
-    atributosTrabajo = ["Trabajo", "Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
-
-    for trabajo in trabajos:
-        if trabajo[0] == trabajo_elegido:
-            for i in range(len(trabajo)):
-                tablaTrabajos.append([atributosTrabajo[i], trabajo[i]])
-            Imprimir(tabulate(tablaTrabajos))
+        Imprimir("Que desea hacer?\n"
+                 "(1) Ver Experiencia Laboral\n"
+                 "(2) Agregar Experiencia Laboral\n"
+                 "(3) Eliminar Experiencia Laboral\n"
+                 "(4) Volver al menu anterior\n"
+                 "(5) Salir\n")
+        opcion = ValidarOpcion(range(1, 6))
+        if opcion == 5:
+            if HayConexionBD(conn):
+                conn.close()
+            sys.exit(0)
+        elif opcion == 4:
+            return
+        elif opcion == 1:
+            trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione el trabajo que quiere ver: ")
             tablaTrabajos = list()
+            atributosTrabajo = ["Trabajo", "Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
+
+            for trabajo in trabajos:
+                if trabajo[0] == trabajo_elegido:
+                    for i in range(len(trabajo)):
+                        tablaTrabajos.append([atributosTrabajo[i], trabajo[i]])
+                    Imprimir(tabulate(tablaTrabajos))
+
+        elif opcion == 2:
+            cur.execute("SELECT id, nombre FROM empresa")
+            emp = cur.fetchall()
+            idsEmpresasTodas = []
+            tab = [["EMPRESA", "NOMBRE"]]
+            for e in emp:
+                idsEmpresasTodas.append(e[0])
+                tab.append([e[0], e[1]])
+            Imprimir(tabulate(tab))
+            Imprimir("Que deseas hacer?\n"
+                     "\t(1) Agregar empresa a experiencia laboral\n"
+                     "\t(2) Crear empresa nueva\n")
+            hacer = ValidarOpcion(range(1,3))
+            if hacer == 1:
+                empresaAagregar = ValidarOpcion(idsEmpresasTodas, "Seleccione la empresa que quiere agregar: ")
+                AgregarTrabajos(empresaAagregar, conn)
+                idNuevoTrabajo = SiguienteID("trabajo", conn)
+                fecha_actual = date.today()
+                cur.execute("INSERT INTO trabajado(id, id_trabajo, id_perfil, fecha_inicio) "
+                            "VALUES({}, {}, {}, '{}')"
+                            .format(SiguienteID("trabajado", conn), idNuevoTrabajo-1, id_perfil, fecha_actual))
+                conn.commit()
+            elif hacer == 2:
+                CrearEmpresa(usuario, conn)
+
 
 
 

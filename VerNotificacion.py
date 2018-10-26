@@ -41,9 +41,8 @@ def RetornaTipo(n):
         return "Solicitud"
 
 def MenuVerNotificacion(usuario, conn):
-    no_terminar = True
-    cur = conn.cursor()
-    while no_terminar:
+    while(True):
+        cur = conn.cursor()
         cur.execute("select * from notificacion where leida = FALSE"
                     " and correo_usuario_notificado = '{}';".format(usuario))
         notis = cur.fetchall()
@@ -78,7 +77,6 @@ def MenuVerNotificacion(usuario, conn):
                 conn.close()
             sys.exit(0)
         elif (opcion == 4 and hay_notis) or (opcion == 2 and not hay_notis):
-            no_terminar = False
             return
         elif opcion == 1 and hay_notis:
             opcionNotificacion = ValidarOpcion(ln, "Seleccione la notificacion que quiere ver: ")
