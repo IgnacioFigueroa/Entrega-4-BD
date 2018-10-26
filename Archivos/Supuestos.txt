@@ -1,0 +1,1 @@
+Una solicitud puede estar aceptada, rechazada o eliminada(dando a entender que los usuarios dejaron de ser amigos)
