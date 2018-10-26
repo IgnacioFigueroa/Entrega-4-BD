@@ -201,41 +201,57 @@ def VerTrabajos1(idEmpresa, conn):
     for trabajo in trabajos:
         Imprimir("({}) Trabajo {}.".format(i, trabajo[0]))
         i += 1
+    if len(trabajos)<1:
+        Imprimir("Mostrando opciones modificadas por falta de trabajos.")
+        Imprimir("({}) Agregar trabajos".format(i))
+        i+=1
     opciones = "({}) Volver.\n" \
                "({}) Salir.".format(i, i+1)
     Imprimir(opciones)
     seleccion = ValidarOpcion(range(1, i+2), "Seleccione un trabajo: ")
     cur.close()
-    if seleccion == i:
-        return
-    elif seleccion == i+1:
-        sys.exit()
-    else:
-        idTrabajo = trabajos[seleccion-1]
-        opciones = ["Ver trabajo",
-                    "Abrir postulaciones",
-                    "Cerrar postulaciones",
-                    "Agregar trabajos",
-                    "Eliminar trabajo",
-                    "Volver",
-                    "Salir"]
-        ImprimirOpciones(opciones)
-        seleccion = ValidarOpcion(range(1,len(opciones)+1))
+    if len(trabajos)<1:
         if seleccion == 1:
-            VerTrabajo1(idTrabajo, conn)
-        elif seleccion == 2:
-            AbrirPostulaciones(idTrabajo, conn)
-        elif seleccion == 3:
-            CerrarPostulaciones(idTrabajo, conn)
-        elif seleccion == 4:
             AgregarTrabajos(idEmpresa, conn)
-        elif seleccion == 5:
-            EliminarTrabajo(idTrabajo, conn)
-        elif seleccion == 6:
+            VerTrabajos1(idEmpresa, conn)
+        elif seleccion == 2:
             return
-        elif seleccion == 7:
+        elif seleccion == 3:
+            cur.close()
+            conn.close()
             sys.exit()
-        VerTrabajos1(idEmpresa, conn)
+    else:
+        if seleccion == i:
+            return
+        elif seleccion == i+1:
+            sys.exit()
+        else:
+            idTrabajo = trabajos[seleccion-1]
+            opciones = ["Ver trabajo",
+                        "Abrir postulaciones",
+                        "Cerrar postulaciones",
+                        "Agregar trabajos",
+                        "Eliminar trabajo",
+                        "Volver",
+                        "Salir"]
+            ImprimirOpciones(opciones)
+            seleccion = ValidarOpcion(range(1,len(opciones)+1))
+            if seleccion == 1:
+                VerTrabajo1(idTrabajo, conn)
+            elif seleccion == 2:
+                AbrirPostulaciones(idTrabajo, conn)
+            elif seleccion == 3:
+                CerrarPostulaciones(idTrabajo, conn)
+            elif seleccion == 4:
+                AgregarTrabajos(idEmpresa, conn)
+            elif seleccion == 5:
+                EliminarTrabajo(idTrabajo, conn)
+            elif seleccion == 6:
+                return
+            elif seleccion == 7:
+                conn.close()
+                sys.exit()
+            VerTrabajos1(idEmpresa, conn)
     return
 
 
@@ -583,7 +599,7 @@ def CrearEmpresa(usuario, conn):
 
 def EliminarEmpresa(idEmpresa, conn):
     cur = conn.cursor()
-    cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(id))
+    cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(idEmpresa))
     nombreEmpresa = cur.fetchall()
     nombreEmpresa = nombreEmpresa[0][0]
     ImprimirTitulo("Eliminar empresa")
