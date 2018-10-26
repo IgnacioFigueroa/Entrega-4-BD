@@ -96,6 +96,8 @@ obtenerInfoTrabajoOfrecido = "SELECT t.id, t.id_empresa, e.nombre, t.descripcion
 
 postulantes = "SELECT COUNT(*) c FROM postulacion WHERE estado = 'pendiente' AND id_trabajo = {}"
 
+crearPostulacion = ("INSERT INTO postulacion (id, correo_usuario, id_trabajo, estado, fecha) "
+                    "VALUES ({}, '{}', {}, '{}', TO_DATE('{}', 'DD/MM/YYYY'))")
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -694,8 +696,6 @@ def VerTrabajo2(idTrabajo, conn):
     Imprimir(tabulate(info, headers=["Id", "Id Empresa", "Nombre Empresa", "Descripcion", "Fecha creacion", "Postulaciones abiertas", "Cantidad postulantes"], tablefmt = 'grid'))
     return
 
-crearPostulacion = ("INSERT INTO postulacion (id, correo_usuario, id_trabajo, estado, fecha) "
-                    "VALUES ({}, '{}', {}, '{}', TO_DATE('{}', 'DD/MM/YYYY'))")
 
 def PostularTrabajo(idTrabajo, correoUsuario, conn):
     ImprimirTitulo("Postular a trabajo")
