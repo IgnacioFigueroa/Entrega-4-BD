@@ -558,7 +558,6 @@ def DejarDeSerAdministrador(correoUsuario, IdEmpresa, conn):
         Imprimir("Cobarde... Ya no eres administrador")
         conn.commit()
     cur.close()
-    conn.close()
     return
 
 
