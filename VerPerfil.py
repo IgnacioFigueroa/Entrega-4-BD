@@ -91,6 +91,7 @@ def MenuVerPerfil(usuario, conn):
 
 
 def EditarPerfil(usuario, conn):
+    cur = conn.cursor()
     VerPerfilHastaHabilidad(usuario, conn)
     atributosPerfil=["Correo", "Nombre", "Apellido", "Fecha de Nacimiento", "Pais", "Sexo", "Descripcion"]
     cont = 0
@@ -98,7 +99,14 @@ def EditarPerfil(usuario, conn):
         cont+=1
         Imprimir("({}) {}".format(cont, i))
     opcion = ValidarOpcion(range(1,7))
+    atributosPerfil = ["correo", "nombre", "apellido", "fecha_nacimiento", "pais", "sexo", "descripcion"]
     atributoCambiar=atributosPerfil[opcion-1]
+    info = input("Ingrese {}: ".format(atributoCambiar))
+    if atributoCambiar == "correo":
+        cur.execute("UPDATE Usuario SET correo = {} WHERE correo = {}".format(info, usuario))
+    else:
+        cur.execute("UPDATE Perfil SET {} = {} WHERE correo_usuario = {}".format(atributoCambiar,info, usuario))
+    conn.commit()
     return
 def CambiarFoto(usuario, conn):
     return
@@ -255,7 +263,7 @@ def EliminarCuenta(usuario, conn):
     opcion = input("Ingresa 'Si' si deseas eliminar tu cuenta, si no, ingresa cualquier cosa")
     if opcion in ["si, SI, Si, sI"]:
         cur = conn. cursor()
-        cur.execute("DELETE FROM Usuario WHERE correo = '{}'".format(usuario))
+        cur.execute("DELETE FROM Usuario WHERE correo = '{}'".format(usuario))#Quedo tan corto porque lo hicimos con cascade
         conn.commit()
 
     return
