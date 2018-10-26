@@ -85,6 +85,7 @@ def MenuVerPerfil(usuario, conn):
         elif opcion == 6:
             EliminarCuenta(usuario, conn)
         elif opcion == 7:
+            volver = True
             return
         elif opcion == 8:
             conn.close()
@@ -106,12 +107,19 @@ def EditarPerfil(usuario, conn):
     atributoCambiar=atributosPerfil[opcion-1]
     info = input("Ingrese {}: ".format(atributoCambiar))
     if atributoCambiar == "correo":
-        cur.execute("UPDATE Usuario SET correo = {} WHERE correo = {}".format(info, usuario))
+        cur.execute("UPDATE Usuario SET correo = {} WHERE correo = '{}'".format(info, usuario))
     else:
-        cur.execute("UPDATE Perfil SET {} = {} WHERE correo_usuario = {}".format(atributoCambiar,info, usuario))
+        cur.execute("UPDATE Perfil SET {} = {} WHERE correo_usuario = '{}'".format(atributoCambiar,info, usuario))
     conn.commit()
     return
 def CambiarFoto(usuario, conn):
+    cur = conn.cursor()
+    foto = input("Ingrese el nombre del archivo:")
+    cur.execute("SELECT id FROM Perfil WHERE correo_usuario = '{}'".format(usuario))
+    row = cur.fetchall()
+    id = row[0][0]
+    cur.execute("UPDATE foto_perfil SET foto = '{}' WHERE id_perfil = {} ".format(foto, id))
+    Imprimir("Foto cambiada")
     return
 def VerHabilidades(usuario, conn):
     while(True):

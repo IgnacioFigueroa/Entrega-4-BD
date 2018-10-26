@@ -58,7 +58,8 @@ def MenuContactos(usuario, conn):
                  "\t(1) Ver Contactos\n"
                  "\t(2) Agregar Contactos\n"
                  "\t(3) Solicitudes Pendientes\n"
-                 "\t(4) Salir\n")
+                 "\t(4) Volver\n"
+                 "\t(5) Salir")
         opcion = ValidarOpcion(range(1, 5))
         if opcion == 4:
             salir = False
@@ -68,6 +69,9 @@ def MenuContactos(usuario, conn):
             AgregarContactos(usuario, conn)
         elif opcion == 3:
             SolicitudesPendientes(usuario, conn)
+        elif opcion == 5:
+            conn.close()
+            sys.exit(0)
     return
 
 
