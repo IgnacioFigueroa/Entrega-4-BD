@@ -54,6 +54,9 @@ HABILIDADES_VALIDACIONES = "select h.id, v.id, v.correo_usuario_calificador "\
                         "where h.id = ph.id_habilidad and ph.id = v.id_perfil_habilidad "\
                         "and p.id = ph.id_perfil and h.id = {} and p.correo_usuario = '{}'"
 
+NUEVA_EXPERIENCIA_LABORAL = "INSERT INTO trabajado(id, id_trabajo, id_perfil, fecha_inicio) "\
+                            "VALUES({}, {}, {}, '{}')"
+
 def MenuVerPerfil(usuario, conn):
     volver = False
     while not volver:
@@ -242,19 +245,26 @@ def VerExperienciaLaboral(usuario,conn):
                      "\t(1) Agregar empresa a experiencia laboral\n"
                      "\t(2) Crear empresa nueva\n")
             hacer = ValidarOpcion(range(1,3))
+            fecha_actual = date.today()
             if hacer == 1:
                 empresaAagregar = ValidarOpcion(idsEmpresasTodas, "Seleccione la empresa que quiere agregar: ")
                 AgregarTrabajos(empresaAagregar, conn)
                 idNuevoTrabajo = SiguienteID("trabajo", conn)
-                fecha_actual = date.today()
-                cur.execute("INSERT INTO trabajado(id, id_trabajo, id_perfil, fecha_inicio) "
-                            "VALUES({}, {}, {}, '{}')"
-                            .format(SiguienteID("trabajado", conn), idNuevoTrabajo-1, id_perfil, fecha_actual))
+                cur.execute(NUEVA_EXPERIENCIA_LABORAL.format(SiguienteID("trabajado", conn),
+                            idNuevoTrabajo-1, id_perfil, fecha_actual))
                 conn.commit()
             elif hacer == 2:
                 CrearEmpresa(usuario, conn)
-
-
+                nuevaEmpresa = SiguienteID("empresa", conn)
+                Imprimir()
+                Imprimir("AHORA CREE UN TRABAJO")
+                AgregarTrabajos(nuevaEmpresa-1, conn)
+                idNuevoTrabajo = SiguienteID("trabajo", conn)
+                cur.execute(NUEVA_EXPERIENCIA_LABORAL.format(SiguienteID("trabajado", conn),
+                            idNuevoTrabajo-1, id_perfil, fecha_actual))
+                conn.commit()
+            elif hacer == 3:
+                print("Aca hay que eliminar una experiencia laboral")
 
 
 def VerEducacion(usuario, conn):
