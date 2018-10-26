@@ -195,7 +195,7 @@ def SolicitudesPendientes(usuario, conn):
         selector += 1
         Imprimir("({}) {}".format(selector, solicitud[1]))
 
-    opcion = ValidarOpcion(range(1,len(solicitudesPendientes)+1, "Seleccione su solicitud pendiente"))
+    opcion = ValidarOpcion(range(1,len(solicitudesPendientes)), "Seleccione su solicitud pendiente")
     idSolicitud = solicitudesPendientes[opcion-1][0]
     Imprimir("Que desea hacer con la solicitud: \n"
              "(1) Aceptarla\n"

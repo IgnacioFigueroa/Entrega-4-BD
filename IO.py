@@ -37,6 +37,7 @@ def VerPerfilHastaHabilidad(usuario, conn):
             tablaEstudios.append([atributosEstudios[i], estudio[i]])
         Imprimir(tabulate(tablaEstudios))
         tablaEstudios = list()
+
     cur.execute(VER_TRABAJOS.format(usuario))
     trabajos = cur.fetchall()
     tablaTrabajos = list()
