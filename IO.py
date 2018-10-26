@@ -113,6 +113,13 @@ def PedirDescripcion(arg = "descripcion"):
         texto += n_text + "\n"
     return texto
 
+def PedirUnaLinea(arg = ""):
+    text = input(arg)
+    while text == "":
+        Imprimir("Texto invalido, ingrese nuevamente.")
+        text = input(arg)
+    return text
+
 def ImprimirInfoPublicacion(publicacionCompleta):
     publicacion = publicacionCompleta[0]
     id = publicacion[0]

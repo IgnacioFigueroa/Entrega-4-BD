@@ -70,6 +70,10 @@ obtenerAdministradores = "SELECT COUNT(*) c FROM administrador WHERE id_empresa 
 
 dejarDeSerAdmin = "UPDATE administrador SET activo = FALSE WHERE correo_usuario = '{}'"
 
+crearEmpresa = "INSERT INTO empresa (id, nombre, fecha_creacion, pais, rubro, descripcion) " \
+               "VALUES ({}, '{}', TO_DATE('{}', 'DD/MM/YYYY'), '{}', '{}', '{}')"
+
+
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
     ImprimirTitulo("EMPRESAS")
@@ -93,7 +97,10 @@ def MostrarMisEmpresas(usuario, conn):
     cur = conn.cursor()
     cur.execute(NombresEmpresas.format(usuario))
     empresas = cur.fetchall()
-    if len(empresas)>0:
+    administraEmpresas = True
+    if len(empresas)<1:
+        administraEmpresas = False
+    if administraEmpresas:
         i = 1
         for empresa in empresas:
             Imprimir("({}): {}".format(i,empresa[0]))
@@ -101,13 +108,13 @@ def MostrarMisEmpresas(usuario, conn):
         seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
         idEmpresaSeleccionada = empresas[seleccion-1][1]
         Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
-        opcionesEmpresa = ["Ver trabajos.",
-                          "Crear publicaciones.",
-                          "Mis publicaciones. [falta imprimir bien los comentarios]",
-                          "Agregar administrador.",
-                          "Dejar de ser administrador.",
-                          "Crear empresas. [nada todavia]",
-                          "Eliminar empresas. [nada todavia]",
+        opcionesEmpresa = ["Ver trabajos",
+                          "Crear publicaciones",
+                          "Mis publicaciones [falta imprimir bien los comentarios]",
+                          "Agregar administrador",
+                          "Dejar de ser administrador",
+                          "Crear empresas",
+                          "Eliminar empresas [nada todavia]",
                           "Volver",
                           "Salir"]
         ImprimirOpciones(opcionesEmpresa)
@@ -131,13 +138,30 @@ def MostrarMisEmpresas(usuario, conn):
             DejarDeSerAdministrador(usuario, idEmpresaSeleccionada, conn)
             MostrarMisEmpresas(usuario, conn)
         elif seleccion == 6:
-            CrearEmpresa(conn)
+            CrearEmpresa(usuario, conn)
+            MostrarMisEmpresas(usuario, conn)
         elif seleccion == 7:
             EliminarEmpresa(idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
         elif seleccion == 8:
             MenuEmpresas(usuario, conn)
-    else:
-        Imprimir("No administras empresas")
+
+    elif administraEmpresas == False:
+        Imprimir("Mostrando opciones limitadas ya que no administras ninguna empresa")
+        opcionesEmpresa = ["Crear empresas",
+                           "Volver",
+                           "Salir"]
+        ImprimirOpciones(opcionesEmpresa)
+        cur.close()
+        seleccion = ValidarOpcion(range(1,len(opcionesEmpresa)+1))
+        if seleccion == 1:
+            CrearEmpresa(usuario, conn)
+            MenuEmpresas(usuario, conn)
+        elif seleccion == 2:
+            MenuEmpresas()
+        elif seleccion == 3:
+            conn.close()
+            sys.exit()
     return
 
 
@@ -513,8 +537,23 @@ def DejarDeSerAdministrador(correoUsuario, IdEmpresa, conn):
     return
 
 
-def CrearEmpresa(conn):
-
+def CrearEmpresa(usuario, conn):
+    cur = conn.cursor()
+    ImprimirTitulo("Crear empresa.")
+    id = SiguienteID("empresa", conn)
+    nombre = PedirUnaLinea("Ingrese el nombre de la empresa: ")
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    pais = PedirUnaLinea("Pais: ")
+    rubro = PedirUnaLinea("Rubro: ")
+    descripcion = PedirDescripcion("descripcion de la empresa")
+    # query crear empresa
+    cur.execute(crearEmpresa.format(id, nombre, fecha, pais, rubro, descripcion))
+    # query agregar admin
+    idAdmin = SiguienteID("administrador", conn)
+    cur.execute(agregarAdmin.format(idAdmin, id, usuario, True))
+    Imprimir("Epresa creada con exito. Ya eres administrador de la empresa '{}'".format(nombre))
+    conn.commit()
+    cur.close()
     return
 
 
