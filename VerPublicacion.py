@@ -1,4 +1,47 @@
 from IO import *
+import datetime
+
+crearPublicacionUsuario = "INSERT INTO publicacion (id,correo_usuario,texto,foto,link,estado,fecha,borrada) " \
+                          "VALUES ({},'{}','{}','{}','{}','{}',TO_DATE('{}', 'DD/MM/YYYY'),{})"
+
+INFO_PUBLICACION = "select id, texto, foto, link, estado, fecha from publicacion "\
+                "where correo_usuario = '{}'"
+
+def CrearPublicacionesUsuario(usuario, conn):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM publicacion ORDER BY id DESC LIMIT 1")
+    id = cur.fetchall()
+    id = id[0][0] + 1
+    texto = PedirDescripcion("texto") #1000 chars
+    foto = PedirDescripcion("foto") #30 chars
+    link = PedirDescripcion("link") #100 chars
+    opciones = ["Privada", "Publica"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        estado = "privada"
+    else:
+        estado = "publica"
+    fechaCreacion = "{:%d-%m-%Y}".format(datetime.date.today())
+    borrada = False
+    opciones = ["Si", "No"]
+    ImprimirOpciones(opciones, "Desea publicar?")
+    seleccion = ValidarOpcion([1,2])
+    if seleccion == 1:
+        cur.execute(crearPublicacionUsuario.format(id,usuario,texto.strip("\n"),foto.strip("\n"),link.strip("\n"),estado,fechaCreacion,borrada))
+        Imprimir("Publicacion creada")
+        conn.commit()
+    cur.close()
+    return
+
+def MisPublicaciones(usuario, conn):
+    cur = conn.cursor()
+    cur.execute(INFO_PUBLICACION.format(usuario))
+    respuesta = cur.fetchall()
+    tab = [["PUBLICACION", "TEXTO", "FOTO", "LINK", "ESTADO", "FECHA"]]
+    for i in respuesta:
+        tab.append([i[0], i[1], i[2], i[3], i[4], i[5]])
+    Imprimir(tabulate(tab))
 
 def MenuVerPublicacion(usuario, conn):
     while True:
@@ -16,4 +59,10 @@ def MenuVerPublicacion(usuario, conn):
             sys.exit(0)
         elif opcion == 4:
             return
+        elif opcion == 1:
+            CrearPublicacionesUsuario(usuario, conn)
+        elif opcion == 2:
+            MisPublicaciones(usuario, conn)
+        elif opcion == 3:
+            Imprimir("Aqui van Otras Publicaciones")
     return
