@@ -213,9 +213,15 @@ def VerExperienciaLaboral(usuario,conn):
             tablaTrabajos = list()
 
 
-VerExperienciaLaboral(u, conn)
 
 def VerEducacion(usuario, conn):
     return
 def EliminarCuenta(usuario, conn):
+    opcion = input("Ingresa 'Si' si deseas eliminar tu cuenta, si no, ingresa cualquier cosa")
+    if opcion in ["si, SI, Si, sI"]:
+        cur = conn. cursor()
+        cur.execute("DELETE FROM Usuario WHERE correo = '{}'".format(usuario))
+        conn.commit()
+
     return
+EliminarCuenta("a@a.a", conn)
