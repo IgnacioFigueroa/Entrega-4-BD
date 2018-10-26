@@ -19,7 +19,7 @@ VER_PERFIL = "SELECT * FROM Perfil WHERE correo_usuario = '{}' "
 VER_ESTUDIOS = "SELECT em.nombre, e.grado_academico, e.descripcion, e.fecha_inicio, e.fecha_termino " \
                "FROM Estudio e JOIN Empresa em ON e.id_empresa = em.id " \
                "WHERE correo_usuario = '{}'"
-VER_TRABAJOS = "SELECT e.nombre, t.descripcion, tr.fecha_inicio, tr.fecha_termino" \
+VER_TRABAJOS = "SELECT t.id, e.nombre, t.descripcion, tr.fecha_inicio, tr.fecha_termino" \
                " FROM " \
                "Trabajo t JOIN Empresa e ON t.id_empresa = e.id " \
                "JOIN Trabajado tr ON t.id = tr.id_trabajo " \
@@ -87,7 +87,7 @@ def MenuVerPerfil(usuario, conn):
     return
 #MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
 
-u = "Mono1Apellido1@gmail.com"
+
 def EditarPerfil(usuario, conn):
     VerPerfilHastaHabilidad(usuario, conn)
     atributosPerfil=["Correo", "Nombre", "Apellido", "Fecha de Nacimiento", "Pais", "Sexo", "Descripcion"]
@@ -173,16 +173,49 @@ def VerHabilidades(usuario, conn):
                             "values({}, {}, {})".format(SiguienteID("perfil_habilidad", conn),
                                                         id_perfil, nuevoIDhabilidad))
                 conn.commit()
-
+        elif opcion == 3: # eliminar habilidad
+            habilidad_seleccionada = ValidarOpcion(ids, "Seleccione la habilidad que quiere eliminar: ")
 
         cur.close()
 
+u = "Mono2Apellido2@gmail.com"
+
 def VerExperienciaLaboral(usuario,conn):
-    return
+    cur = conn.cursor()
+    ImprimirTitulo("experiencia laboral: trabajos")
+    cur.execute(VER_TRABAJOS.format(usuario))
+    trabajos = cur.fetchall()
+    tab = [["TRABAJO", "EMPRESA"]]
+    idsTrabajos = []
+    for t in trabajos:
+        tab.append([t[0], t[1]])
+        idsTrabajos.append(t[0])
+    Imprimir(tabulate(tab))
+
+    Imprimir("Que desea hacer?\n"
+             "(1) Ver Experiencia Laboral\n"
+             "(2) Agregar Experiencia Laboral\n"
+             "(3) Eliminar Experiencia Laboral\n"
+             "(4) Volver al menu anterior\n"
+             "(5) Salir\n")
+    opcion = ValidarOpcion(range(1, 6))
+
+    if opcion == 1:
+        trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione el trabajo que quiere ver: ")
+    tablaTrabajos = list()
+    atributosTrabajo = ["Trabajo", "Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
+
+    for trabajo in trabajos:
+        if trabajo[0] == trabajo_elegido:
+            for i in range(len(trabajo)):
+                tablaTrabajos.append([atributosTrabajo[i], trabajo[i]])
+            Imprimir(tabulate(tablaTrabajos))
+            tablaTrabajos = list()
+
+
+VerExperienciaLaboral(u, conn)
+
 def VerEducacion(usuario, conn):
     return
 def EliminarCuenta(usuario, conn):
     return
-
-
-VerHabilidades(u, conn)
