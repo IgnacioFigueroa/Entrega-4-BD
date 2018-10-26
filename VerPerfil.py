@@ -147,11 +147,11 @@ def VerHabilidades(usuario, conn):
             matriz_mostrar_inicio.append([tupla[0], tupla[1], tupla[2]])
         Imprimir(tabulate(matriz_mostrar_inicio))
         Imprimir("Que desea hacer?\n"
-                 "(1) Ver Habilidad\n"
-                 "(2) Agregar Habilidad\n"
-                 "(3) Eliminar Habilidad\n"
-                 "(4) Volver al menu anterior\n"
-                 "(5) Salir\n")
+                 "\t(1) Ver Habilidad\n"
+                 "\t(2) Agregar Habilidad\n"
+                 "\t(3) Eliminar Habilidad\n"
+                 "\t(4) Volver al menu anterior\n"
+                 "\t(5) Salir\n")
         opcion = ValidarOpcion(range(1,6))
         if opcion == 5:
             if HayConexionBD(conn):
