@@ -135,7 +135,7 @@ def MostrarMisEmpresas(usuario, conn):
         Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
         opcionesEmpresa = ["Ver trabajos",
                           "Crear publicaciones",
-                          "Mis publicaciones [falta imprimir bien los comentarios]",
+                          "Mis publicaciones",
                           "Agregar administrador",
                           "Dejar de ser administrador",
                           "Crear empresas",

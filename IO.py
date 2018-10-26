@@ -111,11 +111,13 @@ def PedirDescripcion(arg = "descripcion"):
     n_text = " "
     while len(n_text) != 0:
         n_text = input()
+        n_text = n_text.strip()
         texto += n_text + "\n"
     return texto
 
 def PedirUnaLinea(arg = ""):
     text = input(arg)
+    text = text.strip('\n')
     while text == "":
         Imprimir("Texto invalido, ingrese nuevamente.")
         text = input(arg)
@@ -151,51 +153,12 @@ def ImprimirComentarios(idPublicacion, conn):
     ids_comentariosPresentes = []
     for comentario in comentarios_query:
         ids_comentariosPresentes.append(comentario[0])
-    autor = comentario[2]
-    if autor == None:
-        autor = comentario[7]
-    result = "{:<4}> {:%d-%m-%Y} | {} dijo: {}".format(comentario[0], comentario[5], autor, comentario[4])
-    print(result)
-
-    """
-    comentarios = []
-    comentarios_de_comentarios = []
-    ids_comentariosPresentes = []
-    for comment in comentarios_query:
-        comentario = {"Comentario":[],"Comentarios":[]}
-        comentario["Comentario"] = comment
-        ids_comentariosPresentes.append(comment[0])
-        if comment[1] == None:
-            comentarios.append(comentario)
-        else:
-            comentarios_de_comentarios.append(comentario)
-    while len(comentarios_de_comentarios)>0:
-        for comment in comentarios:
-            id_comm = comment["Comentario"][0]
-            for i in range(len(comentarios_de_comentarios)):
-                com = comentarios_de_comentarios[i]
-                if id_comm == com["Comentario"][1]:
-                    comment["Comentarios"].append(com)
-                    comentarios_de_comentarios.pop(i)
-                    i -= 1
-    for comment in comentarios:
-        ImprimirComentario(comment)
-    """
+        autor = comentario[2]
+        if autor == None:
+            autor = comentario[7]
+        result = "{:<4}> {:%d-%m-%Y} | {} dijo: {}".format(comentario[0], comentario[5], autor, comentario[4])
+        print(result)
     return ids_comentariosPresentes
-
-"""
-def ImprimirComentario(comment, indent=0):
-    id = comment["Comentario"][0]
-    fecha = comment["Comentario"][5]
-    autor = comment["Comentario"][2]
-    if autor == None:
-        autor = comment["Comentario"][7]
-    texto = comment["Comentario"][4]
-    print ("{:<3}{:%d-%m-%Y}  ".format(id,fecha)+"\t"*indent+"|{} dijo: {}".format(autor, texto))
-    for sub_com in comment["Comentarios"]:
-        indent += 1
-        ImprimirComentario(sub_com, indent)
-"""
 
 def HayConexionBD(conn):
     if "closed: 0" in str(conn): # si esta conectado
