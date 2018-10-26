@@ -60,7 +60,7 @@ def MenuContactos(usuario, conn):
                  "\t(3) Solicitudes Pendientes\n"
                  "\t(4) Volver\n"
                  "\t(5) Salir")
-        opcion = ValidarOpcion(range(1, 5))
+        opcion = ValidarOpcion(range(1, 6))
         if opcion == 4:
             salir = True
         elif opcion == 1:
@@ -175,14 +175,14 @@ def AgregarContactos(usuario, conn):
     for user in usuariosNoAmigos:
         selector += 1
         Imprimir("({}) {}".format(selector, user[0]))
-    Imprimir("Seleccione a que usuario desea agregar")
+    Imprimir("Seleccione a que usuario desea agregar: ")
     opcion = ValidarOpcion(range(1,len(usuariosNoAmigos)+1))
     futuroAmigo = usuariosNoAmigos[opcion - 1][0]
     idSolicitud=SiguienteID("Solicitud", conn)
-    cur.execute("INSERT INTO Solicitud(id, correo_usuario_emisor, correo_usuario_receptor, estado, fecha)"
+    cur.execute("INSERT INTO Solicitud(id, correo_usuario_emisor, correo_usuario_receptor, estado, fecha) "
                 "VALUES ({}, '{}', '{}', '{}', '{}')".format(idSolicitud, usuario, futuroAmigo, "pendiente", date.today()))
-    cur.execute("INSERT INTO Notificacion(id, correo_usuario_notificado, id_solicitud, leida)"
-                "VALUES ({}, {}, '{}', {})".format(SiguienteID("Notificacion", conn),SiguienteID("Notificacion", conn, "id_solicitud"), futuroAmigo, False))
+    cur.execute("INSERT INTO Notificacion(id, correo_usuario_notificado, id_solicitud, leida) "
+                "VALUES ({}, '{}', {}, {})".format(SiguienteID("Notificacion", conn),futuroAmigo,SiguienteID("Notificacion", conn, "id_solicitud"),False))
     conn.commit()
     cur.close()
     return
@@ -199,7 +199,7 @@ def SolicitudesPendientes(usuario, conn):
         selector += 1
         Imprimir("({}) {}".format(selector, solicitud[1]))
 
-    opcion = ValidarOpcion(range(1,len(solicitudesPendientes)), "Seleccione su solicitud pendiente")
+    opcion = ValidarOpcion(range(1,len(solicitudesPendientes)+1), "Seleccione su solicitud pendiente: ")
     idSolicitud = solicitudesPendientes[opcion-1][0]
     Imprimir("Que desea hacer con la solicitud: \n"
              "(1) Aceptarla\n"
