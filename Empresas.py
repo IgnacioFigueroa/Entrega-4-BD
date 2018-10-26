@@ -246,9 +246,6 @@ def VerTrabajo1(idTrabajo, conn):
             VerTrabajos1(idEmpresa, conn)
         elif seleccion == 2:
             sys.exit()
-
-
-
     return
 
 
