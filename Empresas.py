@@ -5,7 +5,8 @@ import datetime
 NombresEmpresas = "SELECT e.nombre, e.id " \
                   "FROM administrador a, empresa e " \
                   "WHERE a.id_empresa = e.id " \
-                  "AND a.correo_usuario = '{}';"
+                  "AND a.correo_usuario = '{}' " \
+                  "AND a.activo = TRUE;"
 
 IdTrabajo = "SELECT id " \
             "FROM trabajo " \
@@ -59,7 +60,15 @@ getTrabajadores = "SELECT p.id, p.correo_usuario " \
                   "WHERE trabajado.id_trabajo = trabajo.id " \
                   "AND trabajado.id_perfil = p.id " \
                   "AND trabajo.id_empresa = {} " \
-                  "AND trabajado.fecha_termino > TO_DATE('{}', 'DD/MM/YYYY');"
+                  "AND (trabajado.fecha_termino > TO_DATE('{}', 'DD/MM/YYYY') " \
+                  "OR trabajado.fecha_termino IS NULL);"
+
+agregarAdmin = "INSERT INTO administrador (id, id_empresa, correo_usuario, Activo) " \
+               "VALUES ({}, {}, '{}', {});"
+
+obtenerAdministradores = "SELECT COUNT(*) c FROM administrador WHERE id_empresa = {} AND activo = TRUE;"
+
+dejarDeSerAdmin = "UPDATE administrador SET activo = FALSE WHERE correo_usuario = '{}'"
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
@@ -84,47 +93,51 @@ def MostrarMisEmpresas(usuario, conn):
     cur = conn.cursor()
     cur.execute(NombresEmpresas.format(usuario))
     empresas = cur.fetchall()
-    i = 1
-    for empresa in empresas:
-        Imprimir("({}): {}".format(i,empresa[0]))
-        i += 1
-    seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
-    idEmpresaSeleccionada = empresas[seleccion-1][1]
-    Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
-    opcionesEmpresa = ["Ver trabajos",
-                      "Crear publicaciones",
-                      "Mis publicaciones [falta imprimir bien los comentarios]",
-                      "Agregar administrador",
-                      "Dejar de ser administrador [nada todavia]",
-                      "Crear empresas [nada todavia]",
-                      "Eliminar empresas [nada todavia]",
-                      "Volver",
-                      "Salir"]
-    ImprimirOpciones(opcionesEmpresa)
-    cur.close()
-    seleccion = ValidarOpcion(range(1,len(opcionesEmpresa)+1))
-    if seleccion == 9:
-        sys.exit(0)
-    elif seleccion == 1:
-        VerTrabajos1(idEmpresaSeleccionada, conn)
-        MostrarMisEmpresas(usuario, conn)
-    elif seleccion == 2:
-        CrearPublicaciones(idEmpresaSeleccionada, conn)
-        MostrarMisEmpresas(usuario, conn)
-    elif seleccion == 3:
-        MisPublicaciones(idEmpresaSeleccionada, conn)
-        MostrarMisEmpresas(usuario, conn)
-    elif seleccion == 4:
-        AgregarAdministrador(idEmpresaSeleccionada, conn)
-        MostrarMisEmpresas(usuario, conn)
-    elif seleccion == 5:
-        DejarDeSerAdministrador(usuario, conn)
-    elif seleccion == 6:
-        CrearEmpresa(conn)
-    elif seleccion == 7:
-        EliminarEmpresa(idEmpresaSeleccionada, conn)
-    elif seleccion == 8:
-        MenuEmpresas(usuario, conn)
+    if len(empresas)>0:
+        i = 1
+        for empresa in empresas:
+            Imprimir("({}): {}".format(i,empresa[0]))
+            i += 1
+        seleccion = ValidarOpcion(range(1, len(empresas) + 1), "Seleccione una empresa: ")
+        idEmpresaSeleccionada = empresas[seleccion-1][1]
+        Imprimir("Empresa seleccionada: {}".format(empresas[seleccion-1][0]))
+        opcionesEmpresa = ["Ver trabajos.",
+                          "Crear publicaciones.",
+                          "Mis publicaciones. [falta imprimir bien los comentarios]",
+                          "Agregar administrador.",
+                          "Dejar de ser administrador.",
+                          "Crear empresas. [nada todavia]",
+                          "Eliminar empresas. [nada todavia]",
+                          "Volver",
+                          "Salir"]
+        ImprimirOpciones(opcionesEmpresa)
+        cur.close()
+        seleccion = ValidarOpcion(range(1,len(opcionesEmpresa)+1))
+        if seleccion == 9:
+            sys.exit(0)
+        elif seleccion == 1:
+            VerTrabajos1(idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
+        elif seleccion == 2:
+            CrearPublicaciones(idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
+        elif seleccion == 3:
+            MisPublicaciones(idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
+        elif seleccion == 4:
+            AgregarAdministrador(idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
+        elif seleccion == 5:
+            DejarDeSerAdministrador(usuario, idEmpresaSeleccionada, conn)
+            MostrarMisEmpresas(usuario, conn)
+        elif seleccion == 6:
+            CrearEmpresa(conn)
+        elif seleccion == 7:
+            EliminarEmpresa(idEmpresaSeleccionada, conn)
+        elif seleccion == 8:
+            MenuEmpresas(usuario, conn)
+    else:
+        Imprimir("No administras empresas")
     return
 
 
@@ -420,6 +433,7 @@ def VerPublicacion(idPublicacion, conn):
     opciones = ["Volver", "Salir"]
     ImprimirOpciones(opciones)
     seleccion = ValidarOpcion([1,2])
+    conn.commit()
     if seleccion == 1:
         cur.close()
         return
@@ -464,15 +478,46 @@ def AgregarAdministrador(idEmpresa, conn):
     cur.execute(getTrabajadores.format(idEmpresa,fecha))
     trabajadoresActivos = cur.fetchall()
     ImprimirTitulo("Seleccionar trabajador.")
-    Imprimir(tabulate(trabajadoresActivos,headers='always'))
+    Imprimir(tabulate(trabajadoresActivos, showindex=range(1,len(trabajadoresActivos)+1)))
+    i = len(trabajadoresActivos)+1
+    if len(trabajadoresActivos)<1:
+        Imprimir("No hay trabajadores. :(")
+    Imprimir("{} Volver.\n"
+             "{} Salir.".format(i,i+1))
+    seleccion = ValidarOpcion(range(1, i+3))
+    if seleccion == i:
+        return
+    elif seleccion == i+1:
+        conn.close()
+        sys.exit()
+    id = SiguienteID("administrador", conn)
+    correo_usuario = trabajadoresActivos[seleccion-1][1]
+    Activo = True
+    cur.execute(agregarAdmin.format(id, idEmpresa, correo_usuario, Activo))
+    Imprimir("Administrador agregado.")
+    conn.commit()
+    cur.close()
     return
 
 
-def DejarDeSerAdministrador(correoUsuario, conn):
+def DejarDeSerAdministrador(correoUsuario, IdEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute(obtenerAdministradores.format(IdEmpresa))
+    cantidadAdministradores = cur.fetchall()
+    cantidadAdministradores = cantidadAdministradores[0][0]
+    if cantidadAdministradores<2:
+        Imprimir("Irte no puedes, el ultimo jedi (administrador) eres... .")
+    else:
+        cur.execute(dejarDeSerAdmin.format(correoUsuario))
+        Imprimir("Cobarde... Ya no eres administrador")
+        conn.commit()
+    cur.close()
+    conn.close()
     return
 
 
 def CrearEmpresa(conn):
+
     return
 
 
