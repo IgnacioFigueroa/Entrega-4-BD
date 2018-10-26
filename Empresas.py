@@ -73,13 +73,20 @@ dejarDeSerAdmin = "UPDATE administrador SET activo = FALSE WHERE correo_usuario 
 crearEmpresa = "INSERT INTO empresa (id, nombre, fecha_creacion, pais, rubro, descripcion) " \
                "VALUES ({}, '{}', TO_DATE('{}', 'DD/MM/YYYY'), '{}', '{}', '{}')"
 
+eliminarEmpresa = "DELETE FROM empresa WHERE id = {};"
+
+empresasQueOfrecenTrabajos = "SELECT e.id, e.nombre, COUNT(*) trabajosOfrecidos FROM empresa e, trabajo t WHERE e.id = t.id_empresa " \
+                             "AND t.postulacion_abierta = TRUE " \
+                             "GROUP BY e.id, e.nombre " \
+                             "ORDER BY e.id "
+
 
 # Recibe el correo_usuario en usuario
 def MenuEmpresas(usuario, conn):
     ImprimirTitulo("EMPRESAS")
     #seleccionar ver mis empresas o ver otros trabajos
     opciones = ["Empresas que soy administrador",
-               "Ver trabajos [nada todavia]",
+               "Ver trabajos",
                "Salir"]
     ImprimirOpciones(opciones)
     seleccion = ValidarOpcion(range(1,len(opciones)+1))
@@ -558,14 +565,98 @@ def CrearEmpresa(usuario, conn):
 
 
 def EliminarEmpresa(idEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute("SELECT nombre FROM empresa WHERE id = {}".format(id))
+    nombreEmpresa = cur.fetchall()
+    nombreEmpresa = nombreEmpresa[0][0]
+    ImprimirTitulo("Eliminar empresa")
+    Imprimir("Esta seguro que desea eliminar la empresa '{}' ?".format(nombreEmpresa))
+    ImprimirOpciones(["Si", "No"])
+    seleccion = ValidarOpcion(range(1,3))
+    if seleccion == 1:
+        cur.execute(eliminarEmpresa.format(idEmpresa))
+        conn.commit()
+    else:
+        Imprimir("No se eliminara.")
+    cur.close()
     return
 
 
 def VerTrabajos2(conn):
+    cur = conn.cursor()
+    ImprimirTitulo("Ver Trabajos")
+    cur.execute(empresasQueOfrecenTrabajos)
+    trabajosDisponibles = cur.fetchall()
+    cantidad_ofertas = len(trabajosDisponibles)
+    Imprimir(tabulate(trabajosDisponibles, headers=["Id empresa", "Nombre empresa", "Trabajos ofrecidos"],showindex=range(1,cantidad_ofertas+1)))
+    Imprimir("{} Volver\n{} Salir".format(cantidad_ofertas+1, cantidad_ofertas+2))
+    seleccion = ValidarOpcion(range(1, cantidad_ofertas+3))
+    if seleccion == cantidad_ofertas+1:
+        return
+    elif seleccion == cantidad_ofertas+2:
+        cur.close()
+        conn.close()
+        sys.exit()
+    else:
+        idEmpresaSeleccionada = trabajosDisponibles[seleccion-1][0]
+        opciones = ["Ver empresa",
+                    "Volver",
+                    "Salir"]
+        ImprimirOpciones(opciones)
+        seleccion = ValidarOpcion(range(1,4))
+        if seleccion == 1:
+            VerEmpresa(idEmpresaSeleccionada, conn)
+        elif seleccion == 2:
+            cur.close()
+            VerTrabajos2(conn)
+        elif seleccion == 3:
+            cur.close()
+            conn.close()
+            sys.exit()
     return
 
 
+ultimasPublicaciones = "SELECT texto, foto, link, fecha FROM publicacion WHERE id_empresa = {} " \
+                       "AND estado = 'publica' " \
+                       "ORDER BY fecha DESC LIMIT {};"
+ultimosComentarios = "SELECT c.contenido, c.fecha FROM comentario c, publicacion p WHERE c.empresa_comentadora = {} " \
+                     "AND c.id_publicacion = p.id AND p.estado = 'publica' " \
+                     "ORDER BY c.fecha DESC LIMIT {};"
+trabajosOfrecidos = "SELECT id, descripcion, fecha_creacion FROM trabajo WHERE id_empresa = {} " \
+                    "AND postulacion_abierta = TRUE;"
+
 def VerEmpresa(idEmpresa, conn):
+    cur = conn.cursor()
+    cur.execute(ultimasPublicaciones.format(idEmpresa,5))
+    UltimasPublicaciones = cur.fetchall()
+    cur.execute(ultimosComentarios.format(idEmpresa,2))
+    UltimosComentarios = cur.fetchall()
+    cur.execute(trabajosOfrecidos.format(idEmpresa))
+    TrabajosOfrecidos = cur.fetchall()
+    ImprimirTitulo("Ultimas publicaciones:")
+    if(len(UltimasPublicaciones)<1):
+        Imprimir("No hay publicaciones")
+    else:
+        Imprimir(tabulate(UltimasPublicaciones, headers=["Contenido", "Foto", "Link", "Fecha publicacion"]))
+    ImprimirTitulo("Ultimos comentarios:")
+    if len(UltimosComentarios)<1:
+        Imprimir("No hay comentarios")
+    else:
+        Imprimir(tabulate(UltimosComentarios, headers=["id", "Descripcion", "Fecha creacion"]))
+    ImprimirTitulo("Trabajos ofrecidos:")
+    int_trabajosOfrecidos = len(trabajosOfrecidos)
+    Imprimir(tabulate(TrabajosOfrecidos, showindex=range(1, int_trabajosOfrecidos+1), headers=["id", "Descripcion", "Fecha creacion"]))
+    Imprimir("{} Volver.\n{} Salir.".format(int_trabajosOfrecidos+1, int_trabajosOfrecidos+2))
+    seleccion = ValidarOpcion(range(1, int_trabajosOfrecidos+3))
+    if seleccion == int_trabajosOfrecidos+1:
+        return
+    elif seleccion == int_trabajosOfrecidos+2:
+        cur.close()
+        conn.close()
+        sys.exit()
+    else:
+        idTrabajoSeleccionado = trabajosOfrecidos[seleccion-1][0]
+        VerTrabajo2(idTrabajoSeleccionado, conn)
     return
 
 
