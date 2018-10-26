@@ -104,6 +104,8 @@ def VerHabilidades(usuario, conn):
     no_terminar = True
     while no_terminar:
         cur = conn.cursor()
+        cur.execute("select id from perfil where correo_usuario = '{}'".format(usuario))
+        id_perfil = cur.fetchone()[0]
         ImprimirTitulo("ver habilidades")
         cur.execute(VER_HABILIDADES.format(usuario))
         respuesta_inicio = cur.fetchall()
@@ -153,8 +155,25 @@ def VerHabilidades(usuario, conn):
                      "\t(2) Crear una habilidad nueva\n")
             seleccionarOcrear = ValidarOpcion(range(1,3))
             if seleccionarOcrear == 1:
-                    habilidadAagregar = ValidarOpcion(idsNoDelUsuario,
-                    "Seleccione la habilidad que quiere agregar a su perfil: ")
+                habilidadAagregar = ValidarOpcion(idsNoDelUsuario,
+                "Seleccione la habilidad que quiere agregar a su perfil: ")
+                cur.execute("insert into perfil_habilidad(id, id_perfil, id_habilidad) "
+                            "values({}, {}, {})".format(SiguienteID("perfil_habilidad", conn),
+                                                        id_perfil, habilidadAagregar))
+                conn.commit()
+            elif seleccionarOcrear == 2:
+                nombre_nuevo = input("Ingrese el nombre de la nueva habilidad: ")
+                while len(nombre_nuevo) == 0 or len(nombre_nuevo) > 100:
+                    nombre_nuevo = input("Error, largo del nombre invalido, ingreselo nuevamente:")
+                nuevoIDhabilidad = SiguienteID("habilidad", conn)
+                cur.execute("insert into habilidad(id, nombre) "
+                            "values({}, '{}')".format(nuevoIDhabilidad, nombre_nuevo))
+                conn.commit()
+                cur.execute("insert into perfil_habilidad(id, id_perfil, id_habilidad) "
+                            "values({}, {}, {})".format(SiguienteID("perfil_habilidad", conn),
+                                                        id_perfil, nuevoIDhabilidad))
+                conn.commit()
+
 
         cur.close()
 
