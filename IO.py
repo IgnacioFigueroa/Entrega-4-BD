@@ -1,4 +1,65 @@
 import sys
+from tabulate import tabulate
+VER_PERFIL = "SELECT * FROM Perfil WHERE correo_usuario = '{}' "
+VER_ESTUDIOS = "SELECT em.nombre, e.grado_academico, e.descripcion, e.fecha_inicio, e.fecha_termino " \
+               "FROM Estudio e JOIN Empresa em ON e.id_empresa = em.id " \
+               "WHERE correo_usuario = '{}'"
+VER_TRABAJOS = "SELECT e.nombre, t.descripcion, tr.fecha_inicio, tr.fecha_termino" \
+               " FROM " \
+               "Trabajo t JOIN Empresa e ON t.id_empresa = e.id " \
+               "JOIN Trabajado tr ON t.id = tr.id_trabajo " \
+               "JOIN Perfil p ON p.id = tr.id_perfil" \
+               " WHERE p.correo_usuario = '{}'"
+VER_HABILIDADES = "SELECT h.nombre, COUNT(v.id_perfil_habilidad) " \
+                  "FROM Habilidad h JOIN Perfil_habilidad pf ON h.id = pf.id_habilidad " \
+                  "JOIN Perfil p ON p.id=pf.id_perfil " \
+                  "LEFT JOIN Validacion v ON pf.id = v.id_perfil_habilidad " \
+                  "WHERE p.correo_usuario = '{}' " \
+                  "GROUP BY h.nombre"
+def VerPerfilHastaHabilidad(usuario, conn):
+    cur = conn.cursor()
+    cur.execute(VER_PERFIL.format(usuario))
+    perfilPorVer = cur.fetchall()[0]
+    atributosPerfil = ["Correo", "Nombre", "Apellido", "Fecha de Nacimiento", "Pais", "Sexo", "Descripcion"]
+    tablaPerfil = list()
+    for i in range(len(atributosPerfil)):
+        tablaPerfil.append([atributosPerfil[i], perfilPorVer[i + 1]])
+    Imprimir("PERFIL")
+    Imprimir(tabulate(tablaPerfil))
+
+    cur.execute(VER_ESTUDIOS.format(usuario))
+    estudios = cur.fetchall()
+    tablaEstudios = list()
+    atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
+    Imprimir("ESTUDIOS")
+    for estudio in estudios:
+        for i in range(len(estudio)):
+            tablaEstudios.append([atributosEstudios[i], estudio[i]])
+        Imprimir(tabulate(tablaEstudios))
+        tablaEstudios = list()
+    cur.execute(VER_TRABAJOS.format(usuario))
+    trabajos = cur.fetchall()
+    tablaTrabajos = list()
+    atributosTrabajo = ["Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
+    Imprimir("TRABAJOS")
+    for trabajo in trabajos:
+        for i in range(len(trabajo)):
+            tablaTrabajos.append([atributosTrabajo[i], trabajo[i]])
+        Imprimir(tabulate(tablaTrabajos))
+        tablaTrabajos = list()
+
+    cur.execute(VER_HABILIDADES.format(usuario))
+    habilidades = cur.fetchall()
+    tablaHabilidades = list()
+    atributosHabilidades = ["Habilidad", "Cantidad de validaciones"]
+    Imprimir("HABILIDADES Y SUS VALIDACIONES")
+    for habilidad in habilidades:
+        for i in range(len(habilidad)):
+            tablaHabilidades.append([atributosHabilidades[i], habilidad[i]])
+        Imprimir(tabulate(tablaHabilidades))
+        tablaHabilidades = list()
+
+    return
 
 def Imprimir(mensaje):
     print(mensaje)

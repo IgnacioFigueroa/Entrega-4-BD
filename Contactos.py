@@ -3,7 +3,7 @@ from tabulate import tabulate
 from datetime import date
 import psycopg2
 
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+
 
 # ----------QUERYS----------
 CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
@@ -87,46 +87,7 @@ def VerContactos(usuario, conn):
         Imprimir("Selecciona el usuario del cual quieres ver su perfil\n")
         opcion = ValidarOpcion(range(1, selector + 1))
         amigoPorVer = usuariosAmigos[opcion - 1][0]
-        cur.execute(VER_PERFIL.format(amigoPorVer))
-        perfilPorVer = cur.fetchall()[0]
-        atributosPerfil = ["Correo", "Nombre", "Apellido", "Fecha de Nacimiento", "Pais", "Sexo", "Descripcion"]
-        tablaPerfil = list()
-        for i in range(len(atributosPerfil)):
-            tablaPerfil.append([atributosPerfil[i], perfilPorVer[i + 1]])
-        Imprimir("PERFIL")
-        Imprimir(tabulate(tablaPerfil))
-
-        cur.execute(VER_ESTUDIOS.format(amigoPorVer))
-        estudios = cur.fetchall()
-        tablaEstudios = list()
-        atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
-        Imprimir("ESTUDIOS")
-        for estudio in estudios:
-            for i in range(len(estudio)):
-                tablaEstudios.append([atributosEstudios[i], estudio[i]])
-            Imprimir(tabulate(tablaEstudios))
-            tablaEstudios = list()
-        cur.execute(VER_TRABAJOS.format(amigoPorVer))
-        trabajos = cur.fetchall()
-        tablaTrabajos = list()
-        atributosTrabajo = ["Empresa", "Descripcion del trabajo", "Fecha inicio", "Fecha termino"]
-        Imprimir("TRABAJOS")
-        for trabajo in trabajos:
-            for i in range(len(trabajo)):
-                tablaTrabajos.append([atributosTrabajo[i], trabajo[i]])
-            Imprimir(tabulate(tablaTrabajos))
-            tablaTrabajos = list()
-
-        cur.execute(VER_HABILIDADES.format(amigoPorVer))
-        habilidades = cur.fetchall()
-        tablaHabilidades = list()
-        atributosHabilidades = ["Habilidad", "Cantidad de validaciones"]
-        Imprimir("HABILIDADES Y SUS VALIDACIONES")
-        for habilidad in habilidades:
-            for i in range(len(habilidad)):
-                tablaHabilidades.append([atributosHabilidades[i], habilidad[i]])
-            Imprimir(tabulate(tablaHabilidades))
-            tablaHabilidades = list()
+        VerPerfilHastaHabilidad(amigoPorVer, conn)
 
         cur.execute(VER_ULTIMAS2_PUBLICACIONES.format(amigoPorVer))
         publicaciones = cur.fetchall()
@@ -169,6 +130,7 @@ def VerContactos(usuario, conn):
 
         conn.commit()
         ImprimirPositivo("Usuario Eliminado")
+        cur.close()
     return
 
 
@@ -197,6 +159,7 @@ def ValidarHabilidad(usuario, amigo, conn):
     ImprimirPositivo("Habilidad Validada")
     ImprimirPositivo("Notificacion Enviada")
     conn.commit()
+    cur.close()
     return
 
 
@@ -215,8 +178,9 @@ def AgregarContactos(usuario, conn):
     cur.execute("INSERT INTO Solicitud(id, correo_usuario_emisor, correo_usuario_receptor, estado, fecha)"
                 "VALUES ({}, '{}', '{}', '{}', '{}')".format(idSolicitud, usuario, futuroAmigo, "pendiente", date.today()))
     cur.execute("INSERT INTO Notificacion(id, correo_usuario_notificado, id_solicitud, leida)"
-                "VALUES ({}, '{}', {}, {}, {})".format(SiguienteID("Notificacion", conn, "id_solicitud"), futuroAmigo, False))
+                "VALUES ({}, '{}', {}, {})".format(SiguienteID("Notificacion", conn),SiguienteID("Notificacion", conn, "id_solicitud"), futuroAmigo, False))
     conn.commit()
+    cur.close()
     return
 
 def SolicitudesPendientes(usuario, conn):
@@ -245,6 +209,10 @@ def SolicitudesPendientes(usuario, conn):
         cur.execute("UPDATE Solicitud SET estado = 'rechazada' WHERE id = {}".format(idSolicitud))
         ImprimirPositivo("Solicitud rechazada")
     else:
+        cur.close()
+        conn.commit()
         return
+    cur.close()
+    conn.commit()
     return
 
