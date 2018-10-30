@@ -13,5 +13,23 @@ def MenuEstadisticas(usuario, conn):
 
 def CalidadContactos(usuario, conn):
     return
+
+from matplotlib import pyplot
 def CantidadComentarios(usuario, conn):
+    cur = conn.cursor()
+    cur.execute("select count(*) cantidad_comentarios, extract(month from c.fecha) "
+                "from comentario c left join publicacion p on p.id = c.id_publicacion "
+                "where c.correo_usuario_comentador = '{}' or p.correo_usuario = '{}' "
+                "group by extract(month from c.fecha)".format(usuario, usuario))
+    resultado = cur.fetchall()
+    cantidades = [0,0,0,0,0,0,0,0,0,0,0,0]
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril',
+             'Mayo', 'Junio', 'Julio', 'Agosto',
+             'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    for tupla in resultado:
+        cantidades[int(tupla[1])-1] = tupla[0]
+
+    pyplot.plot(meses, cantidades)
+    pyplot.show()
     return
+
