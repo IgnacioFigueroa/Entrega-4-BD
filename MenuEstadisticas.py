@@ -17,9 +17,9 @@ CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
 VER_CONTACTOS_ESTUDIO = "SELECT cu.amigo, e.grado_academico FROM {} cu JOIN Estudio e ON e.correo_usuario = cu.correo WHERE cu.correo = '{}' "
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 def MenuEstadisticas(usuario, conn):
-    Imprimir("Que desea hacer?"
-             "\t (1) Ver calidad de contactos"
-             "\t (2) Ver cantidad de comentarios")
+    Imprimir("Que desea hacer?\n"
+             "\t (1) Ver calidad de contactos\n"
+             "\t (2) Ver cantidad de comentarios\n")
     opcion = ValidarOpcion(range(1,3))
     if opcion == 1:
         CalidadContactos(usuario, conn)
@@ -41,6 +41,25 @@ def CalidadContactos(usuario, conn):
     pyplot.hist(lista)
     pyplot.show()
     return
+
+from matplotlib import pyplot
 def CantidadComentarios(usuario, conn):
+    cur = conn.cursor()
+    cur.execute("select count(*) cantidad_comentarios, extract(month from c.fecha) "
+                "from comentario c left join publicacion p on p.id = c.id_publicacion "
+                "where c.correo_usuario_comentador = '{}' or p.correo_usuario = '{}' "
+                "group by extract(month from c.fecha)".format(usuario, usuario))
+    resultado = cur.fetchall()
+    cantidades = [0,0,0,0,0,0,0,0,0,0,0,0]
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril',
+             'Mayo', 'Junio', 'Julio', 'Agosto',
+             'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    for tupla in resultado:
+        cantidades[int(tupla[1])-1] = tupla[0]
+
+    pyplot.plot(meses, cantidades)
+    pyplot.xlabel("Meses")
+    pyplot.ylabel("Cantidad comentarios")
+    pyplot.show()
     return
 
