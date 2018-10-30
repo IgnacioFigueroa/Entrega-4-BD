@@ -35,9 +35,6 @@ def CalidadContactos(usuario, conn):
     lista = []
     for correo, grado in rows:
         lista.append(grado)
-    print(rows)
-    cols = []
-    vals = []
     pyplot.hist(lista)
     pyplot.show()
     return
