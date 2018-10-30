@@ -1,8 +1,8 @@
 from IO import *
 def MenuEstadisticas(usuario, conn):
-    Imprimir("Que desea hacer?"
-             "\t (1) Ver calidad de contactos"
-             "\t (2) Ver cantidad de comentarios")
+    Imprimir("Que desea hacer?\n"
+             "\t (1) Ver calidad de contactos\n"
+             "\t (2) Ver cantidad de comentarios\n")
     opcion = ValidarOpcion(range(1,3))
     if opcion == 1:
         CalidadContactos(usuario, conn)
@@ -30,6 +30,8 @@ def CantidadComentarios(usuario, conn):
         cantidades[int(tupla[1])-1] = tupla[0]
 
     pyplot.plot(meses, cantidades)
+    pyplot.xlabel("Meses")
+    pyplot.ylabel("Cantidad comentarios")
     pyplot.show()
     return
 

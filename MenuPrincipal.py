@@ -35,9 +35,9 @@ def MenuPrincipal(usuario, conn):
                  "\t(4) Contactos\n"
                  "\t(5) Empresas\n"
                  "\t(6) Cerrar Sesion\n"
-                 "\t(7) Ver Estadisticas"
+                 "\t(7) Ver Estadisticas\n"
                  "\t(8) Salir\n")
-        opcion = ValidarOpcion(range(1, 8))
+        opcion = ValidarOpcion(range(1, 9))
         if opcion == 1:
             MenuVerPerfil(usuario, conn)
         elif opcion == 2:
