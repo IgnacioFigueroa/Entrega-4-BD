@@ -80,6 +80,8 @@ def MisPublicaciones(usuario, conn):
     elif seleccion == opciones[-2]:
         return
     else:
+        id_pub = seleccion
+        ImprimirComentarios(id_pub, conn)
         opciones = ["Comentar",
                     "Eliminar Comentario",
                     "Editar Publicacion",
@@ -89,16 +91,16 @@ def MisPublicaciones(usuario, conn):
         ImprimirOpciones(opciones)
         seleccion = ValidarOpcion(range(1,len(opciones)+1))
         if seleccion == 1:
-            Comentar(conn)
+            Comentar(id_pub, conn)
 
         elif seleccion == 2:
-            pass
+            EliminarComentario(id_pub, conn)
 
         elif seleccion == 3:
-            pass
+            EditarPublicacion(id_pub, conn)
 
         elif seleccion == 4:
-            pass
+            EliminarPublicacion(id_pub, conn)
 
         elif seleccion == 5:
             return
@@ -107,6 +109,19 @@ def MisPublicaciones(usuario, conn):
             cur.close()
             conn.close()
             sys.exit()
+
+def Comentar(id_publicacion, conn):
+    pass
+
+def EliminarComentario(id_publicacion, conn):
+    pass
+
+def EditarPublicacion(id_publicacion, conn):
+    pass
+
+def EliminarPublicacion(id_publicacion, conn):
+    pass
+
 
 def OtrasPublicaciones(conn):
     pass
