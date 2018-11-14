@@ -1,0 +1,11 @@
+CREATE FUNCTION fecha_trabajo_valida()
+RETURNS trigger AS $$
+from datetime import date
+if TD['new']['fecha_inicio'] < str(date.today()):
+	return "SKIP"
+else:
+	return "OK"
+$$ LANGUAGE plpythonu;
+
+CREATE TRIGGER trigger_fecha_trabajo_valida BEFORE INSERT OR UPDATE
+ON Trabajado FOR EACH ROW EXECUTE PROCEDURE fecha_trabajo_valida();
