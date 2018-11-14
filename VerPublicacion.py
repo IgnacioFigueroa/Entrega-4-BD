@@ -108,5 +108,10 @@ def MisPublicaciones(usuario, conn):
             conn.close()
             sys.exit()
 
+def Comentar(conn):
+    pass
+
+
+
 def OtrasPublicaciones(conn):
     pass
