@@ -6,18 +6,15 @@ CREATE FUNCTION unUsuarioPorTrabajo_trigger()
 RETURNS trigger
 AS $$
 	if TD['new']['estado'] == "Rechazado":
-		return "OK"
-	trabajados = plpy.execute("
-		SELECT fecha_termino FROM trabajado WHERE id_trabajo = {};
-		".format(TD['new']['id_trabajo']))
+	return "OK"
+	trabajados = plpy.execute("SELECT * FROM postulacion WHERE id_trabajo = {};".format(TD['new']['id_trabajo']))
 	
-	if len(trabajados)>0:
-		return "SKIP"
+	for trabajo in trabajados:
+		if trabajo['estado'] == "Aceptado":
+			return "SKIP"
 	else:
 		return "OK"
 $$ LANGUAGE plpythonu;
-
-
 
 /* 
 Forma 2:
