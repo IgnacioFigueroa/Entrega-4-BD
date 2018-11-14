@@ -15,16 +15,31 @@ CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
                     'ORDER BY todos.correo DESC)'
 
 VER_CONTACTOS_ESTUDIO = "SELECT cu.amigo, e.grado_academico FROM {} cu JOIN Estudio e ON e.correo_usuario = cu.correo WHERE cu.correo = '{}' "
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+
+COOMENTARIOS_POR_MES = "select count(*) cantidad_comentarios, extract(month from c.fecha) "\
+                "from comentario c left join publicacion p on p.id = c.id_publicacion "\
+                "where c.correo_usuario_comentador = '{}' or p.correo_usuario = '{}' "\
+                "group by extract(month from c.fecha)"
+
+TRABAJOS_DISPONIBLES_RUBRO = "select e.rubro, count(*) cantidad_trabajos from Empresa e, Trabajo t "\
+                "where t.id_empresa = e.id and t.postulacion_abierta is True group by e.rubro"
+
+#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+
+#u = "Mono1Apellido1@gmail.com"
+
 def MenuEstadisticas(usuario, conn):
     Imprimir("Que desea hacer?\n"
              "\t (1) Ver calidad de contactos\n"
-             "\t (2) Ver cantidad de comentarios\n")
-    opcion = ValidarOpcion(range(1,3))
+             "\t (2) Ver cantidad de comentarios\n"
+             "\t (3) Ver trabajos\n")
+    opcion = ValidarOpcion(range(1,4))
     if opcion == 1:
         CalidadContactos(usuario, conn)
     elif opcion == 2:
         CantidadComentarios(usuario, conn)
+    elif opcion == 3:
+        Trabajos(usuario, conn)
     return
 
 
@@ -39,13 +54,9 @@ def CalidadContactos(usuario, conn):
     pyplot.show()
     return
 
-from matplotlib import pyplot
 def CantidadComentarios(usuario, conn):
     cur = conn.cursor()
-    cur.execute("select count(*) cantidad_comentarios, extract(month from c.fecha) "
-                "from comentario c left join publicacion p on p.id = c.id_publicacion "
-                "where c.correo_usuario_comentador = '{}' or p.correo_usuario = '{}' "
-                "group by extract(month from c.fecha)".format(usuario, usuario))
+    cur.execute(COOMENTARIOS_POR_MES.format(usuario, usuario))
     resultado = cur.fetchall()
     cantidades = [0,0,0,0,0,0,0,0,0,0,0,0]
     meses = ['Enero', 'Febrero', 'Marzo', 'Abril',
@@ -60,3 +71,14 @@ def CantidadComentarios(usuario, conn):
     pyplot.show()
     return
 
+def Trabajos(usuario, conn):
+    cur = conn.cursor()
+    cur.execute(TRABAJOS_DISPONIBLES_RUBRO)
+    rubros = cur.fetchall()
+    lista_rubros = []
+    lista_cantidades = []
+    for r in rubros:
+        lista_rubros.append(r[0])
+        lista_cantidades.append(r[1])
+    pyplot.bar(lista_rubros, lista_cantidades)
+    pyplot.show()
