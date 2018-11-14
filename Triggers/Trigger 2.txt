@@ -34,9 +34,9 @@ AS $$
 		".format(TD['new']['id_trabajo'])
 	
 	for trabajado in trabajados:
-		if TD['new'][
-		
-	
+		if TD['new']['fecha_inicio'] < trabajado['fecha_termino']:
+			return "SKIP"
+	return "OK"
 $$ LANGUAGE plpythonu;
 
 CREATE TRIGGER UnUsuarioPorTrabajo BEFORE UPDATE 
