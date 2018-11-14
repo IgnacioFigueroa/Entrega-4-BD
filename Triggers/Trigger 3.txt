@@ -1,0 +1,14 @@
+CREATE FUNCTION verificar_validacion()
+RETURNS trigger AS $$
+validaciones_realizadas = plpy.execute(" SELECT v.correo_usuario_calificador, ph.id_perfil FROM validacion v JOIN perfil_habilidad ph ON v.id_perfil_habilidad = ph.id WHERE v.correo_usuario_calificador = '{}'".format(TD['new']['correo_usuario_calificador']))
+
+pertenece = plpy.execute(" SELECT id_perfil FROM perfil_habilidad WHERE id = '{}'".format(TD['new']['id_perfil_habilidad']))
+
+for tupla in validaciones_realizadas:
+	if tupla['id_perfil'] == pertenece[0]['id_perfil']:
+		return 'SKIP'
+return 'OK'
+$$ LANGUAGE plpythonu;
+
+CREATE TRIGGER verificador_validacion BEFORE INSERT OR UPDATE 
+ON Validacion FOR EACH ROW EXECUTE PROCEDURE verificar_validacion();
