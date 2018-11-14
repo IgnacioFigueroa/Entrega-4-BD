@@ -1,0 +1,43 @@
+/*
+Forma 1:
+Solo se puede tener a una persona por trabajo.
+*/
+CREATE FUNCTION unUsuarioPorTrabajo_trigger()
+RETURNS trigger
+AS $$
+	if TD['new']['estado'] == "Rechazado":
+		return "OK"
+	trabajados = plpy.execute("
+		SELECT fecha_termino FROM trabajado WHERE id_trabajo = {};
+		".format(TD['new']['id_trabajo'])
+	
+	if len(trabajados)>0:
+		return "SKIP"
+	else:
+		return "OK"
+$$ LANGUAGE plpythonu;
+
+
+
+/* 
+Forma 2:
+Suponiendo que se puede tener a una sola persona un trabajo, pero
+dos personas si pueden trabajar mientras esten en fechas distintas
+*/
+CREATE FUNCTION unUsuarioPorTrabajo_trigger()
+RETURNS trigger
+AS $$
+	if TD['new']['estado'] == "Rechazado":
+		return "OK"
+	trabajados = plpy.execute("
+		SELECT fecha_termino FROM trabajado WHERE id_trabajo = {};
+		".format(TD['new']['id_trabajo'])
+	
+	for trabajado in trabajados:
+		if TD['new'][
+		
+	
+$$ LANGUAGE plpythonu;
+
+CREATE TRIGGER UnUsuarioPorTrabajo BEFORE UPDATE 
+ON postulacion FOR EACH ROW EXECUTE PROCEDURE unUsuarioPorTrabajo_trigger();
