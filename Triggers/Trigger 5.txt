@@ -1,0 +1,13 @@
+CREATE FUNCTION noRepetirContrasena_trigger()
+RETURNS trigger
+AS $$
+	contrasenas_anteriores = plpy.execute("SELECT * FROM contrasena_antigua WHERE correo_usuario like '{}';".format(TD['new']['correo_usuario']))
+	for contrasena_antigua in contrasenas_anteriores:
+		if TD['new']['contrasena'] == contrasena_antigua['contrasena']:
+			return "SKIP"
+	return "OK"
+$$ LANGUAGE plpythonu;
+
+CREATE TRIGGER noRepetirContrasena BEFORE INSERT OR UPDATE 
+ON contrasena_antigua FOR EACH ROW 
+EXECUTE PROCEDURE noRepetirContrasena_trigger();
