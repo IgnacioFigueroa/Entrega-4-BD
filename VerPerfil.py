@@ -333,7 +333,7 @@ def VerEducacion(usuario, conn):
         instituciones = cur.fetchall()
         for i in range(len(instituciones)):
             Imprimir("({}) {}".format(i+1, instituciones[i][0]))
-        opcion1 = ValidarOpcion(range(1,len(instituciones)), "Que institucion desea seleccionar")
+        opcion1 = ValidarOpcion(range(1,len(instituciones)+1), "Que institucion desea seleccionar: ")
         institucion = instituciones[opcion1-1][0]
         cur.execute("SELECT id FROM Empresa WHERE nombre = '{}'".format(institucion))
         row = cur.fetchall()
@@ -346,9 +346,10 @@ def VerEducacion(usuario, conn):
             Imprimir("({}) {}".format(i, niveles[i-1]))
         opcion1= ValidarOpcion(range(1,5))
         nivel= niveles[opcion-1]
-        descripcion = input("Ingrese una descripcion de su estudio")
-        cur.execute("INSERT INTO Educacion(id, correo_usuario, id_empresa, grado_academico, decripcion, fecha_inicio, fecha_termino)"
-                    " VALUES ({}, '{}', {}, '{}', '{}', '{}', '{}'".format(SiguienteID("Educacion",conn), usuario, id, nivel, descripcion, fechaInicio, fechaTermino))
+        descripcion = input("Ingrese una descripcion de su estudio: ")
+        cur.execute("INSERT INTO Estudio(id, correo_usuario, id_empresa, grado_academico, descripcion, fecha_inicio, fecha_termino)"
+                    " VALUES ({}, '{}', {}, '{}', '{}', '{}', '{}')".format(SiguienteID("Estudio",conn), usuario, id, nivel, descripcion, fechaInicio, fechaTermino))
+        conn.commit()
 
 
 
