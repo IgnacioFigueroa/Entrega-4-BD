@@ -81,6 +81,7 @@ def MisPublicaciones(usuario, conn):
         return
     else:
         id_pub = seleccion
+        ImprimirComentarios(id_pub, conn)
         opciones = ["Comentar",
                     "Eliminar Comentario",
                     "Editar Publicacion",
@@ -93,13 +94,13 @@ def MisPublicaciones(usuario, conn):
             Comentar(id_pub, conn)
 
         elif seleccion == 2:
-            pass
+            EliminarComentario(id_pub, conn)
 
         elif seleccion == 3:
-            pass
+            EditarPublicacion(id_pub, conn)
 
         elif seleccion == 4:
-            pass
+            EliminarPublicacion(id_pub, conn)
 
         elif seleccion == 5:
             return
@@ -112,6 +113,14 @@ def MisPublicaciones(usuario, conn):
 def Comentar(id_publicacion, conn):
     pass
 
+def EliminarComentario(id_publicacion, conn):
+    pass
+
+def EditarPublicacion(id_publicacion, conn):
+    pass
+
+def EliminarPublicacion(id_publicacion, conn):
+    pass
 
 
 def OtrasPublicaciones(conn):
