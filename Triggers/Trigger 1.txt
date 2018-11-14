@@ -1,0 +1,17 @@
+CREATE FUNCTION sin_admin()
+RETURNS trigger AS $$
+st = plpy.execute("SELECT * FROM Administrador WHERE id_empresa = {}".format(TD['old']['id_empresa']))
+admins_activos = 0
+if TD['old']['activo'] == False:
+	return 'OK'
+for tupla in st:
+	if tupla['activo'] == True:
+		admins_activos+=1
+if admins_activos>=2:
+	return 'OK'
+else:
+	return 'SKIP'
+$$ LANGUAGE plpythonu;
+
+CREATE TRIGGER verificador_admins BEFORE DELETE or UPDATE
+ON administrador FOR EACH ROW EXECUTE PROCEDURE sin_admin();
