@@ -32,15 +32,16 @@ VER_HABILIDADES = "SELECT h.nombre, COUNT(v.id_perfil_habilidad) " \
                   "WHERE p.correo_usuario = '{}' " \
                   "GROUP BY h.id"
 
-VER_HABILIDADES2 = "SELECT p.correo_usuario, h.nombre, COUNT(v.id_perfil_habilidad) " \
+VER_HABILIDADES2 = "SELECT h.nombre, COUNT(v.id_perfil_habilidad) " \
                   "FROM Habilidad h JOIN Perfil_habilidad pf ON h.id = pf.id_habilidad " \
                   "JOIN Perfil p ON p.id=pf.id_perfil " \
                   "LEFT JOIN Validacion v ON pf.id = v.id_perfil_habilidad " \
                   "WHERE p.correo_usuario IN {} " \
-                  "GROUP BY p.correo_usuario, h.id"
+                  "GROUP BY p.correo_usuario, h.id " \
+                  "ORDER BY COUNT(v.id_perfil_habilidad) DESC LIMIT 10"
 
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-u = "Mono3Apellido3@gmail.com"
+#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+#u = "Mono3Apellido3@gmail.com"
 
 def MenuEstadisticas(usuario, conn):
     Imprimir("Que desea hacer?\n"
@@ -98,31 +99,23 @@ def Trabajos(usuario, conn):
         lista_rubros.append(r[0])
         lista_cantidades.append(r[1])
     pyplot.bar(lista_rubros, lista_cantidades)
+    pyplot.xlabel("Rubros")
+    pyplot.ylabel("Cantidad trabajos disponibles")
     pyplot.show()
     return
 
 def Habilidades(usuario, conn):
     cur = conn.cursor()
-    cur.execute(CONTACTOS_USUARIO.format(usuario))
-    contactos = cur.fetchall()
-    lista_contactos = []
-    for amigo in contactos:
-        lista_contactos.append(amigo[0])
-    print(lista_contactos)
-
     cur.execute(VER_HABILIDADES2.format(CONTACTOS_USUARIO.format(usuario)))
     hb = cur.fetchall()
+    numeros = []
+    habis = []
     for h in hb:
-        print(h)
+        numeros.append(h[1])
+        habis.append(h[0])
 
-    for contacto in lista_contactos:
-        print("Contacto:", contacto)
-        cur.execute(VER_HABILIDADES.format(contacto))
-        habilidades = cur.fetchall()
-        for h in habilidades:
-            print("\t", h)
-
-
-
-
-MenuEstadisticas(u, conn)
+    pyplot.bar(habis, numeros)
+    pyplot.xlabel("Habilidades")
+    pyplot.ylabel("Cantidad validaciones")
+    pyplot.show()
+    return
