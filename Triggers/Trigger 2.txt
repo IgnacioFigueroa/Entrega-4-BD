@@ -1,6 +1,7 @@
 /*
 Forma 1:
 Solo se puede tener a una persona por trabajo.
+Este es el que esta en la base de datos.
 */
 CREATE FUNCTION unUsuarioPorTrabajo_trigger()
 RETURNS trigger
