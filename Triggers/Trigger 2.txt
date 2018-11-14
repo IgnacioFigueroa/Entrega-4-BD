@@ -9,7 +9,7 @@ AS $$
 		return "OK"
 	trabajados = plpy.execute("
 		SELECT fecha_termino FROM trabajado WHERE id_trabajo = {};
-		".format(TD['new']['id_trabajo'])
+		".format(TD['new']['id_trabajo']))
 	
 	if len(trabajados)>0:
 		return "SKIP"
@@ -31,7 +31,7 @@ AS $$
 		return "OK"
 	trabajados = plpy.execute("
 		SELECT fecha_termino FROM trabajado WHERE id_trabajo = {};
-		".format(TD['new']['id_trabajo'])
+		".format(TD['new']['id_trabajo']))
 	
 	for trabajado in trabajados:
 		if TD['new']['fecha_inicio'] < trabajado['fecha_termino']:
