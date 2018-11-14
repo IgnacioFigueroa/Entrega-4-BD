@@ -2,7 +2,10 @@ from IO import *
 from tabulate import tabulate
 from Empresas import AgregarTrabajos, CrearEmpresa
 from datetime import date
+import time
 
+import psycopg2
+conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
 # ----------QUERYS----------
 CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
@@ -17,7 +20,7 @@ CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
                     'GROUP BY u.correo, s.correo_usuario_receptor, s.correo_usuario_emisor ORDER BY amigos DESC) todos ' \
                     'ORDER BY todos.correo DESC)'
 VER_PERFIL = "SELECT * FROM Perfil WHERE correo_usuario = '{}' "
-VER_ESTUDIOS = "SELECT em.nombre, e.grado_academico, e.descripcion, e.fecha_inicio, e.fecha_termino " \
+VER_ESTUDIOS = "SELECT em.nombre, e.grado_academico, e.descripcion, e.fecha_inicio, e.fecha_termino, e.id " \
                "FROM Estudio e JOIN Empresa em ON e.id_empresa = em.id " \
                "WHERE correo_usuario = '{}'"
 VER_TRABAJOS = "SELECT t.id, e.nombre, t.descripcion, tr.fecha_inicio, tr.fecha_termino" \
@@ -72,7 +75,7 @@ def MenuVerPerfil(usuario, conn):
                  "(4) Ver experiencia laboral\n"
                  "(5) Ver educacion\n"
                  "(6) Eliminar Cuenta\n"
-                 "(7) Volver\n"
+                 "(7) Volver al menu anterior\n"
                  "(8) Salir\n")
         opcion = ValidarOpcion(range(1,9))
         if opcion == 1:
@@ -94,7 +97,6 @@ def MenuVerPerfil(usuario, conn):
             conn.close()
             sys.exit(0)
     return
-#MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
 
 
 def EditarPerfil(usuario, conn):
@@ -289,7 +291,7 @@ def VerExperienciaLaboral(usuario,conn):
                             idNuevoTrabajo-1, id_perfil, fecha_actual))
                 conn.commit()
         elif opcion == 3:
-            print("Aca hay que eliminar una experiencia laboral")
+            #print("Aca hay que eliminar una experiencia laboral")
             trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione la experiencia laboral que quiere eliminar: ")
             cur.execute("SELECT tj.id from trabajado tj, trabajo t "
                         "WHERE tj.id_trabajo = t.id AND t.id = {} "
@@ -298,6 +300,7 @@ def VerExperienciaLaboral(usuario,conn):
             idTrabajado = cur.fetchone()
             idTrabajado = idTrabajado[0]
             cur.execute("DELETE FROM trabajado WHERE id = {}".format(idTrabajado))
+            Imprimir("Experiencia laboral borrada")
             conn.commit()
 
 
@@ -307,27 +310,36 @@ def VerEducacion(usuario, conn):
     estudios = cur.fetchall()
     tablaEstudios = list()
     atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
-    Imprimir("ESTUDIOS")
+    ImprimirTitulo("ver educacion")
     cont = 0
-    for grado in atributosEstudios:
+    for estd in estudios:
         cont+=1
-        Imprimir("({}) {}".format(cont, grado[1]))
+        Imprimir("({}) {} en {}".format(cont, estd[1], estd[0]))
+
     Imprimir("Que desea hacer: \n"
              "\t(1) Ver Educacion\n"
              "\t(2) Agregar educacion\n"
-             "\t(3) Eliminar educacion")
-    opcion = ValidarOpcion(range(1,4))
-    if opcion == 1:
-        cur.execute(VER_ESTUDIOS.format(usuario))
-        estudios = cur.fetchall()
-        tablaEstudios = list()
-        atributosEstudios = ["Universidad", "GradoAcademico", "Descripcion", "FechaInicio", "FechaTermino"]
-        Imprimir("ESTUDIOS")
-        for estudio in estudios:
-            for i in range(len(estudio)):
-                tablaEstudios.append([atributosEstudios[i], estudio[i]])
-            Imprimir(tabulate(tablaEstudios))
-            tablaEstudios = list()
+             "\t(3) Eliminar educacion\n"
+             "\t(4) Volver al menu anterior\n"
+             "\t(5) Salir\n")
+    opcion = ValidarOpcion(range(1, 6))
+    if opcion == 5:
+        if HayConexionBD(conn):
+            conn.close()
+        sys.exit(0)
+    elif opcion == 4:
+        return
+    elif opcion == 1:
+        op_edu = ValidarOpcion(range(1,cont+1), "Ingrese la educacion que quiere ver en detalle: ")
+        cont2 = 0
+        for e in estudios:
+            cont2 += 1
+            if op_edu == cont2:
+                for i in range(len(atributosEstudios)):
+                    tablaEstudios.append([atributosEstudios[i], e[i]])
+                Imprimir(tabulate(tablaEstudios))
+        time.sleep(2)
+
     elif opcion == 2:
         cur.execute("SELECT nombre FROM Empresa WHERE rubro ='Educacion'")
         instituciones = cur.fetchall()
@@ -341,19 +353,30 @@ def VerEducacion(usuario, conn):
         fechaInicio = input("Ingrese fecha de inicio: ")
         fechaTermino = input("Ingrese fecha de termino: ")
         niveles = ["Educacion Basica", "Educacion Media", "Universitario", "PostGrado"]
-        Imprimir("Ingrese su Nivel de educacion")
+        Imprimir("Ingrese su Nivel de educacion:")
         for i in range(1,5):
             Imprimir("({}) {}".format(i, niveles[i-1]))
         opcion1= ValidarOpcion(range(1,5))
-        nivel= niveles[opcion-1]
+        nivel= niveles[opcion1-1]
         descripcion = input("Ingrese una descripcion de su estudio: ")
         cur.execute("INSERT INTO Estudio(id, correo_usuario, id_empresa, grado_academico, descripcion, fecha_inicio, fecha_termino)"
                     " VALUES ({}, '{}', {}, '{}', '{}', '{}', '{}')".format(SiguienteID("Estudio",conn), usuario, id, nivel, descripcion, fechaInicio, fechaTermino))
         conn.commit()
 
-
-
+    elif opcion == 3:
+        print("Eliminar una educacion")
+        op_edu = ValidarOpcion(range(1, cont + 1), "Ingrese la educacion que quiere eliminar: ")
+        cont2 = 0
+        for e in estudios:
+            cont2 += 1
+            if op_edu == cont2:
+                id_borrar = e[-1]
+                break
+        cur.execute("DELETE FROM Estudio WHERE id = {}".format(id_borrar))
+        Imprimir("Educacion borrada")
+        conn.commit()
     return
+
 def EliminarCuenta(usuario, conn):
     opcion = input("Ingresa 'Si' si deseas eliminar tu cuenta, si no, ingresa cualquier cosa: ")
     if opcion in ["si", "SI", "Si", "sI"]:
@@ -361,5 +384,7 @@ def EliminarCuenta(usuario, conn):
         cur.execute("DELETE FROM Usuario WHERE correo = '{}'".format(usuario))#Quedo tan corto porque lo hicimos con cascade
         Imprimir("Tu cuenta ha sido borrada")
         conn.commit()
-
     return
+
+
+MenuVerPerfil("Mono1Apellido1@gmail.com", conn)
