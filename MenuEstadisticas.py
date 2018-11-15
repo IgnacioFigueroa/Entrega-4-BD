@@ -40,16 +40,25 @@ VER_HABILIDADES2 = "SELECT h.nombre, COUNT(v.id_perfil_habilidad) " \
                   "GROUP BY p.correo_usuario, h.id " \
                   "ORDER BY COUNT(v.id_perfil_habilidad) DESC LIMIT 10"
 
-#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-#u = "Mono3Apellido3@gmail.com"
+CANTIDAD_TRABAJOS = "SELECT p.correo_usuario, count(*)c FROM Trabajado t JOIN Perfil p ON p.id = t.id_perfil WHERE p.correo_usuario = '{}' GROUP BY p.correo_usuario"
+DIAS_TRABAJADOS = "SELECT fecha_inicio, fecha_termino" \
+                  "CASE WHEN fecha_termino>'{}' THEN ('{}'-fecha_inicio)" \
+                  "ELSE fecha_termino_fecha_inicio " \
+                  "END " \
+                  "FROM Trabajado t JOIN Perfil p ON p.id = t.id_perfil " \
+                  "WHERE p.correo_usuario = '{}'"#probar esto
+
+conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+u = "Mono3Apellido3@gmail.com"
 
 def MenuEstadisticas(usuario, conn):
     Imprimir("Que desea hacer?\n"
              "\t (1) Ver calidad de contactos\n"
              "\t (2) Ver cantidad de comentarios\n"
              "\t (3) Ver trabajos\n"
-             "\t (4) Ver habilidades\n")
-    opcion = ValidarOpcion(range(1,5))
+             "\t (4) Ver habilidades\n"
+             "\t (5) Ver tus trabajos\n")
+    opcion = ValidarOpcion(range(1,6))
     if opcion == 1:
         CalidadContactos(usuario, conn)
     elif opcion == 2:
@@ -58,6 +67,8 @@ def MenuEstadisticas(usuario, conn):
         Trabajos(usuario, conn)
     elif opcion == 4:
         Habilidades(usuario, conn)
+    elif opcion == 5:
+        TusTrabajos(usuario, conn)
     return
 
 
@@ -118,4 +129,6 @@ def Habilidades(usuario, conn):
     pyplot.xlabel("Habilidades")
     pyplot.ylabel("Cantidad validaciones")
     pyplot.show()
+    return
+def TusTrabajos(usurio, conn):
     return

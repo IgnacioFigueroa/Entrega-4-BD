@@ -24,7 +24,8 @@ def VerPerfilHastaHabilidad(usuario, conn):
     tablaPerfil = list()
     for i in range(len(atributosPerfil)):
         tablaPerfil.append([atributosPerfil[i], perfilPorVer[i + 1]])
-    Imprimir("PERFIL")
+    ImprimirTitulo("PERFIL")
+    Imprimir("DATOS BASICOS")
     Imprimir(tabulate(tablaPerfil))
 
     cur.execute(VER_ESTUDIOS.format(usuario))
