@@ -11,6 +11,9 @@ crearPublicacionUsuario = "INSERT INTO publicacion (id,correo_usuario,texto,foto
 INFO_PUBLICACION = "select id, texto, foto, link, estado, fecha from publicacion "\
                 "where correo_usuario = '{}'"
 
+comentarUsuario = "INSERT INTO comentario (id, id_comentado, correo_usuario_comentador, id_publicacion, contenido, fecha, borrado) " \
+           "VALUES ({},{},'{}',{},'{}',TO_DATE('{}', 'DD/MM/YYYY'),{});"
+
 def MenuVerPublicacion(usuario, conn):
     while True:
         ImprimirTitulo("ver publicaciones")
@@ -85,7 +88,7 @@ def MisPublicaciones(usuario, conn):
         return
     else:
         id_pub = seleccion
-        ImprimirComentarios(id_pub, conn)
+        ids_comentarios = ImprimirComentarios(id_pub, conn)
         opciones = ["Comentar",
                     "Eliminar Comentario",
                     "Editar Publicacion",
@@ -95,7 +98,7 @@ def MisPublicaciones(usuario, conn):
         ImprimirOpciones(opciones)
         seleccion = ValidarOpcion(range(1,len(opciones)+1))
         if seleccion == 1:
-            Comentar(id_pub, conn)
+            Comentar(id_pub, conn, usuario, ids_comentarios)
 
         elif seleccion == 2:
             EliminarComentario(id_pub, conn)
@@ -114,8 +117,24 @@ def MisPublicaciones(usuario, conn):
             conn.close()
             sys.exit()
 
-def Comentar(id_a_comentar, conn, opcion): # opcion puede ser "comentario" o "publicacion"
-    pass
+def Comentar(idPublicacion, conn, nombre, idsComentarios):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM comentario ORDER BY id DESC LIMIT 1")
+    id = cur.fetchall()
+    id = id[0][0]+1
+    ImprimirTitulo("Comentar.")
+    fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+    idsComentarios.append(0)
+    idComentado = ValidarOpcion(idsComentarios,"(0)  Comentar en la publicacion.\n"
+                                               "(id) Ingrese un id de otro comentario para comentarlo.")
+    if (idComentado==0):
+        idComentado = "NULL"
+    contenido = PedirDescripcion("comentario")
+    borrado = False
+    cur.execute(comentarUsuario.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
+    cur.close()
+    conn.commit()
+    return
 
 def EliminarComentario(id_publicacion, conn):
     pass
@@ -228,6 +247,5 @@ def OtrasPublicaciones(usuario, conn):
     elif opcion == 2:
         print("eliminar comentario")
 
-OtrasPublicaciones(u, conn)
 
 
