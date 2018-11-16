@@ -109,7 +109,6 @@ def CalidadContactos(usuario, conn):
     cur = conn.cursor()
     cur.execute(VER_CONTACTOS_ESTUDIO.format(CONTACTOS_USUARIO.format(usuario), usuario))
     rows = cur.fetchall()
-    print (rows)
     lista = []
     for correo, grado in rows:
         lista.append(grado)

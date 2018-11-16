@@ -114,7 +114,7 @@ def EditarPerfil(usuario, conn):
     if atributoCambiar == "correo":
         cur.execute("UPDATE Usuario SET correo = {} WHERE correo = '{}'".format(info, usuario))
     else:
-        cur.execute("UPDATE Perfil SET {} = {} WHERE correo_usuario = '{}'".format(atributoCambiar,info, usuario))
+        cur.execute("UPDATE Perfil SET {} = '{}' WHERE correo_usuario = '{}'".format(atributoCambiar,info, usuario))
     conn.commit()
     return
 def CambiarFoto(usuario, conn):
