@@ -384,6 +384,3 @@ def EliminarCuenta(usuario, conn):
         Imprimir("Tu cuenta ha sido borrada")
         conn.commit()
     return
-
-
-MenuVerPerfil("Mono1Apellido1@gmail.com", conn)

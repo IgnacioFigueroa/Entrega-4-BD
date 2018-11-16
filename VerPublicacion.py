@@ -17,6 +17,12 @@ comentarUsuario = "INSERT INTO comentario (id, id_comentado, correo_usuario_come
 
 borrarComentario = "UPDATE comentario SET borrado = {} WHERE id = {};"
 
+cambiarContenidoPublicacion = "UPDATE publicacion SET texto = '{}', fecha = TO_DATE('{}', 'DD/MM/YYYY') WHERE id = {}"
+
+eliminarComentarios = "DELETE FROM comentario WHERE id_publicacion = {}"
+
+eliminarPublicacion = "DELETE FROM publicacion WHERE id = {}"
+
 
 def MenuVerPublicacion(usuario, conn):
     while True:
@@ -80,9 +86,10 @@ def MisPublicaciones(usuario, conn):
         tab.append([i[0], i[1], i[2], i[3], i[4], i[5]])
     Imprimir(tabulate(tab))
     ops = ["Volver", "Salir"]
-    ImprimirOpciones(ops, "", opciones[-1]+1)
-    opciones.append(opciones[-1]+1)
-    opciones.append(opciones[-1]+1)
+    maximo = max(opciones)+1
+    ImprimirOpciones(ops, "", maximo)
+    opciones.append(maximo)
+    opciones.append(maximo + 1)
     seleccion = ValidarOpcion(opciones)
     if seleccion == opciones[-1]:
         cur.close()
@@ -156,8 +163,6 @@ def EliminarComentario(id_publicacion, conn, idsComentarios):
     conn.commit()
     return
 
-cambiarContenidoPublicacion = "UPDATE publicacion SET texto = '{}', fecha = TO_DATE('{}', 'DD/MM/YYYY') WHERE id = {}"
-
 def EditarPublicacion(id_publicacion, conn):
     cur = conn.cursor()
     ImprimirTitulo("Editar publicacion.")
@@ -187,11 +192,30 @@ def EditarPublicacion(id_publicacion, conn):
             cur.execute(cambiarContenidoPublicacion.format(nuevo_contenido, fecha, id_publicacion))
             Imprimir("Publicacion editada.")
             conn.commit()
+            cur.close()
             return
 
 def EliminarPublicacion(id_publicacion, conn):
-    pass
-
+    cur = conn.cursor()
+    opciones = ["SI", "NO", "Volver", "Salir"]
+    ImprimirTitulo("Eliminar publicacion")
+    ImprimirOpciones(opciones, "Esta seguro que desea eliminar esta publicacion?\n"
+                               "Se eliminaran todos los comentarios")
+    seleccion = ValidarOpcion(range(1, 5))
+    if seleccion == 4:
+        cur.close()
+        conn.close()
+        sys.exit()
+    elif seleccion == 3 or seleccion == 2:
+        cur.close()
+        return
+    elif seleccion == 1:
+        cur.execute(eliminarComentarios.format(id_publicacion))
+        cur.execute(eliminarPublicacion.format(id_publicacion))
+        Imprimir("Publicacion eliminada")
+        conn.commit()
+        cur.close()
+        return
 CONTACTOS_USUARIO = 'SELECT todos.amigo amigo' \
                     ' FROM ' \
                     '(SELECT u.correo correo, COUNT(*) amigos, ' \
