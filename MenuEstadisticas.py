@@ -1,8 +1,9 @@
 from IO import *
 import psycopg2
 from matplotlib import pyplot
-
-CONTACTOS_USUARIO = '(SELECT todos.amigo amigo' \
+from datetime import datetime
+import numpy
+CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
                     ' FROM ' \
                     '(SELECT u.correo correo, COUNT(*) amigos, ' \
                     ' CASE  WHEN u.correo = s.correo_usuario_emisor THEN s.correo_usuario_receptor ' \
@@ -41,41 +42,59 @@ VER_HABILIDADES2 = "SELECT h.nombre, COUNT(v.id_perfil_habilidad) " \
                   "ORDER BY COUNT(v.id_perfil_habilidad) DESC LIMIT 10"
 
 CANTIDAD_TRABAJOS = "SELECT p.correo_usuario, count(*)c FROM Trabajado t JOIN Perfil p ON p.id = t.id_perfil WHERE p.correo_usuario = '{}' GROUP BY p.correo_usuario"
-DIAS_TRABAJADOS = "SELECT fecha_inicio, fecha_termino" \
-                  "CASE WHEN fecha_termino>'{}' THEN ('{}'-fecha_inicio)" \
-                  "ELSE fecha_termino_fecha_inicio " \
-                  "END " \
+DIAS_TRABAJADOS = " SELECT count(*),sum(" \
+                  "CASE WHEN (fecha_termino>'31-12-{}' or fecha_termino is null) and '31-12-{}'>fecha_inicio THEN ('31-12-{}'-fecha_inicio) " \
+                  "ELSE (fecha_termino-fecha_inicio) END) " \
                   "FROM Trabajado t JOIN Perfil p ON p.id = t.id_perfil " \
-                  "WHERE p.correo_usuario = '{}'"#probar esto
+                  "WHERE p.correo_usuario = '{}'"
 
+ANO_INICIO = "select extract(year from fecha_inicio) inicio " \
+             "from trabajado t join perfil p on t.id_perfil = p.id " \
+             "WHERE correo_usuario = '{}' " \
+             "order by inicio asc limit 1"
+
+ANO_FIN = "select extract(year from fecha_termino) fin " \
+             "from trabajado t join perfil p on t.id_perfil = p.id " \
+             "WHERE correo_usuario = '{}' " \
+             "order by fin desc limit 1"
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 u = "Mono3Apellido3@gmail.com"
 
 def MenuEstadisticas(usuario, conn):
-    Imprimir("Que desea hacer?\n"
-             "\t (1) Ver calidad de contactos\n"
-             "\t (2) Ver cantidad de comentarios\n"
-             "\t (3) Ver trabajos\n"
-             "\t (4) Ver habilidades\n"
-             "\t (5) Ver tus trabajos\n")
-    opcion = ValidarOpcion(range(1,6))
-    if opcion == 1:
-        CalidadContactos(usuario, conn)
-    elif opcion == 2:
-        CantidadComentarios(usuario, conn)
-    elif opcion == 3:
-        Trabajos(usuario, conn)
-    elif opcion == 4:
-        Habilidades(usuario, conn)
-    elif opcion == 5:
-        TusTrabajos(usuario, conn)
+    salir = False
+    while (not salir):
+        Imprimir("Que desea hacer?\n"
+                 "\t (1) Ver calidad de contactos\n"
+                 "\t (2) Ver cantidad de comentarios\n"
+                 "\t (3) Ver trabajos\n"
+                 "\t (4) Ver habilidades\n"
+                 "\t (5) Ver tus trabajos\n"
+                 "\t (6) Volver\n"
+                 "\t (7) Salir")
+        opcion = ValidarOpcion(range(1,8))
+        if opcion == 1:
+            CalidadContactos(usuario, conn)
+        elif opcion == 2:
+            CantidadComentarios(usuario, conn)
+        elif opcion == 3:
+            Trabajos(usuario, conn)
+        elif opcion == 4:
+            Habilidades(usuario, conn)
+        elif opcion == 5:
+            TusTrabajos(usuario, conn)
+        elif opcion == 6:
+            salir = True
+        elif opcion == 7:
+            conn.close()
+            sys.exit(0)
     return
 
 
 def CalidadContactos(usuario, conn):
     cur = conn.cursor()
-    cur.execute(VER_CONTACTOS_ESTUDIO.format(CONTACTOS_USUARIO, usuario))
+    cur.execute(VER_CONTACTOS_ESTUDIO.format(CONTACTOS_USUARIO.format(usuario), usuario))
     rows = cur.fetchall()
+    print (rows)
     lista = []
     for correo, grado in rows:
         lista.append(grado)
@@ -130,5 +149,26 @@ def Habilidades(usuario, conn):
     pyplot.ylabel("Cantidad validaciones")
     pyplot.show()
     return
-def TusTrabajos(usurio, conn):
+def TusTrabajos(usuario, conn):
+    cur = conn.cursor()
+    cur.execute(ANO_INICIO.format(usuario))
+    a = cur.fetchall()
+    ano_inicio = int(a[0][0])
+    cur.execute(ANO_FIN.format(usuario))
+    a=cur.fetchall()
+    if a[0][0] is None:
+        ano_fin = datetime.now().year
+    else:
+        ano_fin = a[0][0]
+    datos = [numpy.array(range(ano_inicio,(ano_fin))), []]
+    for ano in range(ano_inicio, ano_fin):
+        cur.execute(DIAS_TRABAJADOS.format(str(ano),str(ano),str(ano),usuario))
+        dias= cur.fetchall()
+        promedio = round(float(dias[0][1])/float(dias[0][0]),2)
+        datos[1].append(promedio)
+    pyplot.plot(datos[0],datos[1])
+    pyplot.xlabel("Años")
+    pyplot.ylabel("Promedio de dias trabajados")
+    pyplot.show()
     return
+MenuEstadisticas(u,conn)
