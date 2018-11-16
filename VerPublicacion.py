@@ -282,7 +282,6 @@ def OtrasPublicaciones(usuario, conn):
     comentarios = [["COMENTARIO", "CONTENIDO"]]
     ides_comen = []
     for i in info:
-        print(i)
         if pub_con_comentarios:
             comentarios.append([i[6], i[5]])
             ides_comen.append(i[6])
@@ -352,7 +351,6 @@ def OtrasPublicaciones(usuario, conn):
     elif opcion == 2:
         Imprimir(tabulate(comentarios))
         comen_para_eliminar = ValidarOpcion(ides_comen, "Ingrese el numero del comentario a eliminar: ")
-        print(comen_para_eliminar)
         cur.execute("select correo_usuario_comentador from Comentario where id = {}"
                     .format(comen_para_eliminar))
         dueno = cur.fetchall()
