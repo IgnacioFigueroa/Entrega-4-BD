@@ -152,12 +152,13 @@ def ImprimirComentarios(idPublicacion, conn):
     comentarios_query = cur.fetchall()
     ids_comentariosPresentes = []
     for comentario in comentarios_query:
-        ids_comentariosPresentes.append(comentario[0])
         autor = comentario[2]
         if autor == None:
             autor = comentario[7]
         result = "{:<4}> {:%d-%m-%Y} | {} dijo: {}".format(comentario[0], comentario[5], autor, comentario[4])
-        print(result)
+        if comentario[-2] == False:
+            ids_comentariosPresentes.append(comentario[0])
+            print(result)
     return ids_comentariosPresentes
 
 def HayConexionBD(conn):

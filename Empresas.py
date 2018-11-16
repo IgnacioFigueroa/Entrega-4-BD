@@ -516,14 +516,13 @@ def EliminarPublicacion(idPublicacion, conn):
 
 def Comentar(idPublicacion, conn, nombre, idsComentarios):
     cur = conn.cursor()
-    cur.execute("SELECT id FROM comentario ORDER BY id DESC LIMIT 1")
-    id = cur.fetchall()
-    id = id[0][0]+1
+    id = SiguienteID("Comentario", conn)
     ImprimirTitulo("Comentar.")
     fecha = "{:%d-%m-%Y}".format(datetime.date.today())
     idsComentarios.append(0)
     idComentado = ValidarOpcion(idsComentarios,"(0)  Comentar en la publicacion.\n"
-                                               "(id) Ingrese un id de otro comentario para comentarlo.")
+                                               "(id) Ingrese un id de otro comentario para comentarlo."
+                                               "Ingrese su opcion: ")
     if (idComentado==0):
         idComentado = "NULL"
     contenido = PedirDescripcion("comentario")

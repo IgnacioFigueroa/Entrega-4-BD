@@ -101,7 +101,7 @@ def MisPublicaciones(usuario, conn):
             Comentar(id_pub, conn, usuario, ids_comentarios)
 
         elif seleccion == 2:
-            EliminarComentario(id_pub, conn)
+            EliminarComentario(id_pub, conn, ids_comentarios)
 
         elif seleccion == 3:
             EditarPublicacion(id_pub, conn)
@@ -119,25 +119,39 @@ def MisPublicaciones(usuario, conn):
 
 def Comentar(idPublicacion, conn, nombre, idsComentarios):
     cur = conn.cursor()
-    cur.execute("SELECT id FROM comentario ORDER BY id DESC LIMIT 1")
-    id = cur.fetchall()
-    id = id[0][0]+1
+    id = SiguienteID("Comentario", conn)
     ImprimirTitulo("Comentar.")
     fecha = "{:%d-%m-%Y}".format(datetime.date.today())
     idsComentarios.append(0)
     idComentado = ValidarOpcion(idsComentarios,"(0)  Comentar en la publicacion.\n"
-                                               "(id) Ingrese un id de otro comentario para comentarlo.")
+                                               "(id) Ingrese un id de otro comentario para comentarlo.\n"
+                                               "Ingrese su opcion: ")
     if (idComentado==0):
         idComentado = "NULL"
     contenido = PedirDescripcion("comentario")
     borrado = False
     cur.execute(comentarUsuario.format(id, idComentado, nombre, idPublicacion, contenido, fecha, borrado))
     cur.close()
+    Imprimir("Comentario publicado.")
     conn.commit()
     return
 
-def EliminarComentario(id_publicacion, conn):
-    pass
+borrarComentario = "UPDATE comentario SET borrado = {} WHERE id = {};"
+
+def EliminarComentario(id_publicacion, conn, idsComentarios):
+    cur = conn.cursor()
+    ImprimirTitulo("Eliminar comentario.")
+    if len(idsComentarios) < 1:
+        Imprimir("No hay comentarios para eliminar")
+        cur.close()
+        return
+    id = ValidarOpcion(idsComentarios, "(id) Ingrese el id del comentario para eliminarlo: ")
+    borrado = True
+    cur.execute(borrarComentario.format(borrado, id))
+    Imprimir("Comentario eliminado")
+    cur.close()
+    conn.commit()
+    return
 
 def EditarPublicacion(id_publicacion, conn):
     pass
