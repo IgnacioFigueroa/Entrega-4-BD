@@ -3,7 +3,22 @@ import psycopg2
 from matplotlib import pyplot
 from datetime import datetime
 import numpy
+
+
 CONTACTOS_USUARIO = '(SELECT todos.correo correo, todos.amigo amigo' \
+                    ' FROM ' \
+                    '(SELECT u.correo correo, COUNT(*) amigos, ' \
+                    ' CASE  WHEN u.correo = s.correo_usuario_emisor THEN s.correo_usuario_receptor ' \
+                    'WHEN u.correo = s.correo_usuario_receptor THEN s.correo_usuario_emisor ' \
+                    'END amigo ' \
+                    'FROM ' \
+                    'usuario u JOIN solicitud s ON (u.correo = s.correo_usuario_emisor OR u.correo = s.correo_usuario_receptor) ' \
+                    'WHERE  s.estado = \'aceptada\' ' \
+                    'GROUP BY u.correo, s.correo_usuario_receptor, s.correo_usuario_emisor ORDER BY amigos DESC) todos ' \
+                    "WHERE todos.correo = '{}'" \
+                    'ORDER BY todos.correo DESC)'
+
+CONTACTOS_USUARIO2 = '(SELECT todos.amigo amigo' \
                     ' FROM ' \
                     '(SELECT u.correo correo, COUNT(*) amigos, ' \
                     ' CASE  WHEN u.correo = s.correo_usuario_emisor THEN s.correo_usuario_receptor ' \
@@ -57,8 +72,8 @@ ANO_FIN = "select extract(year from fecha_termino) fin " \
              "from trabajado t join perfil p on t.id_perfil = p.id " \
              "WHERE correo_usuario = '{}' " \
              "order by fin desc limit 1"
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
-u = "Mono3Apellido3@gmail.com"
+#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+#u = "Mono3Apellido3@gmail.com"
 
 def MenuEstadisticas(usuario, conn):
     salir = False
@@ -136,7 +151,7 @@ def Trabajos(usuario, conn):
 
 def Habilidades(usuario, conn):
     cur = conn.cursor()
-    cur.execute(VER_HABILIDADES2.format(CONTACTOS_USUARIO.format(usuario)))
+    cur.execute(VER_HABILIDADES2.format(CONTACTOS_USUARIO2.format(usuario)))
     hb = cur.fetchall()
     numeros = []
     habis = []
@@ -171,4 +186,5 @@ def TusTrabajos(usuario, conn):
     pyplot.ylabel("Promedio de dias trabajados")
     pyplot.show()
     return
-MenuEstadisticas(u,conn)
+
+#MenuEstadisticas(u,conn)
