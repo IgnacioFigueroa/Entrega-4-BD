@@ -9,24 +9,10 @@ from RecuperarContraseña import RecuperarContrasena
 from IniciarSesion import IniciarSesion
 from MenuEstadisticas import MenuEstadisticas
 
-def VolverAlMain(conn):
-    ImprimirTitulo("BIENVENIDO/A A LINKEDING")
-    Imprimir("Que desea hacer?\n"
-             "\t(1) Iniciar Sesion\n"
-             "\t(2) Crear Cuenta\n"
-             "\t(3) Recuperar Contraseña\n")
-    opcion = ValidarOpcion(range(1, 4))
-    if opcion == 1:
-        usuario = IniciarSesion(conn)
-        MenuPrincipal(usuario, conn)
-    elif opcion == 2:
-        CrearCuenta(conn)
-    elif opcion == 3:
-        RecuperarContrasena(conn)
-    conn.close()
 
 def MenuPrincipal(usuario, conn):
-    while(True):
+    salir = True
+    while(salir):
         ImprimirTitulo("BIENVENIDO " + usuario)
         Imprimir("Que deseas hacer? \n"
                  "\t(1) Ver Perfil\n"
@@ -49,7 +35,7 @@ def MenuPrincipal(usuario, conn):
         elif opcion == 5:
             MenuEmpresas(usuario, conn)
         elif opcion == 6:
-            VolverAlMain(conn)
+            salir = False
         elif opcion == 7:
             MenuEstadisticas(usuario, conn)
         elif opcion == 8:

@@ -105,11 +105,14 @@ def MenuEmpresas(usuario, conn):
     #seleccionar ver mis empresas o ver otros trabajos
     opciones = ["Empresas que soy administrador",
                "Ver trabajos",
+                "Volver",
                "Salir"]
     ImprimirOpciones(opciones)
     seleccion = ValidarOpcion(range(1,len(opciones)+1))
-    if seleccion == 3:
+    if seleccion == 4:
         sys.exit(0)
+    elif seleccion == 3:
+        return
     elif seleccion == 1:
         MostrarMisEmpresas(usuario, conn)
     elif seleccion == 2:
