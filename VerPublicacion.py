@@ -1,10 +1,9 @@
 import datetime
-
-import psycopg2
-
+from datetime import date
 from IO import *
 
-conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
+#import psycopg2
+#conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
 
 crearPublicacionUsuario = "INSERT INTO publicacion (id,correo_usuario,texto,foto,link,estado,fecha,borrada) " \
@@ -218,11 +217,24 @@ EMPRESAS_TRABAJADAS = "select distinct t.id_empresa from trabajado td, perfil pf
 
 PUBLICACIONES_EMPRESAS = "select * from publicacion where id_empresa = {}"
 PUBLICACIONES_AMIGOS = "select * from publicacion where correo_usuario = '{}'"
-INFO_PUBLICACION_ID = "select p.texto, p.foto, p.link, p.estado, p.fecha, c.contenido " \
+INFO_PUBLICACION_ID = "select p.texto, p.foto, p.link, p.estado, p.fecha, c.contenido, c.id " \
                       "from publicacion p, comentario c where c.id_publicacion = p.id " \
-                        "and p.id = {}"
+                        "and p.id = {} and c.borrado = {}"
+INFO_PUBLICACION_SIN_COMENTARIOS = "select p.texto, p.foto, p.link, p.estado, p.fecha " \
+                                    "from publicacion p where p.id = {}"
+
+COMENTAR_COMENTARIO = "insert into Comentario(id, id_comentado, correo_usuario_comentador, " \
+                            "id_publicacion, contenido, fecha, borrado) " \
+                            "values ({}, {}, '{}', {}, '{}', '{}', {})"
+COMENTAR_PUBLICACION = "insert into Comentario(id, correo_usuario_comentador, " \
+                             "id_publicacion, contenido, fecha, borrado) " \
+                             "values({}, '{}', {}, '{}', '{}', {})"
+
+
+#u = "Mono1Apellido1@gmail.com"
 
 def OtrasPublicaciones(usuario, conn):
+
     ImprimirTitulo("otras publicaciones")
     cur = conn.cursor()
     cur.execute(CONTACTOS_USUARIO.format(usuario))
@@ -256,17 +268,38 @@ def OtrasPublicaciones(usuario, conn):
             ids_publicaciones.append(r[0])
             atributos_publicacion_empresa.append([r[0], "", r[1]])
     Imprimir(tabulate(atributos_publicacion_empresa))
-    id_elegido = ValidarOpcion(ids_publicaciones, "Ingrese la publicacion que quiera ver en detalle: ")
-    cur.execute(INFO_PUBLICACION_ID.format(id_elegido))
+    id_public_elegido = ValidarOpcion(ids_publicaciones, "Ingrese la publicacion que quiera ver en detalle: ")
+    cur.execute(INFO_PUBLICACION_ID.format(id_public_elegido, False))
     info = cur.fetchall()
+    pub_con_comentarios = True
+    if len(info) == 0:
+        pub_con_comentarios = False
+        cur.execute(INFO_PUBLICACION_SIN_COMENTARIOS.format(id_public_elegido))
+        info = cur.fetchall()
     info_publicacion = [["TEXTO", "FOTO", "LINK", "ESTADO", "FECHA", "COMENTARIOS"]]
     contador = 0
+    hay_comentario = False
+    comentarios = [["COMENTARIO", "CONTENIDO"]]
+    ides_comen = []
     for i in info:
+        print(i)
+        if pub_con_comentarios:
+            comentarios.append([i[6], i[5]])
+            ides_comen.append(i[6])
         if contador == 0:
-            info_publicacion.append([i[0], i[1], i[2], i[3], i[4], i[5]])
+            if pub_con_comentarios:
+                info_publicacion.append([i[0], i[1], i[2], i[3], i[4], i[5]])
+            else:
+                info_publicacion.append([i[0], i[1], i[2], i[3], i[4], ""])
             contador += 1
+            if pub_con_comentarios:
+                if i[6] != None:
+                    hay_comentario = True
         else:
-            info_publicacion.append(["", "", "", "", "", i[5]])
+            if pub_con_comentarios:
+                info_publicacion.append(["", "", "", "", "", i[5]])
+            else:
+                info_publicacion.append(["", "", "", "", "", ""])
     Imprimir(tabulate(info_publicacion))
     Imprimir("Que desea hacer?\n"
              "\t(1) Comentar\n"
@@ -287,10 +320,48 @@ def OtrasPublicaciones(usuario, conn):
                  "\t(2) La publicacion\n")
         op_comentar = ValidarOpcion(range(1,3))
         if op_comentar == 1:
-            pass
-            #Comentar()
+            if not hay_comentario:
+                Imprimir("No hay comentarios para comentar")
+                return
+            else:
+                Imprimir(tabulate(comentarios))
+                id_comen_elegido = ValidarOpcion(ides_comen, "Ingrese el numero del comentario a comentar: ")
+                texto = input("Comente: ")
+                cur.execute(COMENTAR_COMENTARIO.format(SiguienteID("Comentario",conn), id_comen_elegido,
+                                    usuario, id_public_elegido, texto, date.today(), False))
+                conn.commit()
+
+        elif op_comentar == 2:
+            usuario_notificado = ""
+            es_amigo = False
+            for atribu in atributos_publicacion_empresa:
+                if atribu[0] == id_public_elegido:
+                    if atribu[2].__contains__("@"):
+                        usuario_notificado = atribu[2]
+                        es_amigo = True
+            texto = input("Comente: ")
+            cur.execute(COMENTAR_PUBLICACION.format(SiguienteID("Comentario", conn),
+                                                    usuario, id_public_elegido,
+                                                    texto, date.today(), False))
+            if es_amigo:
+                cur.execute("INSERT INTO Notificacion(id, correo_usuario_notificado, id_publicacion, leida) "
+                            "VALUES ({}, '{}', {}, {})".format(SiguienteID("Notificacion", conn), usuario_notificado,
+                                                               id_public_elegido, False))
+            conn.commit()
+
     elif opcion == 2:
-        print("eliminar comentario")
-
-
+        Imprimir(tabulate(comentarios))
+        comen_para_eliminar = ValidarOpcion(ides_comen, "Ingrese el numero del comentario a eliminar: ")
+        print(comen_para_eliminar)
+        cur.execute("select correo_usuario_comentador from Comentario where id = {}"
+                    .format(comen_para_eliminar))
+        dueno = cur.fetchall()
+        dueno = dueno[0][0]
+        if dueno != usuario:
+            Imprimir("No eres el dueño de ese comentario, no lo puedes eliminar")
+        else:
+            cur.execute("update Comentario set borrado = {} where id = {} or id_comentado = {}"
+                        .format(True, comen_para_eliminar, comen_para_eliminar))
+            Imprimir("Comentario eliminado")
+            conn.commit()
 

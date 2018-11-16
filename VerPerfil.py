@@ -291,7 +291,6 @@ def VerExperienciaLaboral(usuario,conn):
                             idNuevoTrabajo-1, id_perfil, fecha_actual))
                 conn.commit()
         elif opcion == 3:
-            #print("Aca hay que eliminar una experiencia laboral")
             trabajo_elegido = ValidarOpcion(idsTrabajos, "Seleccione la experiencia laboral que quiere eliminar: ")
             cur.execute("SELECT tj.id from trabajado tj, trabajo t "
                         "WHERE tj.id_trabajo = t.id AND t.id = {} "
