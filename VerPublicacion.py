@@ -1,7 +1,9 @@
-from IO import *
 import datetime
 
 import psycopg2
+
+from IO import *
+
 conn = psycopg2.connect(database="grupo3", user="grupo3", password="2gKdbj", host="201.238.213.114", port="54321")
 
 
@@ -13,6 +15,9 @@ INFO_PUBLICACION = "select id, texto, foto, link, estado, fecha from publicacion
 
 comentarUsuario = "INSERT INTO comentario (id, id_comentado, correo_usuario_comentador, id_publicacion, contenido, fecha, borrado) " \
            "VALUES ({},{},'{}',{},'{}',TO_DATE('{}', 'DD/MM/YYYY'),{});"
+
+borrarComentario = "UPDATE comentario SET borrado = {} WHERE id = {};"
+
 
 def MenuVerPublicacion(usuario, conn):
     while True:
@@ -136,7 +141,6 @@ def Comentar(idPublicacion, conn, nombre, idsComentarios):
     conn.commit()
     return
 
-borrarComentario = "UPDATE comentario SET borrado = {} WHERE id = {};"
 
 def EliminarComentario(id_publicacion, conn, idsComentarios):
     cur = conn.cursor()
@@ -153,8 +157,38 @@ def EliminarComentario(id_publicacion, conn, idsComentarios):
     conn.commit()
     return
 
+cambiarContenidoPublicacion = "UPDATE publicacion SET texto = '{}', fecha = TO_DATE('{}', 'DD/MM/YYYY') WHERE id = {}"
+
 def EditarPublicacion(id_publicacion, conn):
-    pass
+    cur = conn.cursor()
+    ImprimirTitulo("Editar publicacion.")
+    opciones = ["Editar contenido",
+                "Volver",
+                "Salir"]
+    ImprimirOpciones(opciones)
+    seleccion = ValidarOpcion(range(1,4))
+    if seleccion == 3:
+        cur.close()
+        conn.close()
+        sys.exit()
+    elif seleccion == 2:
+        cur.close()
+        return
+    elif seleccion == 1:
+        nuevo_contenido = PedirDescripcion("Ingrese el nuevo contenido")
+        seleccion2 = ValidarOpcion(range(2), "Esta seguro que desea cambiar el contenido de la publicacion?\n"
+                                             "(0) SI.\n"
+                                             "(1) NO.\n"
+                                             "Ingrese su opcion: ")
+        if seleccion2 == 1:
+            cur.close()
+            return
+        elif seleccion2 == 0:
+            fecha = "{:%d-%m-%Y}".format(datetime.date.today())
+            cur.execute(cambiarContenidoPublicacion.format(nuevo_contenido, fecha, id_publicacion))
+            Imprimir("Publicacion editada.")
+            conn.commit()
+            return
 
 def EliminarPublicacion(id_publicacion, conn):
     pass
@@ -187,9 +221,6 @@ PUBLICACIONES_AMIGOS = "select * from publicacion where correo_usuario = '{}'"
 INFO_PUBLICACION_ID = "select p.texto, p.foto, p.link, p.estado, p.fecha, c.contenido " \
                       "from publicacion p, comentario c where c.id_publicacion = p.id " \
                         "and p.id = {}"
-
-
-u = "Mono1Apellido1@gmail.com"
 
 def OtrasPublicaciones(usuario, conn):
     ImprimirTitulo("otras publicaciones")
